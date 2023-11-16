@@ -5,6 +5,9 @@ import { v4 as uuidv4 } from 'uuid';
 import './index.css';
 
 function Layout() {
+    const location = useLocation();
+    const isOnAuthPage = location.pathname === '/signup' || location.pathname === '/login';
+
     return (
         <>
             <header>
@@ -13,13 +16,18 @@ function Layout() {
                 <h5 id="caption">We'll get you where you need to go.&#9992;</h5>
             </header>
             <div className="main">
-                <span className="logo">
-                    <img src="/airline.png" alt="Company Logo" />
-                </span>
-                <div className="buttons" >
-                    <button className="sign-up">Sign Up</button>
-                    <button className="log-in">Log In</button>
-                </div>
+                {!isOnAuthPage && (
+                    <>
+                        <span className="logo">
+                            <img src="/airline.png" alt="Company Logo" />
+                        </span>
+                        <div className="buttons">
+                            <NavLink to="/signup" className="sign-up">Sign Up</NavLink>
+                            <NavLink to="/login" className="log-in">Log In</NavLink>
+                        </div>
+                    </>
+                )}
+                <Outlet />
             </div>
         </>
     )

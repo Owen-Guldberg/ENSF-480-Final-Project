@@ -77,6 +77,7 @@ header {
 }
 
 .sign-up, .log-in {
+  text-decoration: none;
   padding: 10px 15px;
   margin-left: 10px;
   border: none;
@@ -88,5 +89,56 @@ header {
 }
 
 .sign-up:hover, .log-in:hover {
+  background-color: rgb(54, 48, 218);
+}
+
+.title {
+  font-size: 30px;
+  padding: 0;
+  padding-top: 40px;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  padding: 0;
+  padding-top: 40px;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"] {
+    width: 80%; /* Adjust width as needed */
+    padding: 10px; /* Increases the padding inside the inputs */
+    margin: 10px 0; /* Adds margin for spacing between inputs */
+    font-size: 16px; /* Increase font size for better readability */
+    border-radius: 5px; /* Optional: Rounds the corners of the input boxes */
+}
+
+form button {
+    width: 80%; /* Adjust width as needed */
+    padding: 15px; /* More padding for a larger button */
+    font-size: 18px; /* Larger font size for the button */
+    border-radius: 5px; /* Optional: Rounds the corners of the button */
+}
+
+button {
+  margin-top: 20px;
+  cursor: pointer;
+  background-color: rgb(0, 0, 255);
+  color: white;
+  font-weight: bold;
+}
+
+button:hover {
   background-color: rgb(54, 48, 218);
 }
