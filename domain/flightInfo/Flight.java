@@ -26,6 +26,14 @@ public class Flight {
         this.crewMembers = crewMembers;
         this.passengers = passengers;
     }
+    public Flight(Location origin, Location destination, String flightNum, String departureTime, String arrivalTime, String flightTime) {
+        this.origin = origin;
+        this.destination = destination;
+        this.flightNum = flightNum;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.flightTime = flightTime;
+    }
 
     // Getters
     public Flight getFlight(){
