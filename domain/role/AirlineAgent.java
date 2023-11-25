@@ -13,6 +13,9 @@ public class AirlineAgent implements Person{
     public AirlineAgent getAirlineAgent(){
         return this;
     }
+    public void setClient(RegisteredCustomer client){
+        this.client = client;
+    }
     @Override
     public Name getName(){
         return name;

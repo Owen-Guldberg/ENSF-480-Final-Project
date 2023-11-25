@@ -108,4 +108,5 @@ public class Flight {
     public void addPassenger(RegisteredCustomer passenger){
         this.passengers.add(passenger);
     }
+    
 }

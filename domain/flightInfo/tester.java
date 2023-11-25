@@ -12,7 +12,7 @@ public class tester {
         ArrayList<RegisteredCustomer> na1 = new ArrayList<>();
 
         ArrayList<CrewMember> cm = new ArrayList<>();
-
+        Location loc1 = new Location(null, null, null);
         Location loc = new Location("yyx", "calgary", "canada");
         Flight fl = new Flight(loc, loc, null, null, null, null, cm, na1);
         fl.addPassenger(customer);

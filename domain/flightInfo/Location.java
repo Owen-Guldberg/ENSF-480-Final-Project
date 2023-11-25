@@ -10,7 +10,7 @@ public class Location {
         this.city = city;
         this.country = country;
     }
-    public Location geLocation(){
+    public Location getLocation(){
         return this;
     }
     // Getter for airportName
