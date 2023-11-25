@@ -10,7 +10,9 @@ public class AirlineAgent implements Person{
         this.name = name;
         this.email = email;
     }
-    
+    public AirlineAgent getAirlineAgent(){
+        return this;
+    }
     @Override
     public Name getName(){
         return name;

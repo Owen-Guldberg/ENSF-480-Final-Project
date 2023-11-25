@@ -4,12 +4,23 @@ import util.*;
 public class CrewMember implements Person{
     private Name name; 
     private String email;
+    private String job;
     
-    public CrewMember(Name name, String email){
+    public CrewMember(Name name, String email,String job){
         this.name = name;
         this.email = email;
+        this.job = job;
     }
-    
+    public CrewMember getCrewMember(){
+        return this;
+    }
+    public void setJob(String job){
+        this.job = job;
+    }
+    public String getJob(){
+        return job;
+    }
+
     @Override
     public Name getName(){
         return name;

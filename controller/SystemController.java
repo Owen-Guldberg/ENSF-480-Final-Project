@@ -1,7 +1,7 @@
 package controller;
 
 public class SystemController {
-
+	private ArrayList<> name;
     public SystemController(){
 		start();
     }
