@@ -1,17 +1,22 @@
 package flightInfo;
-
+import util.*;
+// needs major rework
 public class Ticket {
     private Seat seat;
     private int price;
+    private Name name;
+    private String departureTime;
     private boolean hasCancellationInsurance = false;
 
     // Constructor
-    public Ticket(Seat seat, int price, boolean hasCancellationInsurance) {
+    public Ticket(Seat seat, int price, boolean hasCancellationInsurance, Name name) {
         this.seat = seat;
         this.price = price;
         this.hasCancellationInsurance = hasCancellationInsurance;
     }
-
+    public Ticket getTicket(){
+        return this;
+    }
     // Getter for seat
     public Seat getSeat() {
         return seat;
@@ -38,7 +43,6 @@ public class Ticket {
     }
 
     public void buyCancellationInsureance() {
-        this.hasCancellationInsurance = true;
+        hasCancellationInsurance = true;
     }
-    // todo email and display? 
 }

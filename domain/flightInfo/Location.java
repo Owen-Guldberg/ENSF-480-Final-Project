@@ -5,6 +5,14 @@ public class Location {
     private String city;
     private String country;
 
+    public Location(String airport,String city, String country){
+        airportName = airport;
+        this.city = city;
+        this.country = country;
+    }
+    public Location geLocation(){
+        return this;
+    }
     // Getter for airportName
     public String getAirportName() {
         return airportName;

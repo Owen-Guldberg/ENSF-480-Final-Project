@@ -4,7 +4,7 @@ public class Seat {
     private int price;           // Price of the seat
     private boolean isAvailable; // Availability status of the seat
     private int seatNum;         // Seat number
-    private String seatClass;
+    private String seatClass;      // seat class
 
     // Parameterized constructor
     public Seat(int price, int seatNum, String seatClass) {
@@ -13,7 +13,9 @@ public class Seat {
         this.seatNum = seatNum;
         this.seatClass = seatClass;
     }
-
+    public Seat getSeat(){
+        return this;
+    }
     // Reserves the seat, marking it as unavailable
     public void reserveSeat() {
         isAvailable = false;

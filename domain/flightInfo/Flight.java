@@ -9,15 +9,29 @@ public class Flight {
     private Location destination;
     private String flightNum;
     private Location origin;
-    private Aircraft aircraft;
     private String departureTime;
     private String arrivalTime;
     private String flightTime;
     private ArrayList<CrewMember> crewMembers;
     private ArrayList<RegisteredCustomer> passengers;
 
+    // Constructor
+    public Flight(Location origin, Location destination, String flightNum, String departureTime, String arrivalTime, String flightTime,ArrayList<CrewMember> crewMembers, ArrayList<RegisteredCustomer> passengers) {
+        this.origin = origin;
+        this.destination = destination;
+        this.flightNum = flightNum;
+        this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
+        this.flightTime = flightTime;
+        this.crewMembers = crewMembers;
+        this.passengers = passengers;
+    }
+
     // Getters
-    public Location getDestination() {
+    public Flight getFlight(){
+        return this;
+    }
+     public Location getDestination() {
         return destination;
     }
 
@@ -27,10 +41,6 @@ public class Flight {
 
     public Location getOrigin() {
         return origin;
-    }
-
-    public Aircraft getAircraft() {
-        return aircraft;
     }
 
     public String getDepartureTime() {
@@ -66,9 +76,6 @@ public class Flight {
         this.origin = origin;
     }
 
-    public void setAircraft(Aircraft aircraft) {
-        this.aircraft = aircraft;
-    }
 
     public void setDepartureTime(String departureTime) {
         this.departureTime = departureTime;
