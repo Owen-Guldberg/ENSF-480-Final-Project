@@ -23,7 +23,9 @@ public class Seat {
     public void reserveSeat() {
         isAvailable = false;
     }
-
+    public void setAvailable(boolean availability){
+        isAvailable = availability;
+    }
     // Sets the price of the seat
     public void setPrice(int price) {
         this.price = price;

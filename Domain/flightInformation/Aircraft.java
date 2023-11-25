@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Aircraft{
 
-    // HOW DO WE KNOW PRICE?????
+    // HOW DO WE KNOW PRICE and implement seat class?????
     
     private int id;
     private String name;
@@ -64,6 +64,28 @@ public class Aircraft{
     }
     // used for when customer books
     public void changeSeatStatus(boolean status, int seatNum){
+        // Check if seatNum is valid
+        if (seatNum < 1 || seatNum > capacity) {
+            System.out.println("Invalid seat number");
+            return;
+        }
 
+        // Find the seat with the given seatNum
+        for (Seat seat : seats) {
+            if (seat.getSeatNum() == seatNum) {
+                // Change the seat status
+                seat.setAvailable(status);
+                return;
+            }
+        }
+    }
+    public ArrayList<Seat> findAvailableSeats(){
+        ArrayList<Seat> availableSeats = new ArrayList<>();
+        for(Seat seat : seats){
+            if(seat.getAvailability() == true){
+                availableSeats.add(seat);
+            }
+        }
+        return availableSeats;
     }
 }
