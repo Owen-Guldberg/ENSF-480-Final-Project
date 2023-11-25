@@ -1,5 +1,8 @@
 package database;
 
+import util.*;
+import role.*;
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -9,6 +12,8 @@ public class Database {
     private final String URL = "jdbc:mysql://localhost:3306/skyward_bound"; 
     private final String USERNAME = "root";
     private final String PASSWORD = "";
+
+    private ArrayList<RegisteredCustomer> registeredUsers = new ArrayList<RegisteredCustomer>();
 
 /**
  * Constructs a new Database object and connects to the database specified
@@ -37,44 +42,31 @@ public class Database {
 
 
 // /**
-//  * Reads Animal data from the database and populates the animals ArrayList with Animal objects.
-//  * Checks what the animal species is and creates the appropriate Animal object.
-//  * Uses SQL query "SELECT AnimalID, AnimalNickName, AnimalSpecies FROM animals".
+//  * Reads Registered User data from the database and populates the registeredUsers ArrayList.
 //  * @throws SQLException if there is an error reading data from the database
 //  */
-//     public void readAnimalsFromDatabase() throws SQLException {
-//         try{
-//             Statement stmt = dbConnection.createStatement();
-//             String query = "SELECT AnimalID, AnimalNickName, AnimalSpecies FROM animals";
-//             ResultSet results = stmt.executeQuery(query);
+    public void readRegisteredUsers() throws SQLException {
+        try {
+            Statement stmt = dbConnection.createStatement();
+            String query = "SELECT FName, LName, Email, Password FROM REGISTEREDUSERS";
+            ResultSet results = stmt.executeQuery(query);
             
-//             while (results.next()) {
-//                 String id = results.getString("AnimalID");
-//                 String nickname = results.getString("AnimalNickName");
-//                 String species = results.getString("AnimalSpecies");
+            while (results.next()) {
+                String first = results.getString("FName");
+                String last = results.getString("LName");
+                String email = results.getString("Email");
+                String password = results.getString("Password");
 
-//             if (species.equals("beaver")) {
-//                 animals.add(new Beaver(id, nickname));
-//             } 
-//             if (species.equals("coyote")) {
-//                 animals.add(new Coyote(id, nickname));
-//             }
-//             if (species.equals("fox")) {
-//                 animals.add(new Fox(id, nickname));
-//             }
-//             if (species.equals("porcupine")) {
-//                 animals.add(new Porcupine(id, nickname));
-//             }
-//             if (species.equals("raccoon")) {
-//                 animals.add(new Raccoon(id, nickname));
-//             }
-//             }
-//             stmt.close();
-//         }
-//         catch(SQLException e){
-//             e.printStackTrace();
-//         }
-//     }
+                Name name = new Name(first, last);
+                RegisteredCustomer user = new RegisteredCustomer(name, email, password);
+                registeredUsers.add(user);
+            }
+            stmt.close();
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
 
 // /**
 //  * Reads treatments table from the database and populates the treatments ArrayList.

@@ -7,7 +7,7 @@ import flightInfo.*;
 public class tester {
     public static void main(String[] args) {
         Name na = new Name("thomas","mattern");
-        RegisteredCustomer customer = new RegisteredCustomer(na, "thmat@gmail.com");
+        RegisteredCustomer customer = new RegisteredCustomer(na, "thmat@gmail.com", "password");
 
         ArrayList<RegisteredCustomer> na1 = new ArrayList<>();
 

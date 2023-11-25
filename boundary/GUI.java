@@ -106,6 +106,7 @@ public class GUI extends JFrame implements ActionListener {
     public static void main(String[] args) {
         try {
             Database db = new Database();
+            db.readRegisteredUsers();
             GUI gui = new GUI(db);
         } catch (Exception e) {
             e.printStackTrace();
