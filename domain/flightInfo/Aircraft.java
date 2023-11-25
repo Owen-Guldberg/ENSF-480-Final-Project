@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 
 public class Aircraft{
-
-    // HOW DO WE KNOW PRICE and implement seat class?????
     
     private int id;
     private String name;
@@ -21,10 +19,22 @@ public class Aircraft{
         this.capacity = capacity;
         this.seats = new ArrayList<>();
 
-        // Initialize seats one by one with a max of 120, price default 100?
+        // Initialize seats one by one each 'third' is its own class, 
+        // todo figure out price
         for (int seatNum = 1; seatNum <= capacity; seatNum++) {
-            Seat seat = new Seat(100, seatNum);
-            this.seats.add(seat);
+            // class 1->capacity
+            if(seatNum < (capacity/3)){
+                Seat seat = new Seat(300, seatNum, "Comfort");
+                this.seats.add(seat);
+            }
+            else if(seatNum < (2*capacity/3)){
+                Seat seat = new Seat(200, seatNum, "Buisness");
+                this.seats.add(seat);
+            }
+            else{
+                Seat seat = new Seat(50, seatNum, "Ordinary");
+                this.seats.add(seat);
+            }
         }
     }
 

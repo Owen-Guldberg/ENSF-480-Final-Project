@@ -4,19 +4,14 @@ public class Seat {
     private int price;           // Price of the seat
     private boolean isAvailable; // Availability status of the seat
     private int seatNum;         // Seat number
-
-    // Default constructor
-    public Seat() {
-        price = 0;
-        isAvailable = true;
-        seatNum = 1;
-    }
+    private String seatClass;
 
     // Parameterized constructor
-    public Seat(int price, int seatNum) {
+    public Seat(int price, int seatNum, String seatClass) {
         this.price = price;
         isAvailable = true;
         this.seatNum = seatNum;
+        this.seatClass = seatClass;
     }
 
     // Reserves the seat, marking it as unavailable
