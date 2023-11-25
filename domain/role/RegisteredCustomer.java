@@ -6,7 +6,8 @@ public class RegisteredCustomer implements Person{
     private String email;
     
     public RegisteredCustomer(Name name, String email){
-        // add some
+        this.name = name;
+        this.email = email;
     }
     
     @Override

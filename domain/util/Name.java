@@ -16,10 +16,10 @@ public class Name {
         this.firstName = firstName;
         this.lastName = lastName;
     }
-    String getFirstName(){
+    public String getFirstName(){
         return firstName;
     }
-    String getLastName(){
+    public String getLastName(){
         return lastName;
     }
     void setFirstName(String firstName){

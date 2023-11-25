@@ -3,10 +3,10 @@ package controller;
 public class SystemController {
 
     public SystemController(){
-
+		start();
     }
 
-	public void startup() {
+	public void start() {
 
 	}
     public static void main(String[] args) {

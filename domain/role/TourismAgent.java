@@ -6,7 +6,8 @@ public class TourismAgent implements Person{
     private String email;
     
     public TourismAgent(Name name, String email){
-        // add some
+        this.name = name;
+        this.email = email;
     }
     
     @Override

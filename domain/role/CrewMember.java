@@ -6,7 +6,8 @@ public class CrewMember implements Person{
     private String email;
     
     public CrewMember(Name name, String email){
-        // add some
+        this.name = name;
+        this.email = email;
     }
     
     @Override

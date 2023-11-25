@@ -4,9 +4,11 @@ import util.*;
 public class AirlineAgent implements Person{
     private Name name; 
     private String email;
+    private RegisteredCustomer client;
     
     public AirlineAgent(Name name, String email){
-        // add some
+        this.name = name;
+        this.email = email;
     }
     
     @Override
