@@ -100,7 +100,9 @@ public class Flight {
     public void setCrewMembers(ArrayList<CrewMember> crewMembers) {
         this.crewMembers = crewMembers;
     }
-
+    public void addCrewMember(CrewMember crewMember){
+        this.crewMembers.add(crewMember);
+    }
     public void setPassengers(ArrayList<RegisteredCustomer> passengers) {
         this.passengers = passengers;
     }
@@ -108,5 +110,5 @@ public class Flight {
     public void addPassenger(RegisteredCustomer passenger){
         this.passengers.add(passenger);
     }
-    
+
 }
