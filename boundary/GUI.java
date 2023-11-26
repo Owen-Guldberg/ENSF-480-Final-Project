@@ -1,7 +1,6 @@
 package boundary;
 
 import controller.*;
-import database.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,15 +15,13 @@ import java.util.ArrayList;
 
 public class GUI extends JFrame implements ActionListener {
 
-    private Database db;
     private JLabel welcome;
     private JLabel instructions;
     private JButton registerButton;
     private JButton loginButton;
     private JButton guestLink;
 
-    public GUI(Database db) {
-        this.db = db;
+    public GUI() {
         setTitle("Skyward Bound Flight Reservation System");
         setSize(500, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -105,9 +102,7 @@ public class GUI extends JFrame implements ActionListener {
     
     public static void main(String[] args) {
         try {
-            Database db = new Database();
-            db.readRegisteredUsers();
-            GUI gui = new GUI(db);
+            GUI gui = new GUI();
         } catch (Exception e) {
             e.printStackTrace();
         }
