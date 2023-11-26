@@ -5,7 +5,13 @@ import role.*;
 import flightInfo.*;
 import java.sql.*;
 import java.util.ArrayList;
-
+/**
+     *IMPLEMENTS SINGLETON DESIGN PATTERN
+     * Constructs a new Database object and connects to the database specified
+     * by the URL, username, and password instance variables.
+     *
+     * @throws SQLException if there is an error connecting to the database
+     */
 public class Database {
      private Connection dbConnection;
     public static Database onlyInstance;
@@ -35,6 +41,12 @@ public class Database {
         readCrewMemberData(); 
     }
 
+
+      /**
+     * Ensures that only one instance of the Database class exists and returns it (SINGLETON).
+     *
+     * @return the only instance of the Database class
+     */
     public static Database getOnlyInstance(){
         if(onlyInstance == null){
             try{
@@ -103,7 +115,9 @@ private void readRegisteredUsers() throws SQLException{
         }
     }
 
-    ///WORKS
+    /**
+     * Reads location data from the database and populates the locations ArrayList.
+     */
     private void readLocationData(){
         try{
             Statement myStmt = this.dbConnection.createStatement();
@@ -126,10 +140,9 @@ private void readRegisteredUsers() throws SQLException{
 
     
 
-    ///WORKS
+
     //** WORKS
-//  * Reads Aircraft data from the database and populates the registeredUsers ArrayList.
-//  * @throws SQLException if there is an error reading data from the database
+//  * Reads Aircraft data from the database and populates the Aircraft ArrayList.
 //  */
     private void readAircraftData(){
         try{
@@ -152,8 +165,7 @@ private void readRegisteredUsers() throws SQLException{
     }
 
 // /** WORKS
-//  * Reads FLight data from the database and populates the registeredUsers ArrayList.
-//  * @throws SQLException if there is an error reading data from the database
+//  * Reads FLight data from the database and populates the flights ArrayList.
 //  */
     private void readFlightData(){
         try{
@@ -203,8 +215,7 @@ private void readRegisteredUsers() throws SQLException{
     }
 
 // /** WORKS
-//  * Reads crew member data from the database and populates the registeredUsers ArrayList.
-//  * @throws SQLException if there is an error reading data from the database
+//  * Reads crew member data from the database and populates the crew ArrayList.
 //  */
     private void readCrewMemberData(){
 
@@ -242,27 +253,57 @@ private void readRegisteredUsers() throws SQLException{
         //need to clarify logic for tickets in db
     }
 
+     /**
+     * Gets the ArrayList of airport locations.
+     *
+     * @return the locations ArrayList
+     */
     public ArrayList<Location> getLocationData(){
         return this.locations; 
     }
 
+     /**
+     * Gets the ArrayList of registered customers.
+     *
+     * @return the registeredUsers ArrayList
+     */
     public ArrayList<RegisteredCustomer> getRegisteredCustomerData(){
         return this.registeredUsers; 
     }
 
+     /**
+     * Gets the ArrayList of aircraft.
+     *
+     * @return the aircrafts ArrayList
+     */
     public ArrayList<Aircraft> getAircraftData(){
         return this.aircrafts; 
     }
 
+     /**
+     * Gets the ArrayList of flights.
+     *
+     * @return the flights ArrayList
+     */
     public ArrayList<Flight> getFlightData(){
         return this.flights; 
     }
 
+     /**
+     * Gets the ArrayList of airline crew members.
+     *
+     * @return the crew ArrayList
+     */
     public ArrayList<AirlineAgent> getCrewMemberData(){
         return this.crew; 
     }
 
-
+     /**
+     * Cancels a flight in the database.
+     *
+     * @param f the Flight object representing the flight to be canceled
+     * @return true if the cancellation is successful, false otherwise
+     */
       public boolean cancelFlight(Flight f){
         boolean success = false; 
         try{
@@ -294,7 +335,11 @@ private void readRegisteredUsers() throws SQLException{
              }
              return success;
          }
-
+     /**
+     * Updates the Database by clearing existing data and re-reading from the database.
+     *
+     * @throws SQLException if there is an error updating the database
+     */
     public void updateDatabase() throws SQLException{
         try{
             locations.clear(); 
@@ -314,6 +359,12 @@ private void readRegisteredUsers() throws SQLException{
         
     }
 
+     /**
+     * Adds a new registered user to the database and updates the registeredUsers ArrayList.
+     *
+     * @param r the RegisteredCustomer object to be added
+     * @return true if the addition is successful, false otherwise
+     */
      // saving to db REGISTEREDUSERS(FName, LName, Email, Password, HouseNum, Street, City, Country, PostalCode, CreditCardNumber, CVV)
      public boolean saveUser(RegisteredCustomer r){
         boolean success = false; 
