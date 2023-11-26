@@ -2,6 +2,7 @@ package controller;
 
 import java.util.ArrayList;
 import flightInfo.*;
+import role.RegisteredCustomer;
 import database.*;
 public class FlightController{
     Database db;
@@ -22,5 +23,16 @@ public class FlightController{
         ArrayList<Flight> allFlights = db.getFlightData();
         return allFlights;
     }
-    
+    public Flight flightByPassenger(RegisteredCustomer passenger){
+        ArrayList<Flight> allFlights = db.getFlightData();
+
+        for(Flight f: allFlights){
+            for(int i = 0; i < f.getPassengers().size(); i++){
+                if(f.getPassengers().get(i) == passenger){
+                    return f;
+                }
+
+            }
+        }
+    }
 }
