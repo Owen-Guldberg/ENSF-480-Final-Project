@@ -25,19 +25,23 @@ public class Aircraft{
         // todo figure out price
         for (int seatNum = 1; seatNum <= capacity; seatNum++) {
             // class 1->capacity
-            if(seatNum < (capacity/3)){
-                Seat seat = new Seat(300, seatNum, "Comfort");
+            if (seatNum < (capacity / 3)) {
+                // Comfort class (40% more than Ordinary)
+                int price = (int) (50 * 1.4);
+                Seat seat = new Seat(price, seatNum, "Comfort");
                 this.seats.add(seat);
-            }
-            else if(seatNum < (2*capacity/3)){
-                Seat seat = new Seat(200, seatNum, "Buisness");
+            } else if (seatNum < (2 * capacity / 3)) {
+                // Business class (double the Ordinary)
+                int price = 50 * 2;
+                Seat seat = new Seat(price, seatNum, "Business");
                 this.seats.add(seat);
-            }
-            else{
+            } else {
+                // Ordinary class
                 Seat seat = new Seat(50, seatNum, "Ordinary");
                 this.seats.add(seat);
             }
         }
+        
     }
 
     // Getters
