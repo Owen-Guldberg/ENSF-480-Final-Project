@@ -36,6 +36,7 @@ public class GUI extends JFrame implements ActionListener {
     private String currentUsername; // Track username of currently logged in user
     private SystemController system = new SystemController();
     private FlightController flightController = new FlightController();
+    private AircraftController aircraftController = new AircraftController();
 
     public GUI() {
         setTitle("Skyward Bound Flight Reservation System");
@@ -377,24 +378,38 @@ public class GUI extends JFrame implements ActionListener {
 
         userPage.add(locationMenusPanel);
         userPage.add(Box.createVerticalStrut(10));
-        userPage.add(actionButton);
 
-        // // Scrollable menu for 'Flights'
-        // JScrollPane flightsScrollPane = createScrollMenu("Flights");
-        // userPage.add(flightsScrollPane);
-        // userPage.add(Box.createVerticalStrut(10));
-        // userPage.add(actionButton);
+        JButton viewFlightsButton = new JButton("View Available Flights");
+        viewFlightsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (selectedOrigin.getAirportName() != null && selectedDestination.getAirportName() != null) {
+                    // Scrollable menu for 'Flights'
+                    JPanel flightsPanel = createFlightsPanel();
+                    cardPanel.add(flightsPanel, "flightsPanel");
+                    cardLayout.show(cardPanel, "flightsPanel");
+                } else {
+                    JOptionPane.showMessageDialog(userPage, "Please select both an origin and a destination.");
+                }
+            }
+        });
+        userPage.add(viewFlightsButton);
+
+        userPage.add(Box.createVerticalStrut(10));
+
+        userPage.add(actionButton);
 
         return userPage;
     }
 
     private JScrollPane createLocationMenu(String title, boolean isOrigin) {
-        ArrayList<String> locations = system.getLocationStrings();
-        JList<String> locationList = new JList<>(locations.toArray(new String[0]));
+        ArrayList<Location> locations = system.getLocations();
+        ArrayList<String> locationStrings = system.getLocationStrings(locations);
+        JList<String> locationList = new JList<>(locationStrings.toArray(new String[0]));
         locationList.setFont(new Font(locationList.getFont().getName(), Font.PLAIN, 16));
         locationList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane locationScrollPane = new JScrollPane(locationList);
-        locationScrollPane.setPreferredSize(new Dimension(400, 200));
+        locationScrollPane.setPreferredSize(new Dimension(400, 400));
 
         TitledBorder titledBorder = BorderFactory.createTitledBorder(title);
         locationScrollPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), titledBorder));
@@ -405,11 +420,11 @@ public class GUI extends JFrame implements ActionListener {
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
                     String selectedLocation = locationList.getSelectedValue();
-                if (isOrigin) {
-                    handleSelectedOrigin(selectedLocation);
-                } else {
-                    handleSelectedDestination(selectedLocation);
-                }
+                    if (isOrigin) {
+                        handleSelectedOrigin(selectedLocation);
+                    } else {
+                        handleSelectedDestination(selectedLocation);
+                    }
                 }
             }
         });
@@ -417,32 +432,44 @@ public class GUI extends JFrame implements ActionListener {
         return locationScrollPane;
     }
 
-    private String selectedOrigin;
-    private String selectedDestination;
+    private Location selectedOrigin;
+    private Location selectedDestination;
 
     private void handleSelectedOrigin(String origin) {
-        selectedOrigin = origin;
-        // You may want to enable the destination selection now
+        selectedOrigin = system.getLocationByName(origin);
     }
     
     private void handleSelectedDestination(String destination) {
-        selectedDestination = destination;
-        // flightController.flightsByLocation(selectedOrigin, selectedDestination);
-        // // Now that both origin and destination are selected, fetch and display flights
-        // displayFlightsForLocations(selectedOrigin, selectedDestination);
+        selectedDestination = system.getLocationByName(destination);
+    }
+
+    private JPanel createFlightsPanel() {
+        JPanel flightsPanel = new JPanel();
+        flightsPanel.setLayout(new BoxLayout(flightsPanel, BoxLayout.Y_AXIS));
+        
+        JLabel flightsLabel = new JLabel("Flights");
+        flightsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JScrollPane flightsScrollPane = createFlightMenu("Flights");
+        flightsPanel.add(flightsScrollPane);
+        flightsPanel.add(Box.createVerticalStrut(10));
+    
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> cardLayout.show(cardPanel, "user"));
+        flightsPanel.add(backButton);
+
+        return flightsPanel;
     }
     
-    private JScrollPane createScrollMenu(String menuTitle) {
-        String[] flights = {"Flight 1", "Flight 2", "Flight 3", "Flight 4", "Flight 5", "Flight 6"}; // Temporary
+    private JScrollPane createFlightMenu(String menuTitle) {
+        ArrayList<Flight> flights = flightController.flightsByLocation(selectedOrigin, selectedDestination);
 
-        JList<String> list = new JList<>(flights);
+        JList<String> list = new JList<>(flightController.browseFlightNums(flights).toArray(new String[0]));
         list.setFont(new Font(list.getFont().getName(), Font.PLAIN, 16));
-
 
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scrollPane = new JScrollPane(list);
         scrollPane.setPreferredSize(new Dimension(200, 100));
-
 
         TitledBorder titledBorder = BorderFactory.createTitledBorder(menuTitle);
         scrollPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), titledBorder));
@@ -475,31 +502,35 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     // Method to create the flightInfoPanel
-    private JPanel createFlightInfoPanel(String flightInfo) {
+    private JPanel createFlightInfoPanel(String flightNum) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-        JLabel infoLabel = new JLabel("Flight Information for " + flightInfo);
-        infoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        String flightInfo = system.getFlightByNum(flightNum).toString();
+        JLabel infoLabel = new JLabel("Flight Information for: ");
+        JLabel infoLabel2 = new JLabel(flightInfo);
         panel.add(Box.createVerticalStrut(20));
         panel.add(infoLabel);
+        panel.add(infoLabel2);
         panel.add(Box.createVerticalStrut(20));
 
         // // Create and display SeatChart
-        AircraftController aircraftController = new AircraftController();
         // SeatChart seatChart = new SeatChart(aircraftController.getSeatsByAircraft(aircraft), aircraftController);
         // panel.add(seatChart);
 
-        JButton backToUserPageButton = new JButton("Back to User Page");
-        backToUserPageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showUserPage(currentUsername); // Pass in either Guest or current Username
-            }
-        });
-        backToUserPageButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        panel.add(backToUserPageButton);
-        panel.add(Box.createVerticalStrut(20));
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> cardLayout.show(cardPanel, "flightsPanel"));
+        panel.add(backButton);
+
+        // JButton backToUserPageButton = new JButton("Back to User Page");
+        // backToUserPageButton.addActionListener(new ActionListener() {
+        //     @Override
+        //     public void actionPerformed(ActionEvent e) {
+        //         showUserPage(currentUsername); // Pass in either Guest or current Username
+        //     }
+        // });
+        // backToUserPageButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // panel.add(backToUserPageButton);
+        // panel.add(Box.createVerticalStrut(20));
 
         return panel;
     }
@@ -520,6 +551,8 @@ public class GUI extends JFrame implements ActionListener {
         // Clear the username and password fields
         usernameField.setText("");
         passwordField.setText("");
+        selectedOrigin = null;
+        selectedDestination = null;
     }
 
     private void showUserPage(String username) {

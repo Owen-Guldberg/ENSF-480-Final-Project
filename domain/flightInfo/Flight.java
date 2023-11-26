@@ -131,4 +131,15 @@ public class Flight {
     public void addPassenger(RegisteredCustomer passenger){
         this.passengers.add(passenger);
     }
+
+    public String toString() {
+        return "<html>Flight Number: " + getFlightNum() +
+           "<br>Date: " + getFlightDate() +
+           "<br>Origin: " + getOrigin().toString() +
+           "<br>Destination: " + getDestination().toString() +
+           "<br>Departure Time: " + getDepartureTime() +
+           "<br>Arrival Time: " + getArrivalTime() +
+           "<br>Flight Duration: " + getFlightTime() +
+           "<br></html>";
+    }
 }

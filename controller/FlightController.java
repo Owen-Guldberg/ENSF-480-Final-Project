@@ -1,6 +1,8 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import flightInfo.*;
 import role.RegisteredCustomer;
 import database.*;
@@ -9,16 +11,28 @@ public class FlightController{
 
     public FlightController(){ }
 
-    public ArrayList<Flight> flightsByLocation(Location orgin,Location location){
+    public ArrayList<String> browseFlightNums(ArrayList<Flight> flights){
+        ArrayList<String> flightDetails = new ArrayList<>();
+        for(Flight f : flights){
+            flightDetails.add(f.getFlightNum());
+        }
+        return flightDetails;
+
+    }
+
+    public ArrayList<Flight> flightsByLocation(Location origin,Location location){
         ArrayList<Flight> allFlights = Database.getOnlyInstance().getFlightData();
         ArrayList<Flight> locationFlights = new ArrayList<>();
         for(Flight f : allFlights){
-            if(f.getOrigin() == orgin &&f.getDestination() == location){
+            if(f.getOrigin() == origin && f.getDestination() == location){
                 locationFlights.add(f);
             }
         }
         return locationFlights;
     }
+
+    
+
     public ArrayList<Flight> allFlights(){
         ArrayList<Flight> allFlights = Database.getOnlyInstance().getFlightData();
         return allFlights;

@@ -8,7 +8,7 @@ public class Location {
     public Location(){} //need for db class
 
     public Location(String airport,String city, String country){
-        airportName = airport;
+        this.airportName = airport;
         this.city = city;
         this.country = country;
     }
@@ -45,7 +45,7 @@ public class Location {
         this.country = country;
     }
 
-    public String getString(){
+    public String toString(){
         return "Airport: " + airportName + " City: " + city + " Country: " + country;
     }
 }
