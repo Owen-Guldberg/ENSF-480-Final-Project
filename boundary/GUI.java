@@ -23,7 +23,8 @@ public class GUI extends JFrame implements ActionListener {
 
     private JPanel cardPanel;
     private CardLayout cardLayout;
-    private JPanel mainPanel;
+    //private JPanel mainPanel;
+    private MainPanel mainPanel;
     private JPanel loginPanel;
     private JPanel registerPanel;
     private JPanel userPanel;
@@ -46,7 +47,11 @@ public class GUI extends JFrame implements ActionListener {
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
-        mainPanel = createMainPanel();
+        mainPanel = new MainPanel(
+            e -> showRegisterScreen(), 
+            e -> showLoginScreen(), 
+            e -> continueAsGuest()
+        );
         cardPanel.add(mainPanel, "main");
 
         loginPanel = createLoginPanel();
@@ -63,62 +68,6 @@ public class GUI extends JFrame implements ActionListener {
         cardLayout.show(cardPanel, "main");
 
         setVisible(true);
-    }
-
-    private JPanel createMainPanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-        JLabel welcome = new JLabel("Welcome to Skyward Bound!");
-        welcome.setFont(new Font(welcome.getFont().getName(), Font.PLAIN, 16));
-        welcome.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JLabel instructions = new JLabel("Please register or login to continue.");
-        instructions.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JPanel buttonsAndLinkPanel = new JPanel();
-        buttonsAndLinkPanel.setLayout(new BoxLayout(buttonsAndLinkPanel, BoxLayout.Y_AXIS));
-
-        JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new FlowLayout());
-
-        // Register Button
-        JButton registerButton = new JButton("Register");
-        registerButton.addActionListener(this);
-        buttonsPanel.add(registerButton);
-        
-        // Login Button
-        JButton loginButton = new JButton("Login");
-        loginButton.addActionListener(this);
-        buttonsPanel.add(loginButton);
-        buttonsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // Continue as Guest Link
-        JButton guestLink = new JButton("Continue as Guest");
-        guestLink.setBorderPainted(false);
-        guestLink.setContentAreaFilled(false);
-        guestLink.setFocusPainted(false);
-        guestLink.setOpaque(false);
-        guestLink.setForeground(Color.BLUE);
-        guestLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        guestLink.setFont(new Font(guestLink.getFont().getName(), Font.PLAIN, guestLink.getFont().getSize()));
-
-        // Action listener
-        guestLink.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                continueAsGuest();
-            }
-        });
-        guestLink.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        buttonsAndLinkPanel.add(buttonsPanel);
-        buttonsAndLinkPanel.add(guestLink);
-        panel.add(welcome);
-        panel.add(instructions);
-        panel.add(buttonsAndLinkPanel);
-
-        return panel;
     }
 
     private JPanel createLoginPanel() {
@@ -539,6 +488,11 @@ public class GUI extends JFrame implements ActionListener {
         // Show the user page for the guest
         currentUsername = "";
         showUserPage(currentUsername);
+    }
+
+    private void showRegisterScreen() {
+        // Switch to the register panel
+        cardLayout.show(cardPanel, "register");
     }
 
     private void showLoginScreen() {
