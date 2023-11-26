@@ -10,7 +10,9 @@ public class Aircraft{
     Flight assignedFlight;
     private int capacity;
     ArrayList<Seat> seats;
+
     
+    public Aircraft(){} //default
     // Constructor
     public Aircraft(int id, String name, Flight assignedFlight, int capacity) {
         this.id = id;
