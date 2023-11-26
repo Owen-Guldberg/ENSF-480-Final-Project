@@ -37,4 +37,8 @@ public class FlightController{
         // no flights booked
         return null;
     }
+    public void bookFlightByCustomer(RegisteredCustomer customer, Flight flight, int seatNum){
+        flight.addPassenger(customer);
+        flight.getAircraft().getSeats().get(seatNum).reserveSeat();
+    }
 }
