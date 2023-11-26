@@ -251,6 +251,58 @@ private void readRegisteredUsers() throws SQLException {
         return this.crew; 
     }
 
+
+      public boolean cancelFlight(Flight f){
+        boolean success = false; 
+        try{
+            String query = "DELETE FROM FLIGHTS WHERE FlightNum = ?"; //matches by flight number 
+               PreparedStatement myStmt = dbConnection.prepareStatement(query);
+   
+               myStmt.setString(1,f.getFlightNum());
+            
+               int rowCount = myStmt.executeUpdate();
+               //System.out.println("Rows affected: " + rowCount);
+               if(rowCount == 0)
+               {
+                 return false;
+               }
+               else{
+                success = true;
+                }
+               myStmt.close();
+             }
+             catch (SQLException ex) {
+               ex.printStackTrace();
+               return false;
+             }
+             
+             for (int i = 0; i < flights.size(); i++){
+                if (f == flights.get(i)){
+                    flights.remove(i);
+                }
+             }
+             return success;
+         }
+
+    public void updateDatabase() throws SQLException{
+        try{
+            locations.clear(); 
+            readLocationData();
+            registeredUsers.clear();
+            readRegisteredUsers();
+            aircrafts.clear();
+            readAircraftData();
+            flights.clear();
+            readFlightData();
+            crew.clear(); 
+            readCrewMemberData(); 
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+        
+    }
+
 //
 
     /**
