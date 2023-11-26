@@ -103,41 +103,43 @@ CREATE TABLE REGISTEREDUSERS(
     City            varchar(25),
     Country         varchar(50),
     PostalCode      varchar(7),
+    CreditCardNumber    varchar(50),
+    CVV                 int,
     primary key(UserID) 
 );
 /*
 could have email as pk
 */
 
-INSERT INTO REGISTEREDUSERS(FName, LName, Email, Password, HouseNum, Street, City, Country, PostalCode)
+INSERT INTO REGISTEREDUSERS(FName, LName, Email, Password, HouseNum, Street, City, Country, PostalCode, CreditCardNumber, CVV)
 VALUES
-('Roy', 'Kent','roykent@gmail.com','soccer123', 819, 'Paved Court', 'London', 'England', 'KLM-352'),
-('Ted', 'Lasso','tedl12@gmail.com','football', 434, 'Wembley Road', 'Kansas', 'USA', 'IHV-164'),
-('John', 'Smith', 'johnsmith@gmail.com', 'pass', 1, 'Maple Street', 'Calgary', 'Canada', 'TMS-257');
+('Roy', 'Kent','roykent@gmail.com','soccer123', 819, 'Paved Court', 'London', 'England', 'KLM-352','10987654321', 201),
+('Ted', 'Lasso','tedl12@gmail.com','football', 434, 'Wembley Road', 'Kansas', 'USA', 'IHV-164', '02468101214', 176),
+('John', 'Smith', 'johnsmith@gmail.com', 'pass', 1, 'Maple Street', 'Calgary', 'Canada', 'TMS-257', '12345678910', 123);
 
 
-DROP TABLE IF EXISTS TICKETS;
-CREATE TABLE TICKETS(
-    TicketID			int not null AUTO_INCREMENT,
-    FlightNumber         varchar(6),
-    ClientEmail          varchar(25),
-    primary key(TicketID) 
-);
+-- DROP TABLE IF EXISTS TICKETS;
+-- CREATE TABLE TICKETS(
+--     TicketID			int not null AUTO_INCREMENT,
+--     FlightNumber         varchar(6),
+--     ClientEmail          varchar(25),
+--     primary key(TicketID) 
+-- );
 
-DROP TABLE IF EXISTS PAYMENT;
-CREATE TABLE PAYMENT(
-    PaymentID			int not null AUTO_INCREMENT,
-    CreditCardNumber    varchar(50),
-    CVV                 int,
-    Email               varchar(25),
-    primary key(PaymentID) 
-); 
+-- DROP TABLE IF EXISTS PAYMENT;
+-- CREATE TABLE PAYMENT(
+--     PaymentID			int not null AUTO_INCREMENT,
+--     CreditCardNumber    varchar(50),
+--     CVV                 int,
+--     Email               varchar(25),
+--     primary key(PaymentID) 
+-- ); 
 
-INSERT INTO PAYMENT(CreditCardNumber,CVV, Email)
-VALUES
-('10987654321', 201,'roykent@gmail.com'),
-('02468101214', 176,'tedl12@gmail.com'),
-('12345678910', 123,'johnsmith@gmail.com');
+-- INSERT INTO PAYMENT(CreditCardNumber,CVV, Email)
+-- VALUES
+-- ('10987654321', 201,'roykent@gmail.com'),
+-- ('02468101214', 176,'tedl12@gmail.com'),
+-- ('12345678910', 123,'johnsmith@gmail.com');
 
 
 /*
