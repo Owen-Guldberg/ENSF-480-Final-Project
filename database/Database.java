@@ -314,7 +314,39 @@ private void readRegisteredUsers() throws SQLException{
         
     }
 
-//
+     // saving to db REGISTEREDUSERS(FName, LName, Email, Password, HouseNum, Street, City, Country, PostalCode, CreditCardNumber, CVV)
+     public void saveUser(RegisteredCustomer user) {
+        try {
+            String query = "INSERT INTO REGISTEREDUSERS (FName, LName, Email, Password, HouseNum, Street, City, Country, PostalCode, CreditCardNumber, CVV) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            
+            try (PreparedStatement myStmt = dbConnection.prepareStatement(query)) {
+                // Set parameters
+                myStmt.setString(1, user.getName().getFirstName());
+                myStmt.setString(2, user.getName().getLastName());
+                myStmt.setString(3, user.getEmail());
+                myStmt.setString(4, user.getPassword());
+                myStmt.setInt(5, user.getAddress().getHouseNum());
+                myStmt.setString(6, user.getAddress().getStreetName());
+                myStmt.setString(7, user.getAddress().getCity());
+                myStmt.setString(8, user.getAddress().getCountry());
+                myStmt.setString(9, user.getAddress().getPostalCode());
+                myStmt.setString(10, user.getPayment().getCreditCardNumber());
+                myStmt.setInt(11, user.getPayment().getCVV());
+    
+                // Execute the update
+                int rowCount = myStmt.executeUpdate();
+    
+                if (rowCount > 0) {
+                    System.out.println("User saved successfully.");
+                } else {
+                    System.out.println("Failed to save user.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle or log the exception appropriately
+        }
+    }
 
     /**
      * Gets the URL of the database.
