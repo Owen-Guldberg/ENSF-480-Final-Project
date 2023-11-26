@@ -34,5 +34,7 @@ public class FlightController{
 
             }
         }
+        // no flights booked
+        return null;
     }
 }
