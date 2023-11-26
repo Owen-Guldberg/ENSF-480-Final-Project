@@ -42,4 +42,9 @@ public class Seat {
     public int getSeatNum() {
         return seatNum;
     }
+
+    // Gets the seat class
+    public String getSeatClass() {
+        return seatClass;
+    }
 }
