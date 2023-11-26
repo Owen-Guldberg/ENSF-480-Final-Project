@@ -22,4 +22,8 @@ public class Payment {
         this.creditCardNum = ccNum; 
         this.CVV = cvv;
     }
+
+    public Payment getPayment(){
+        return this; 
+    }
 }
