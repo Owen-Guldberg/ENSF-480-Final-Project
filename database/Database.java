@@ -315,37 +315,43 @@ private void readRegisteredUsers() throws SQLException{
     }
 
      // saving to db REGISTEREDUSERS(FName, LName, Email, Password, HouseNum, Street, City, Country, PostalCode, CreditCardNumber, CVV)
-     public void saveUser(RegisteredCustomer user) {
-        try {
-            String query = "INSERT INTO REGISTEREDUSERS (FName, LName, Email, Password, HouseNum, Street, City, Country, PostalCode, CreditCardNumber, CVV) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            
-            try (PreparedStatement myStmt = dbConnection.prepareStatement(query)) {
-                // Set parameters
-                myStmt.setString(1, user.getName().getFirstName());
-                myStmt.setString(2, user.getName().getLastName());
-                myStmt.setString(3, user.getEmail());
-                myStmt.setString(4, user.getPassword());
-                myStmt.setInt(5, user.getAddress().getHouseNum());
-                myStmt.setString(6, user.getAddress().getStreetName());
-                myStmt.setString(7, user.getAddress().getCity());
-                myStmt.setString(8, user.getAddress().getCountry());
-                myStmt.setString(9, user.getAddress().getPostalCode());
-                myStmt.setString(10, user.getPayment().getCreditCardNumber());
-                myStmt.setInt(11, user.getPayment().getCVV());
-    
-                // Execute the update
-                int rowCount = myStmt.executeUpdate();
-    
-                if (rowCount > 0) {
-                    System.out.println("User saved successfully.");
-                } else {
-                    System.out.println("Failed to save user.");
+     public boolean saveUser(RegisteredCustomer r){
+        boolean success = false; 
+        try{
+            String query = "INSERT INTO REGISTEREDUSERS(FName,LName, Email, Password, HouseNum, Street, City, Country, PostalCode, CreditCardNumber, CVV) "
+                + "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+
+                PreparedStatement myStmt = dbConnection.prepareStatement(query);
+   
+               myStmt.setString(1, r.getName().getFirstName());
+               myStmt.setString(2,r.getName().getLastName());
+               myStmt.setString(3, r.getEmail());
+               myStmt.setString(4, r.getPassword());
+               myStmt.setString(5, Integer.toString(r.getAddress().getHouseNum()));
+               myStmt.setString(6, r.getAddress().getStreetName());
+               myStmt.setString(7, r.getAddress().getCity());
+               myStmt.setString(8, r.getAddress().getCountry());
+               myStmt.setString(9, r.getAddress().getPostalCode());
+               myStmt.setString(10, r.getPayment().getCreditCardNumber());
+               myStmt.setString(11, Integer.toString(r.getPayment().getCVV()));
+
+               int rowCount = myStmt.executeUpdate();
+               //System.out.println("Rows affected: " + rowCount);
+               if(rowCount == 0)
+               {
+                 return false;
+               }
+               else{
+                success = true;
+                registeredUsers.add(r); 
                 }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle or log the exception appropriately
+                myStmt.close();
+
         }
+        catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return success;
     }
 
     /**
