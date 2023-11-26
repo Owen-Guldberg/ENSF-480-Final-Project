@@ -12,11 +12,13 @@ public class Flight {
     private String departureTime;
     private String arrivalTime;
     private String flightTime;
+    private String flightDate;
+    private Aircraft aircraft; 
     private ArrayList<CrewMember> crewMembers;
     private ArrayList<RegisteredCustomer> passengers;
 
     // Constructor
-    public Flight(Location origin, Location destination, String flightNum, String departureTime, String arrivalTime, String flightTime,ArrayList<CrewMember> crewMembers, ArrayList<RegisteredCustomer> passengers) {
+    public Flight(Location origin, Location destination, String flightNum,String date, String departureTime, String arrivalTime, String flightTime,Aircraft aircraft, ArrayList<CrewMember> crewMembers, ArrayList<RegisteredCustomer> passengers) {
         this.origin = origin;
         this.destination = destination;
         this.flightNum = flightNum;
@@ -25,17 +27,29 @@ public class Flight {
         this.flightTime = flightTime;
         this.crewMembers = crewMembers;
         this.passengers = passengers;
+        this.aircraft = aircraft; 
+        this.flightDate = date; 
     }
-    public Flight(Location origin, Location destination, String flightNum, String departureTime, String arrivalTime, String flightTime) {
+    public Flight(Location origin, Location destination, String flightNum, String date, String departureTime, String arrivalTime, String flightTime, Aircraft aircraft) {
         this.origin = origin;
         this.destination = destination;
         this.flightNum = flightNum;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
         this.flightTime = flightTime;
+        this.aircraft = aircraft; 
+        this.flightDate = date; 
     }
 
     // Getters
+    public String getFlightDate() {
+        return flightDate; 
+    }
+
+    public Aircraft getAircraft() {
+        return aircraft; 
+    }
+    
     public Flight getFlight(){
         return this;
     }
@@ -72,6 +86,14 @@ public class Flight {
     }
 
     // Setters
+    public void setAircraft(Aircraft a) {
+        this.aircraft = a; 
+    }
+    
+    public void setFlightDate(String date) {
+        this.flightDate = date;
+    }
+    
     public void setDestination(Location destination) {
         this.destination = destination;
     }
