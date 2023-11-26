@@ -1,5 +1,7 @@
 package role;
+
 import util.*;
+import database.*;
 
 public class RegisteredCustomer implements Person{
     private Name name; 
