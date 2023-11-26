@@ -1,6 +1,8 @@
 package boundary;
 
 import controller.*;
+import flightInfo.Aircraft;
+import flightInfo.Seat;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -422,6 +424,7 @@ public class GUI extends JFrame implements ActionListener {
         panel.add(infoLabel);
         panel.add(Box.createVerticalStrut(20));
 
+        //displaySeatChart();
 
         JButton backToUserPageButton = new JButton("Back to User Page");
         backToUserPageButton.addActionListener(new ActionListener() {
@@ -436,6 +439,23 @@ public class GUI extends JFrame implements ActionListener {
 
         return panel;
     }
+
+    // public void displaySeatChart(Aircraft aircraft) {
+    //     AircraftController aircraftController = new AircraftController();
+    //     List<Seat> seats = aircraftController.seatByAircraft(aircraft);
+
+    //     SeatChart seatChart = new SeatChart(seats, e -> showSeatDetails(e.getActionCommand()));
+    //     // Add seatChart to the GUI
+    // }
+
+    // public void showSeatDetails(String seatLabel) {
+    //     // Here, fetch the details of the seat using the seat label or ID
+    //     // You can use AircraftController or another appropriate class
+    //     Seat seat = // fetch seat details
+
+    //     // Now display these details. This could be a pop-up or a panel in your GUI.
+    //     JOptionPane.showMessageDialog(this, "Seat Details: " + seat.getDetails());
+    // }
 
 
     private void continueAsGuest() {
