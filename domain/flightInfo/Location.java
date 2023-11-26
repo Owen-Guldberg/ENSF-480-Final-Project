@@ -5,6 +5,8 @@ public class Location {
     private String city;
     private String country;
 
+    public Location(){} //need for db class
+
     public Location(String airport,String city, String country){
         airportName = airport;
         this.city = city;
