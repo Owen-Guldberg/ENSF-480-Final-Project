@@ -44,4 +44,8 @@ public class Location {
     public void setCountry(String country) {
         this.country = country;
     }
+
+    public String getString(){
+        return "Airport: " + airportName + " City: " + city + " Country: " + country;
+    }
 }

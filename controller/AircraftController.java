@@ -5,18 +5,17 @@ import database.*;
 import flightInfo.*;
 
 public class AircraftController {
-    Database db;
-    AircraftController(Database db){
-        this.db = db;
-    }
+
+    public AircraftController(){ }
+
     public ArrayList<Seat> seatByAircraft(Aircraft aircraft){
-        ArrayList<Aircraft> ac = db.getAircraftData();
+        ArrayList<Aircraft> ac = Database.getOnlyInstance().getAircraftData();
         for(Aircraft craft : ac){
-            if(craft == aircraft){
+            if(craft.getId() == aircraft.getId()){
                 return craft.getSeats();
             }
         }
-        return null;
+        return new ArrayList<>();
     }
     public String getSeatDetails(Seat seat) {
         // Construct a string with all the details of the seat

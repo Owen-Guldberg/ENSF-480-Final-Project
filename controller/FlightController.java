@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import flightInfo.*;
 import role.RegisteredCustomer;
 import database.*;
+
 public class FlightController{
-    Database db;
-    FlightController(Database db){
-        this.db = db;
-    }
+
+    public FlightController(){ }
+
     public ArrayList<Flight> flightsByLocation(Location orgin,Location location){
-        ArrayList<Flight> allFlights = db.getFlightData();
+        ArrayList<Flight> allFlights = Database.getOnlyInstance().getFlightData();
         ArrayList<Flight> locationFlights = new ArrayList<>();
         for(Flight f : allFlights){
             if(f.getOrigin() == orgin &&f.getDestination() == location){
@@ -20,11 +20,11 @@ public class FlightController{
         return locationFlights;
     }
     public ArrayList<Flight> allFlights(){
-        ArrayList<Flight> allFlights = db.getFlightData();
+        ArrayList<Flight> allFlights = Database.getOnlyInstance().getFlightData();
         return allFlights;
     }
     public Flight flightByPassenger(RegisteredCustomer passenger){
-        ArrayList<Flight> allFlights = db.getFlightData();
+        ArrayList<Flight> allFlights = Database.getOnlyInstance().getFlightData();
 
         for(Flight f: allFlights){
             for(int i = 0; i < f.getPassengers().size(); i++){

@@ -1,8 +1,8 @@
 package boundary;
 
 import controller.*;
-import flightInfo.Aircraft;
-import flightInfo.Seat;
+import database.Database;
+import flightInfo.*;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -34,10 +34,12 @@ public class GUI extends JFrame implements ActionListener {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private String currentUsername; // Track username of currently logged in user
+    private SystemController system = new SystemController();
+    private FlightController flightController = new FlightController();
 
     public GUI() {
         setTitle("Skyward Bound Flight Reservation System");
-        setSize(500, 300);
+        setSize(1000, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         cardLayout = new CardLayout();
@@ -362,15 +364,74 @@ public class GUI extends JFrame implements ActionListener {
         userPage.add(welcomeLabel);
         userPage.add(Box.createVerticalStrut(20));
 
-        // Scrollable menu for 'Flights'
-        JScrollPane flightsScrollPane = createScrollMenu("Flights");
-        userPage.add(flightsScrollPane);
+        // Panel to hold both location menus
+        JPanel locationMenusPanel = new JPanel();
+        locationMenusPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); // Or use GridLayout
+
+        // Add scrollable menus for 'Origin' and 'Destination'
+        JScrollPane originScrollPane = createLocationMenu("Origin Locations", true);
+        JScrollPane destinationScrollPane = createLocationMenu("Destination Locations", false);
+
+        locationMenusPanel.add(originScrollPane);
+        locationMenusPanel.add(destinationScrollPane);
+
+        userPage.add(locationMenusPanel);
         userPage.add(Box.createVerticalStrut(10));
         userPage.add(actionButton);
+
+        // // Scrollable menu for 'Flights'
+        // JScrollPane flightsScrollPane = createScrollMenu("Flights");
+        // userPage.add(flightsScrollPane);
+        // userPage.add(Box.createVerticalStrut(10));
+        // userPage.add(actionButton);
 
         return userPage;
     }
 
+    private JScrollPane createLocationMenu(String title, boolean isOrigin) {
+        ArrayList<String> locations = system.getLocationStrings();
+        JList<String> locationList = new JList<>(locations.toArray(new String[0]));
+        locationList.setFont(new Font(locationList.getFont().getName(), Font.PLAIN, 16));
+        locationList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane locationScrollPane = new JScrollPane(locationList);
+        locationScrollPane.setPreferredSize(new Dimension(400, 200));
+
+        TitledBorder titledBorder = BorderFactory.createTitledBorder(title);
+        locationScrollPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), titledBorder));
+
+        // Add listener to handle location selection
+        locationList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    String selectedLocation = locationList.getSelectedValue();
+                if (isOrigin) {
+                    handleSelectedOrigin(selectedLocation);
+                } else {
+                    handleSelectedDestination(selectedLocation);
+                }
+                }
+            }
+        });
+
+        return locationScrollPane;
+    }
+
+    private String selectedOrigin;
+    private String selectedDestination;
+
+    private void handleSelectedOrigin(String origin) {
+        selectedOrigin = origin;
+        // You may want to enable the destination selection now
+    }
+    
+    private void handleSelectedDestination(String destination) {
+        selectedDestination = destination;
+        // flightController.flightsByLocation(selectedOrigin, selectedDestination);
+        // // Now that both origin and destination are selected, fetch and display flights
+        // displayFlightsForLocations(selectedOrigin, selectedDestination);
+    }
+    
     private JScrollPane createScrollMenu(String menuTitle) {
         String[] flights = {"Flight 1", "Flight 2", "Flight 3", "Flight 4", "Flight 5", "Flight 6"}; // Temporary
 
@@ -425,7 +486,7 @@ public class GUI extends JFrame implements ActionListener {
         panel.add(Box.createVerticalStrut(20));
 
         // // Create and display SeatChart
-        // AircraftController aircraftController = new AircraftController();
+        AircraftController aircraftController = new AircraftController();
         // SeatChart seatChart = new SeatChart(aircraftController.getSeatsByAircraft(aircraft), aircraftController);
         // panel.add(seatChart);
 

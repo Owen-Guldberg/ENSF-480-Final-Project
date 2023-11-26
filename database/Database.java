@@ -12,7 +12,7 @@ public class Database {
     private ResultSet results;
     private final String URL = "jdbc:mysql://localhost:3306/skyward_bound"; 
     private final String USERNAME = "root";
-    private final String PASSWORD = "";
+    private final String PASSWORD = "Mathaward1!";
     public ArrayList<Location> locations = new ArrayList<Location>();
     public ArrayList<RegisteredCustomer> registeredUsers = new ArrayList<RegisteredCustomer>();
     public ArrayList<Aircraft> aircrafts = new ArrayList<Aircraft>(); 
