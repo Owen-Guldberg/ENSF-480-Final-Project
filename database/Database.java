@@ -69,10 +69,10 @@ private Connection connectToDatabase() throws SQLException {
 //  * Reads Registered User data from the database and populates the registeredUsers ArrayList.
 //  * @throws SQLException if there is an error reading data from the database
 //  */
-private void readRegisteredUsers() throws SQLException {
+private void readRegisteredUsers() throws SQLException{
         try {
             Statement stmt = dbConnection.createStatement();
-            String query = "SELECT FName, LName, Email, Password FROM REGISTEREDUSERS";
+            String query = "SELECT * FROM REGISTEREDUSERS";
             ResultSet results = stmt.executeQuery(query);
             
             while (results.next()) {
@@ -81,8 +81,19 @@ private void readRegisteredUsers() throws SQLException {
                 String email = results.getString("Email");
                 String password = results.getString("Password");
 
+                int house = results.getInt("HouseNum");
+                String street= results.getString("Street");
+                String city = results.getString("City");
+                String country = results.getString("Country");
+                String postal= results.getString("PostalCode");
+                String cc= results.getString("CreditCardNumber");
+                int cvv = results.getInt("CVV"); 
+
                 Name name = new Name(first, last);
-                RegisteredCustomer user = new RegisteredCustomer(name, email, password);
+                Address a = new Address(house, street, city, country, postal); 
+                Payment p = new Payment(cc, cvv);
+
+                RegisteredCustomer user = new RegisteredCustomer(name, email, password, a, p);
                 registeredUsers.add(user);
             }
             stmt.close();
