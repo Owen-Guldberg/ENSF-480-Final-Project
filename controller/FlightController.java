@@ -5,6 +5,9 @@ import flightInfo.*;
 import database.*;
 public class FlightController{
     Database db;
+    FlightController(Database db){
+        this.db = db;
+    }
     public ArrayList<Flight> flightsByLocation(Location location){
         ArrayList<Flight> allFlights = db.getFlightData();
         ArrayList<Flight> locationFlights = new ArrayList<>();
