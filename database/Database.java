@@ -12,13 +12,13 @@ public class Database {
     private ResultSet results;
     private final String URL = "jdbc:mysql://localhost:3306/skyward_bound"; 
     private final String USERNAME = "root";
-    private final String PASSWORD = "Ravenclaw23";
-    public ArrayList<Loc> locations = new ArrayList<Loc>();
+    private final String PASSWORD = "";
+    public ArrayList<Location> locations = new ArrayList<Location>();
     public ArrayList<RegisteredCustomer> registeredUsers = new ArrayList<RegisteredCustomer>();
     public ArrayList<Aircraft> aircrafts = new ArrayList<Aircraft>(); 
     public ArrayList<Flight> flights = new ArrayList<Flight>(); 
     public ArrayList<AirlineAgent> crew = new ArrayList<AirlineAgent>(); 
-    public ArrayList<Ticket> crew = new ArrayList<Ticket>();
+    public ArrayList<Ticket> tickets = new ArrayList<Ticket>();
     
 
 /**
@@ -28,11 +28,11 @@ public class Database {
  */
     private Database() throws SQLException {
         this.dbConnection = connectToDatabase();
-        getLocationData();
+        readLocationData();
         readRegisteredUsers();
-        getAircraftData();
-        getFlightData();
-        getCrewMemberData(); 
+        readAircraftData();
+        readFlightData();
+        readCrewMemberData(); 
     }
 
     public static Database getOnlyInstance(){
@@ -53,7 +53,7 @@ public class Database {
  * @return a Connection object representing the connection to the database
  * @throws SQLException if there is an error connecting to the database
  */
-    public Connection connectToDatabase() throws SQLException {
+private Connection connectToDatabase() throws SQLException {
         try{
             dbConnection = DriverManager.getConnection(getURL(), getUsername(), getPassword());
         }
@@ -69,7 +69,7 @@ public class Database {
 //  * Reads Registered User data from the database and populates the registeredUsers ArrayList.
 //  * @throws SQLException if there is an error reading data from the database
 //  */
-    public void readRegisteredUsers() throws SQLException {
+private void readRegisteredUsers() throws SQLException {
         try {
             Statement stmt = dbConnection.createStatement();
             String query = "SELECT FName, LName, Email, Password FROM REGISTEREDUSERS";
@@ -93,7 +93,7 @@ public class Database {
     }
 
     ///WORKS
-    public void getLocationData(){
+    private void readLocationData(){
         try{
             Statement myStmt = this.dbConnection.createStatement();
             String query = "SELECT * FROM LOCATIONS";
@@ -104,7 +104,7 @@ public class Database {
               String city = results.getString("City");
               String country = results.getString("Country");
     
-              Loc tmp = new Loc(airportName, city, country); //creates food item with each item in the database
+              Location tmp = new Location(airportName, city, country); //creates food item with each item in the database
               this.locations.add(tmp); //stores food item in linkedlist of food objects
               }
               myStmt.close(); 
@@ -116,7 +116,11 @@ public class Database {
     
 
     ///WORKS
-    public void getAircraftData(){
+    //** WORKS
+//  * Reads Aircraft data from the database and populates the registeredUsers ArrayList.
+//  * @throws SQLException if there is an error reading data from the database
+//  */
+    private void readAircraftData(){
         try{
             Statement myStmt = this.dbConnection.createStatement();
             String query = "SELECT * FROM AIRCRAFT";
@@ -136,8 +140,11 @@ public class Database {
 
     }
 
-
-    public void getFlightData(){
+// /** WORKS
+//  * Reads FLight data from the database and populates the registeredUsers ArrayList.
+//  * @throws SQLException if there is an error reading data from the database
+//  */
+    private void readFlightData(){
         try{
             Statement myStmt = this.dbConnection.createStatement();
             String query = "SELECT * FROM FLIGHTS";
@@ -153,8 +160,8 @@ public class Database {
               String arriveTime = results.getString("ArrivalTime");
               String flightTime = results.getString("FlightTime");
 
-              Loc origin = new Loc("gay", "gay", "gay");
-              Loc destination = new Loc("gay", "gay", "gay"); 
+              Location origin = new Location();
+              Location destination = new Location(); 
               for (int i = 0; i < locations.size(); i++){
                 if(locations.get(i).getAirportName().equals(originName) == true){
                   origin = locations.get(i); 
@@ -171,12 +178,10 @@ public class Database {
                 }
               }
 
-            //   public Flight(Loc origin, Loc destination, String flightNum, String departureTime, String arrivalTime, String flightTime, Aircraft aircraft)
                
 
-              Flight tmp= new Flight(origin,destination, flightNum, flightDate, departTime, arriveTime, flightTime, a); //creates food item with each item in the database
-              this.flights.add(tmp); 
-              //this.inventory.add(foodItem); //stores food item in linkedlist of food objects
+              Flight tmp= new Flight(origin,destination, flightNum, flightDate, departTime, arriveTime, flightTime, a); 
+              this.flights.add(tmp);
               
             }
             myStmt.close(); 
@@ -186,8 +191,11 @@ public class Database {
              
     }
 
-
-    public void getCrewMemberData(){
+// /** WORKS
+//  * Reads crew member data from the database and populates the registeredUsers ArrayList.
+//  * @throws SQLException if there is an error reading data from the database
+//  */
+    private void readCrewMemberData(){
 
         try{
             Statement myStmt = this.dbConnection.createStatement();
@@ -219,8 +227,28 @@ public class Database {
 
     }
 
-    public void getTicketData(){
+    public void readTicketData(){
         //need to clarify logic for tickets in db
+    }
+
+    public ArrayList<Location> getLocationData(){
+        return this.locations; 
+    }
+
+    public ArrayList<RegisteredCustomer> getRegisteredCustomerData(){
+        return this.registeredUsers; 
+    }
+
+    public ArrayList<Aircraft> getAircraftData(){
+        return this.aircrafts; 
+    }
+
+    public ArrayList<Flight> getFlightData(){
+        return this.flights; 
+    }
+
+    public ArrayList<AirlineAgent> getCrewMemberData(){
+        return this.crew; 
     }
 
 //
