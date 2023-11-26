@@ -9,11 +9,11 @@ public class FlightController{
     FlightController(Database db){
         this.db = db;
     }
-    public ArrayList<Flight> flightsByLocation(Location location){
+    public ArrayList<Flight> flightsByLocation(Location orgin,Location location){
         ArrayList<Flight> allFlights = db.getFlightData();
         ArrayList<Flight> locationFlights = new ArrayList<>();
         for(Flight f : allFlights){
-            if(f.getDestination() == location){
+            if(f.getOrigin() == orgin &&f.getDestination() == location){
                 locationFlights.add(f);
             }
         }
