@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Flight {
 
-    // todo some member function
 
     private Location destination;
     private String flightNum;
@@ -132,5 +131,4 @@ public class Flight {
     public void addPassenger(RegisteredCustomer passenger){
         this.passengers.add(passenger);
     }
-
 }

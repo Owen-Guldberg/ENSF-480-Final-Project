@@ -2,7 +2,7 @@ package database;
 
 import util.*;
 import role.*;
-
+import flightInfo.*;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -129,8 +129,8 @@ private void readRegisteredUsers() throws SQLException {
               int airID = results.getInt("AircraftID");
               String airName= results.getString("Name");
               int capacity = results.getInt("Capacity");
-    
-              Aircraft tmp = new Aircraft(airID, airName, capacity); //creates 
+
+              Aircraft tmp = new Aircraft(airID, airName, null,capacity); //creates 
               this.aircrafts.add(tmp); //stores
               }
               myStmt.close(); 

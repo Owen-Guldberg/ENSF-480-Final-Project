@@ -1,30 +1,23 @@
 package flightInfo;
 import util.*;
-// needs major rework
 public class Ticket {
-    private Seat seat;
+    private int seatNum;
     private int price;
-    private Name name;
     private String departureTime;
     private boolean hasCancellationInsurance = false;
+    private String classSeat;
 
-    // Constructor
-    public Ticket(Seat seat, int price, boolean hasCancellationInsurance, Name name) {
-        this.seat = seat;
+    // Constructor ONLY CALLED BY CONTROLLER
+    public Ticket(int seatNum, int price, boolean hasCancellationInsurance, Name name,String departureTime, String classSeat) {
+        this.seatNum = seatNum;
         this.price = price;
         this.hasCancellationInsurance = hasCancellationInsurance;
+        this.departureTime = departureTime;
+        this.classSeat = classSeat;
     }
+    
     public Ticket getTicket(){
         return this;
-    }
-    // Getter for seat
-    public Seat getSeat() {
-        return seat;
-    }
-
-    // Setter for seat
-    public void setSeat(Seat seat) {
-        this.seat = seat;
     }
 
     // Getter for price
