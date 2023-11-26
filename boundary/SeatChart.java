@@ -10,23 +10,24 @@ import java.util.List;
 
 public class SeatChart extends JPanel {
 
-    private List<JButton> seatButtons = new ArrayList<>();
-    private ActionListener seatSelectionListener;
+    private AircraftController aircraftController;
 
-    public SeatChart(List<Seat> seats, ActionListener seatSelectionListener) {
+    public SeatChart(ArrayList<Seat> seats, AircraftController aircraftController) {
+        this.aircraftController = aircraftController;
         setLayout(new GridLayout(0, 4)); // Assuming a 4-seat per row configuration
-        this.seatSelectionListener = seatSelectionListener;
 
         for (Seat seat : seats) {
             JButton seatButton = new JButton();
             seatButton.setEnabled(seat.getAvailability()); // Enable only if the seat is available
             seatButton.setBackground(seat.getAvailability() ? Color.GREEN : Color.RED);
-            seatButton.setText(seat.getSeatNum());
-            seatButton.addActionListener(seatSelectionListener);
-            seatButton.setActionCommand(seat.getSeatNum()); // Set action command to seat label or ID
+            seatButton.setText(String.valueOf(seat.getSeatNum()));
+            seatButton.addActionListener(e -> showSeatDetails(seat));
             add(seatButton);
-            seatButtons.add(seatButton);
         }
+    }
+
+    private void showSeatDetails(Seat seat) {
+        JOptionPane.showMessageDialog(this, aircraftController.getSeatDetails(seat));
     }
 
     // Method to add a legend for seat colors

@@ -424,7 +424,10 @@ public class GUI extends JFrame implements ActionListener {
         panel.add(infoLabel);
         panel.add(Box.createVerticalStrut(20));
 
-        //displaySeatChart();
+        // // Create and display SeatChart
+        // AircraftController aircraftController = new AircraftController();
+        // SeatChart seatChart = new SeatChart(aircraftController.getSeatsByAircraft(aircraft), aircraftController);
+        // panel.add(seatChart);
 
         JButton backToUserPageButton = new JButton("Back to User Page");
         backToUserPageButton.addActionListener(new ActionListener() {
@@ -439,24 +442,6 @@ public class GUI extends JFrame implements ActionListener {
 
         return panel;
     }
-
-    // public void displaySeatChart(Aircraft aircraft) {
-    //     AircraftController aircraftController = new AircraftController();
-    //     List<Seat> seats = aircraftController.seatByAircraft(aircraft);
-
-    //     SeatChart seatChart = new SeatChart(seats, e -> showSeatDetails(e.getActionCommand()));
-    //     // Add seatChart to the GUI
-    // }
-
-    // public void showSeatDetails(String seatLabel) {
-    //     // Here, fetch the details of the seat using the seat label or ID
-    //     // You can use AircraftController or another appropriate class
-    //     Seat seat = // fetch seat details
-
-    //     // Now display these details. This could be a pop-up or a panel in your GUI.
-    //     JOptionPane.showMessageDialog(this, "Seat Details: " + seat.getDetails());
-    // }
-
 
     private void continueAsGuest() {
         // Show the user page for the guest
