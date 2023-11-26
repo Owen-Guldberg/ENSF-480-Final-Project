@@ -25,8 +25,8 @@ public class GUI extends JFrame implements ActionListener {
     private CardLayout cardLayout;
     //private JPanel mainPanel;
     private MainPanel mainPanel;
-    private JPanel loginPanel;
-    private JPanel registerPanel;
+    private Login loginPanel;
+    private Register registerPanel;
     private JPanel userPanel;
     private JPanel flightInfoPanel;  // New panel for flight information
     private JButton backToMainButton;
@@ -54,10 +54,16 @@ public class GUI extends JFrame implements ActionListener {
         );
         cardPanel.add(mainPanel, "main");
 
-        loginPanel = createLoginPanel();
+        loginPanel = new Login(
+            e -> handleLogin(), 
+            e -> showMainScreen()
+        );
         cardPanel.add(loginPanel, "login");
 
-        registerPanel = createRegisterPanel();
+        registerPanel = new Register(
+            e -> handleRegister(), 
+            e -> showMainScreen()
+        );
         cardPanel.add(registerPanel, "register");
 
         userPanel = new JPanel();
@@ -68,219 +74,6 @@ public class GUI extends JFrame implements ActionListener {
         cardLayout.show(cardPanel, "main");
 
         setVisible(true);
-    }
-
-    private JPanel createLoginPanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-        JLabel usernameLabel = new JLabel("Username/Email:");
-
-        JPanel usernamePanel = new JPanel();
-        usernamePanel.setLayout(new BoxLayout(usernamePanel, BoxLayout.X_AXIS));
-
-        usernameField = new JTextField(15);
-        usernameField.setMaximumSize(new Dimension(200, 25));
-
-        usernamePanel.add(Box.createHorizontalGlue());
-        usernamePanel.add(usernameField);
-        usernamePanel.add(Box.createHorizontalGlue());
-
-        JLabel passwordLabel = new JLabel("Password:");
-
-        JPanel passwordPanel = new JPanel();
-        passwordPanel.setLayout(new BoxLayout(passwordPanel, BoxLayout.X_AXIS));
-
-        passwordField = new JPasswordField(15);
-        passwordField.setMaximumSize(new Dimension(200, 25));
-
-        passwordPanel.add(Box.createHorizontalGlue());
-        passwordPanel.add(passwordField);
-        passwordPanel.add(Box.createHorizontalGlue());
-
-        // Show/Hide password checkbox
-        JCheckBox showPasswordCheckBox = new JCheckBox("Show Password");
-        showPasswordCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Toggle password visibility
-                passwordField.setEchoChar(showPasswordCheckBox.isSelected() ? '\u0000' : '*');
-            }
-        });
-
-        JPanel showPasswordPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        showPasswordPanel.add(showPasswordCheckBox);
-
-        actionButton = new JButton("Login");
-        actionButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                // Implement login logic here
-                String username = usernameField.getText();
-                char[] password = passwordField.getPassword();
-                currentUsername = username;
-
-
-                // For now, just print the entered values
-                System.out.println("Username/Email: " + username);
-                System.out.println("Password: " + new String(password));
-
-                // Assuming login is successful, show the user page
-                showUserPage(username);
-            }
-        });
-        actionButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        backToMainButton = new JButton("Back");
-        backToMainButton.addActionListener(this);
-        backToMainButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        loginBackButton = new JButton("Back");
-        loginBackButton.addActionListener(this);
-        loginBackButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.add(actionButton);
-        buttonPanel.add(loginBackButton);
-        panel.add(Box.createVerticalStrut(10));
-
-        panel.add(usernameLabel);
-        panel.add(usernamePanel);
-
-
-        panel.add(Box.createVerticalStrut(10));
-        panel.add(passwordLabel);
-        panel.add(passwordPanel);
-
-        // Add show/hide password checkbox
-        panel.add(showPasswordPanel);
-
-        panel.add(Box.createVerticalStrut(10));
-        panel.add(buttonPanel);
-        panel.add(Box.createVerticalStrut(10));
-
-        return panel;
-    }
-
-    private JPanel createRegisterPanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-
-        JLabel usernameLabel = new JLabel("Username:");
-        JLabel emailLabel = new JLabel("Email:");
-
-        JPanel usernamePanel = new JPanel();
-        usernamePanel.setLayout(new BoxLayout(usernamePanel, BoxLayout.X_AXIS));
-
-        JTextField registerUsernameField = new JTextField(15);
-        registerUsernameField.setMaximumSize(new Dimension(200, 25));
-
-        usernamePanel.add(Box.createHorizontalGlue());
-        usernamePanel.add(registerUsernameField);
-        usernamePanel.add(Box.createHorizontalGlue());
-
-        JPanel emailPanel = new JPanel();
-        emailPanel.setLayout(new BoxLayout(emailPanel, BoxLayout.X_AXIS));
-
-        JTextField registerEmailField = new JTextField(15);
-        registerEmailField.setMaximumSize(new Dimension(200, 25));
-
-        emailPanel.add(Box.createHorizontalGlue());
-        emailPanel.add(registerEmailField);
-        emailPanel.add(Box.createHorizontalGlue());
-
-        JLabel passwordLabel = new JLabel("Password:");
-
-        JPanel passwordPanel = new JPanel();
-        passwordPanel.setLayout(new BoxLayout(passwordPanel, BoxLayout.X_AXIS));
-
-        JPasswordField registerPasswordField = new JPasswordField(15);
-        registerPasswordField.setMaximumSize(new Dimension(200, 25));
-
-        passwordPanel.add(Box.createHorizontalGlue());
-        passwordPanel.add(registerPasswordField);
-        passwordPanel.add(Box.createHorizontalGlue());
-
-        // Show/Hide password checkbox
-        JCheckBox showPasswordCheckBox = new JCheckBox("Show Password");
-        showPasswordCheckBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Toggle password visibility
-                registerPasswordField.setEchoChar(showPasswordCheckBox.isSelected() ? '\u0000' : '*');
-            }
-        });
-
-
-        JPanel showPasswordPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        showPasswordPanel.add(showPasswordCheckBox);
-
-        actionButton = new JButton("Register");
-        actionButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
-                // Implement registration logic here
-                String username = registerUsernameField.getText();
-                String email = registerEmailField.getText();
-                char[] password = registerPasswordField.getPassword();
-
-
-                // for now just print the entered values
-                System.out.println("New Username: " + username);
-                System.out.println("Email: " + email);
-                System.out.println("New Password: " + new String(password));
-
-                // Show the home page so the user can log in
-                showMainScreen();
-
-                // Clear the fields
-                registerUsernameField.setText("");
-                registerEmailField.setText("");
-                registerPasswordField.setText("");
-            }
-        });
-        actionButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        backToMainButton = new JButton("Back");
-        backToMainButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Show the main screen when the back button is pressed
-                showMainScreen();
-
-                // Reset the register fields
-                registerUsernameField.setText("");
-                registerEmailField.setText("");
-                registerPasswordField.setText("");
-            }
-        });
-        backToMainButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.add(actionButton);
-        buttonPanel.add(backToMainButton);
-        panel.add(Box.createVerticalStrut(10));
-
-        panel.add(usernameLabel);
-        panel.add(usernamePanel);
-        panel.add(Box.createVerticalStrut(10));
-
-        panel.add(emailLabel); // Email label
-        panel.add(emailPanel); // Email panel
-        panel.add(Box.createVerticalStrut(10));
-
-        panel.add(passwordLabel);
-        panel.add(passwordPanel);
-
-        // Add show/hide password checkbox
-        panel.add(showPasswordPanel);
-        panel.add(Box.createVerticalStrut(10));
-
-        panel.add(buttonPanel);
-        panel.add(Box.createVerticalStrut(10));
-
-        return panel;
     }
 
     private JPanel createUserPage(String username) {
@@ -507,6 +300,28 @@ public class GUI extends JFrame implements ActionListener {
         passwordField.setText("");
         selectedOrigin = null;
         selectedDestination = null;
+    }
+
+    private void handleLogin() {
+        String username = loginPanel.getEmail();
+        char[] password = loginPanel.getPassword();
+        currentUsername = username;
+    
+        // Implement your login logic here
+    
+        showUserPage(username);
+    }
+
+    private void handleRegister() {
+        String name = registerPanel.getName();
+        String email = registerPanel.getEmail();
+        String address = registerPanel.getAddress();
+        char[] password = registerPanel.getPassword();
+    
+        // Implement your registration logic here
+    
+        // After successful registration, show the login screen
+        showLoginScreen();
     }
 
     private void showUserPage(String username) {
