@@ -23,7 +23,12 @@ public class SystemController {
 	public void start() {
 		
 	}
-
+	public void save(){
+		// write to db
+	}
+	public void returnFlights(){
+		
+	}
     public static void main(String[] args) {
 		SystemController system = new SystemController();
 	}
