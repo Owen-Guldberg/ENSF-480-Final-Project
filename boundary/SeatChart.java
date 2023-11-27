@@ -43,7 +43,17 @@ public class SeatChart extends JPanel {
     }
 
     private void showSeatDetails(Seat seat) {
-        JOptionPane.showMessageDialog(this, aircraftController.getSeatDetails(seat));
+        //JOptionPane.showMessageDialog(this, aircraftController.getSeatDetails(seat));
+        int response = JOptionPane.showConfirmDialog(this, 
+            aircraftController.getSeatDetails(seat) + "\n\nWould you like to select this seat?", 
+            "Seat Details", JOptionPane.YES_NO_OPTION);
+
+        if (response == JOptionPane.YES_OPTION && seat.getAvailability()) {
+            //aircraftController.selectSeat(seat);
+            JOptionPane.showMessageDialog(this, "Seat " + seat.getSeatNum() + " selected!");
+        } else if (response == JOptionPane.YES_OPTION && !seat.getAvailability()) {
+            JOptionPane.showMessageDialog(this, "Seat " + seat.getSeatNum() + " is not available!");
+        }
     }
 
     // Method to add a legend for seat colors
