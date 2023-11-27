@@ -24,4 +24,9 @@ public class AircraftController {
                "\nClass: " + seat.getSeatClass() +
                "\nAvailable: " + (seat.getAvailability() ? "Yes" : "No");
     }
+
+    public void updateSeatAvailability(Seat seat, boolean availability) {
+        // Update the availability of the seat
+        seat.setAvailable(availability);
+    }
 }

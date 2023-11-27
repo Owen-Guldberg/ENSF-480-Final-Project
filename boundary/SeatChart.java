@@ -2,6 +2,7 @@ package boundary;
 
 import controller.AircraftController;
 import controller.FlightController;
+import controller.SystemController;
 import flightInfo.Flight;
 import flightInfo.Seat;
 
@@ -12,16 +13,18 @@ import java.util.ArrayList;
 public class SeatChart extends JPanel {
 
     private AircraftController aircraftController;
+    private String flightNum;
     private Color lightGreen = new Color(152, 251, 152);
     private JPanel cardPanel;
     private CardLayout cardLayout;
-    private FlightController flightController;
+    private SystemController system;
 
-    public SeatChart(ArrayList<Seat> seats, AircraftController aircraftController, FlightController flightController, JPanel cardPanel, CardLayout cardLayout) {
+    public SeatChart(ArrayList<Seat> seats, AircraftController aircraftController, String flightNum, SystemController system, JPanel cardPanel, CardLayout cardLayout) {
         this.aircraftController = aircraftController;
+        this.flightNum = flightNum;
         this.cardPanel = cardPanel;
         this.cardLayout = cardLayout;
-        this.flightController = flightController;
+        this.system = system;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JLabel seatChartLabel = new JLabel("Seat Chart");
@@ -51,7 +54,7 @@ public class SeatChart extends JPanel {
     }
 
     private void showSeatDetails(Seat seat) {
-        //Flight flight = flightController.getFlightByNum(flightNum);
+        Flight flight = system.getFlightByNum(flightNum);
         //JOptionPane.showMessageDialog(this, aircraftController.getSeatDetails(seat));
         int response = JOptionPane.showConfirmDialog(this, 
             aircraftController.getSeatDetails(seat) + "\n\nWould you like to select this seat?", 
@@ -60,7 +63,7 @@ public class SeatChart extends JPanel {
         if (response == JOptionPane.YES_OPTION && seat.getAvailability()) {
             //aircraftController.selectSeat(seat);
             //JOptionPane.showMessageDialog(this, "Seat " + seat.getSeatNum() + " selected!");
-            TicketPurchasePanel purchasePanel = new TicketPurchasePanel(seat, aircraftController, null);
+            TicketPurchasePanel purchasePanel = new TicketPurchasePanel(seat, aircraftController, flight);
             cardPanel.add(purchasePanel, "purchaseTicket");
             cardLayout.show(cardPanel, "purchaseTicket");
         } else if (response == JOptionPane.YES_OPTION && !seat.getAvailability()) {

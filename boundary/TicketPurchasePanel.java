@@ -17,8 +17,9 @@ public class TicketPurchasePanel extends JPanel {
         this.flight = flight;
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(new JLabel("Ticket Purchase"));
-        add(new JLabel("Flight: " + flight.toString()));
+        add(new JLabel("Ticket Purchase\n"));
+        add(new JLabel("Flight Information"));
+        add(new JLabel("<html>" + flight.toString() + "</html>"));
         add(new JLabel("Selected Seat: " + seat.getSeatNum()));
         add(new JLabel("Price: $" + seat.getPrice()));
 
@@ -28,20 +29,32 @@ public class TicketPurchasePanel extends JPanel {
 
         // Add payment information fields
         JTextField cardNumberField = new JTextField(16);
+        cardNumberField.setMaximumSize(new Dimension(200, 20));
         add(new JLabel("Card Number:"));
         add(cardNumberField);
 
+        JTextField cvvField = new JTextField(4);
+        cvvField.setMaximumSize(new Dimension(60, 20)); // Smaller field for CVV
+        add(new JLabel("CVV:"));
+        add(cvvField);
+
+        JTextField promoCodeField = new JTextField(10);
+        promoCodeField.setMaximumSize(new Dimension(200, 20));
+        add(new JLabel("Promotion Code (optional):"));
+        add(promoCodeField);
+
         JButton purchaseButton = new JButton("Purchase Ticket");
-        purchaseButton.addActionListener(e -> handlePurchase(insuranceCheckBox.isSelected(), cardNumberField.getText()));
+        purchaseButton.addActionListener(e -> handlePurchase(insuranceCheckBox.isSelected(), cardNumberField.getText(), cvvField.getText(),
+        promoCodeField.getText()));
         add(purchaseButton);
     }
 
-    private void handlePurchase(boolean insuranceSelected, String cardNumber) {
+    private void handlePurchase(boolean insuranceSelected, String cardNumber, String cvv, String promoCode) {
         // Implement ticket purchase logic
         // Update seat availability
 
-        //aircraftController.updateSeatAvailability(selectedSeat, false);
-        
+        aircraftController.updateSeatAvailability(selectedSeat, false);
+
         // Process payment and booking
         // Show confirmation message
         JOptionPane.showMessageDialog(this, "Ticket purchased successfully!");
