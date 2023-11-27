@@ -34,7 +34,7 @@ public class GUI extends JFrame implements ActionListener {
 
     public GUI() {
         setTitle("Skyward Bound Flight Reservation System");
-        setSize(1000, 600);
+        setSize(1000, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         cardLayout = new CardLayout();
@@ -240,6 +240,7 @@ public class GUI extends JFrame implements ActionListener {
     private JPanel createFlightInfoPanel(String flightNum) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        Flight flight = system.getFlightByNum(flightNum);
         String flightInfo = system.getFlightByNum(flightNum).toString();
         JLabel infoLabel = new JLabel("Flight Information for: ");
         JLabel infoLabel2 = new JLabel(flightInfo);
@@ -247,6 +248,10 @@ public class GUI extends JFrame implements ActionListener {
         panel.add(infoLabel);
         panel.add(infoLabel2);
         panel.add(Box.createVerticalStrut(20));
+
+        JButton viewSeatsButton = new JButton("View Seats");
+        viewSeatsButton.addActionListener(e -> showSeatChart(flight.getAircraft()));
+        panel.add(viewSeatsButton);
 
         // // Create and display SeatChart
         // SeatChart seatChart = new SeatChart(aircraftController.getSeatsByAircraft(aircraft), aircraftController);
@@ -257,6 +262,14 @@ public class GUI extends JFrame implements ActionListener {
         panel.add(backButton);
 
         return panel;
+    }
+
+    private void showSeatChart(Aircraft aircraft) {
+        ArrayList<Seat> seats = aircraftController.seatByAircraft(aircraft);
+        SeatChart seatChart = new SeatChart(seats, aircraftController);
+
+        cardPanel.add(seatChart, "seatChart");
+        cardLayout.show(cardPanel, "seatChart");
     }
 
     private void continueAsGuest() {
