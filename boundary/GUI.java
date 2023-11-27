@@ -1,7 +1,7 @@
 package boundary;
 
 import controller.*;
-import database.Database;
+
 import flightInfo.*;
 
 import javax.swing.*;
@@ -10,12 +10,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.util.*;
-import java.sql.*;
-import java.text.*;
-import java.io.*;
-import java.util.stream.Collectors;
-import java.util.List;
 import java.util.ArrayList;
 
 
@@ -23,7 +17,6 @@ public class GUI extends JFrame implements ActionListener {
 
     private JPanel cardPanel;
     private CardLayout cardLayout;
-    //private JPanel mainPanel;
     private MainPanel mainPanel;
     private Login loginPanel;
     private Register registerPanel;
@@ -262,17 +255,6 @@ public class GUI extends JFrame implements ActionListener {
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> cardLayout.show(cardPanel, "flightsPanel"));
         panel.add(backButton);
-
-        // JButton backToUserPageButton = new JButton("Back to User Page");
-        // backToUserPageButton.addActionListener(new ActionListener() {
-        //     @Override
-        //     public void actionPerformed(ActionEvent e) {
-        //         showUserPage(currentUsername); // Pass in either Guest or current Username
-        //     }
-        // });
-        // backToUserPageButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        // panel.add(backToUserPageButton);
-        // panel.add(Box.createVerticalStrut(20));
 
         return panel;
     }
