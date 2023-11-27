@@ -19,12 +19,12 @@ public class Database {
     private final String URL = "jdbc:mysql://localhost:3306/skyward_bound"; 
     private final String USERNAME = "root";
     private final String PASSWORD = "Mathaward1!";
-    public ArrayList<Location> locations = new ArrayList<Location>();
-    public ArrayList<RegisteredCustomer> registeredUsers = new ArrayList<RegisteredCustomer>();
-    public ArrayList<Aircraft> aircrafts = new ArrayList<Aircraft>(); 
-    public ArrayList<Flight> flights = new ArrayList<Flight>(); 
-    public ArrayList<AirlineAgent> crew = new ArrayList<AirlineAgent>(); 
-    public ArrayList<Ticket> tickets = new ArrayList<Ticket>();
+    private ArrayList<Location> locations = new ArrayList<Location>();
+    private ArrayList<RegisteredCustomer> registeredUsers = new ArrayList<RegisteredCustomer>();
+    private ArrayList<Aircraft> aircrafts = new ArrayList<Aircraft>(); 
+    private ArrayList<Flight> flights = new ArrayList<Flight>(); 
+    private ArrayList<AirlineAgent> crew = new ArrayList<AirlineAgent>(); 
+    private ArrayList<Ticket> tickets = new ArrayList<Ticket>();
     
 
 /**
