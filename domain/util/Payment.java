@@ -3,10 +3,14 @@ package util;
 public class Payment {
     private String creditCardNum;
     private int CVV; 
+    DiscountStrategy str;
+    private double amountOwed;
 
     public Payment(String ccNum, int cvv){
         this.creditCardNum = ccNum; 
         this.CVV = cvv; 
+        str = null;
+        amountOwed = 0;
     }
 
     public String getCreditCardNumber(){
@@ -25,5 +29,17 @@ public class Payment {
 
     public Payment getPayment(){
         return this; 
+    }
+    public void setDiscount(DiscountStrategy str){
+        this.str = str;
+    }
+    public void performDiscount(){
+        amountOwed = str.applyDiscount(amountOwed);
+    }
+    public double getAmountOwed(){
+        return amountOwed;
+    }
+    public void setOwed(double owed){
+        amountOwed  = owed;
     }
 }
