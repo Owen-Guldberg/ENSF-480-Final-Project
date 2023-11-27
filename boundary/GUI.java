@@ -1,7 +1,7 @@
 package boundary;
 
 import controller.*;
-
+import database.Database;
 import flightInfo.*;
 
 import javax.swing.*;
@@ -308,15 +308,30 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     private void handleRegister() {
-        String name = registerPanel.getName();
+        String firstName = registerPanel.getFirstName();
+        String lastName = registerPanel.getLastName();
         String email = registerPanel.getEmail();
-        String address = registerPanel.getAddress();
         char[] password = registerPanel.getPassword();
     
-        // Implement your registration logic here
-    
-        // After successful registration, show the login screen
-        showLoginScreen();
+        int houseNum = Integer.parseInt(registerPanel.getHouseNum()); // Assuming house number is always a valid integer
+        String streetName = registerPanel.getStreetName();
+        String city = registerPanel.getCity();
+        String country = registerPanel.getCountry();
+        String postalCode = registerPanel.getPostalCode();
+
+        // Registering user through AuthenticationController
+        AuthenticationController authController = new AuthenticationController(null, Database.getOnlyInstance());
+        boolean registrationSuccess = authController.registerNewUser(firstName, lastName, email, new String(password), 
+                                                                    houseNum, streetName, city, 
+                                                                    country, postalCode);
+
+        if (registrationSuccess) {
+            // Registration successful
+            showLoginScreen();
+        } else {
+            // Registration failed
+            JOptionPane.showMessageDialog(this, "Registration failed. User might already exist.");
+        }
     }
 
     private void showUserPage(String username) {

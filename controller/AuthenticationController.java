@@ -5,6 +5,7 @@ import role.*;
 import java.util.ArrayList;
 
 import database.*;
+import util.*;
 
 public class AuthenticationController {
     private RegisteredCustomer user;
@@ -24,6 +25,20 @@ public class AuthenticationController {
         return false; // Login failed
     }
 
+    public boolean registerNewUser(String firstName, String lastName, String email, String password, 
+                               int houseNum, String streetName, String city, 
+                               String country, String postalCode) {
+        // Creating Address object
+        Address address = new Address(houseNum, streetName, city, country, postalCode);
+
+        // Creating RegisteredCustomer object
+        Name customerName = new Name(firstName, lastName);
+        RegisteredCustomer newCustomer = new RegisteredCustomer(customerName, email, password, address, null); // Assuming null for Payment
+
+        // Attempt to register the user in the database
+        return registerUser(newCustomer);
+    }
+
     public boolean registerUser(RegisteredCustomer user) {
         ArrayList<RegisteredCustomer> passengerData = db.getRegisteredCustomerData();
         for(RegisteredCustomer passenger : passengerData){
@@ -31,7 +46,7 @@ public class AuthenticationController {
                 return false;
             }
         }
-        // user doesnt exsist in RegisteredCustomer
+        // user doesnt exist in RegisteredCustomer
         db.saveUser(user);
         return true;
     }

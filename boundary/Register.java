@@ -5,9 +5,17 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class Register extends JPanel {
-    private JTextField nameField;
+    private JTextField firstNameField;
+    private JTextField lastNameField;
     private JTextField emailField;
-    private JTextField addressField;
+
+    //private JTextField addressField;
+    private JTextField houseNumField;
+    private JTextField streetNameField;
+    private JTextField cityField;
+    private JTextField countryField;
+    private JTextField postalCodeField;
+
     private JPasswordField passwordField;
     private JButton registerButton;
     private JButton backButton;
@@ -19,9 +27,13 @@ public class Register extends JPanel {
 
     private void initializeComponents(ActionListener registerListener, ActionListener backListener) {
         // Name
-        nameField = new JTextField(15);
-        addComponent(new JLabel("Name:"), nameField);
-        nameField.setMaximumSize(new Dimension(200, 25));
+        firstNameField = new JTextField(15);
+        addComponent(new JLabel("Name:"), firstNameField);
+        firstNameField.setMaximumSize(new Dimension(200, 25));
+
+        lastNameField = new JTextField(15);
+        addComponent(new JLabel("Name:"), lastNameField);
+        lastNameField.setMaximumSize(new Dimension(200, 25));
 
         // Email
         emailField = new JTextField(15);
@@ -29,9 +41,25 @@ public class Register extends JPanel {
         emailField.setMaximumSize(new Dimension(200, 25));
 
         // Address
-        addressField = new JTextField(15);
-        addComponent(new JLabel("Address:"), addressField);
-        addressField.setMaximumSize(new Dimension(200, 25));
+        houseNumField = new JTextField(15);
+        addComponent(new JLabel("House Number:"), houseNumField);
+        houseNumField.setMaximumSize(new Dimension(200, 25));
+
+        streetNameField = new JTextField(15);
+        addComponent(new JLabel("Street Name:"), streetNameField);
+        streetNameField.setMaximumSize(new Dimension(200, 25));
+
+        cityField = new JTextField(15);
+        addComponent(new JLabel("City:"), cityField);
+        cityField.setMaximumSize(new Dimension(200, 25));
+
+        countryField = new JTextField(15);
+        addComponent(new JLabel("Country:"), countryField);
+        countryField.setMaximumSize(new Dimension(200, 25));
+
+        postalCodeField = new JTextField(15);
+        addComponent(new JLabel("Postal Code:"), postalCodeField);
+        postalCodeField.setMaximumSize(new Dimension(200, 25));
 
         // Password
         passwordField = new JPasswordField(15);
@@ -73,16 +101,36 @@ public class Register extends JPanel {
     }
 
     // Getters
-    public String getName() {
-        return nameField.getText();
+    public String getFirstName() {
+        return firstNameField.getText();
+    }
+
+    public String getLastName() {
+        return lastNameField.getText();
     }
 
     public String getEmail() {
         return emailField.getText();
     }
 
-    public String getAddress() {
-        return addressField.getText();
+    public String getHouseNum() {
+        return houseNumField.getText();
+    }
+    
+    public String getStreetName() {
+        return streetNameField.getText();
+    }
+    
+    public String getCity() {
+        return cityField.getText();
+    }
+    
+    public String getCountry() {
+        return countryField.getText();
+    }
+    
+    public String getPostalCode() {
+        return postalCodeField.getText();
     }
 
     public char[] getPassword() {
