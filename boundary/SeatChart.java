@@ -1,6 +1,8 @@
 package boundary;
 
 import controller.AircraftController;
+import controller.FlightController;
+import flightInfo.Flight;
 import flightInfo.Seat;
 
 import javax.swing.*;
@@ -11,9 +13,15 @@ public class SeatChart extends JPanel {
 
     private AircraftController aircraftController;
     private Color lightGreen = new Color(152, 251, 152);
+    private JPanel cardPanel;
+    private CardLayout cardLayout;
+    private FlightController flightController;
 
-    public SeatChart(ArrayList<Seat> seats, AircraftController aircraftController) {
+    public SeatChart(ArrayList<Seat> seats, AircraftController aircraftController, FlightController flightController, JPanel cardPanel, CardLayout cardLayout) {
         this.aircraftController = aircraftController;
+        this.cardPanel = cardPanel;
+        this.cardLayout = cardLayout;
+        this.flightController = flightController;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JLabel seatChartLabel = new JLabel("Seat Chart");
@@ -43,6 +51,7 @@ public class SeatChart extends JPanel {
     }
 
     private void showSeatDetails(Seat seat) {
+        //Flight flight = flightController.getFlightByNum(flightNum);
         //JOptionPane.showMessageDialog(this, aircraftController.getSeatDetails(seat));
         int response = JOptionPane.showConfirmDialog(this, 
             aircraftController.getSeatDetails(seat) + "\n\nWould you like to select this seat?", 
@@ -50,7 +59,10 @@ public class SeatChart extends JPanel {
 
         if (response == JOptionPane.YES_OPTION && seat.getAvailability()) {
             //aircraftController.selectSeat(seat);
-            JOptionPane.showMessageDialog(this, "Seat " + seat.getSeatNum() + " selected!");
+            //JOptionPane.showMessageDialog(this, "Seat " + seat.getSeatNum() + " selected!");
+            TicketPurchasePanel purchasePanel = new TicketPurchasePanel(seat, aircraftController, null);
+            cardPanel.add(purchasePanel, "purchaseTicket");
+            cardLayout.show(cardPanel, "purchaseTicket");
         } else if (response == JOptionPane.YES_OPTION && !seat.getAvailability()) {
             JOptionPane.showMessageDialog(this, "Seat " + seat.getSeatNum() + " is not available!");
         }

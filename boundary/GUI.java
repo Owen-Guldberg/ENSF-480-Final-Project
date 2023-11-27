@@ -253,10 +253,6 @@ public class GUI extends JFrame implements ActionListener {
         viewSeatsButton.addActionListener(e -> showSeatChart(flight.getAircraft()));
         panel.add(viewSeatsButton);
 
-        // // Create and display SeatChart
-        // SeatChart seatChart = new SeatChart(aircraftController.getSeatsByAircraft(aircraft), aircraftController);
-        // panel.add(seatChart);
-
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> cardLayout.show(cardPanel, "flightsPanel"));
         panel.add(backButton);
@@ -266,7 +262,7 @@ public class GUI extends JFrame implements ActionListener {
 
     private void showSeatChart(Aircraft aircraft) {
         ArrayList<Seat> seats = aircraftController.seatByAircraft(aircraft);
-        SeatChart seatChart = new SeatChart(seats, aircraftController);
+        SeatChart seatChart = new SeatChart(seats, aircraftController, flightController, cardPanel, cardLayout);
 
         cardPanel.add(seatChart, "seatChart");
         cardLayout.show(cardPanel, "seatChart");
