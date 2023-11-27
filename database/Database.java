@@ -431,18 +431,18 @@ private void readRegisteredUsers() throws SQLException{
         return this.PASSWORD;
     }
 
-//     /**
-//     * Closes the database connection and result set.
-//     */
-//     public void close() {
-//         //close the connection and result set
-//         try{
-//             dbConnection.close();
-//             results.close();
-//         }
-//         //catch exception if database cannot be accessed or any other error
-//         catch(SQLException e){
-//             e.printStackTrace();
-//         }
-//     }
+    /**
+    * Closes the database connection and result set.
+    */
+    public void close() {
+        //close the connection and result set
+        try{
+            dbConnection.close();
+            results.close();
+        }
+        //catch exception if database cannot be accessed or any other error
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+    }
 }
