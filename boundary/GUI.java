@@ -1,7 +1,6 @@
 package boundary;
 
 import controller.*;
-import database.Database;
 import flightInfo.*;
 
 import javax.swing.*;
@@ -31,6 +30,7 @@ public class GUI extends JFrame implements ActionListener {
     private SystemController system = new SystemController();
     private FlightController flightController = new FlightController();
     private AircraftController aircraftController = new AircraftController();
+    private AuthenticationController authController = new AuthenticationController();
 
     public GUI() {
         setTitle("Skyward Bound Flight Reservation System");
@@ -298,13 +298,17 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     private void handleLogin() {
-        String username = loginPanel.getEmail();
+        String email = loginPanel.getEmail();
         char[] password = loginPanel.getPassword();
-        currentUsername = username;
     
-        // Implement your login logic here
-    
-        showUserPage(username);
+        if (authController.loginUser(email, new String(password))) {
+            // Login successful
+            currentUsername = email;
+            showUserPage(email); // Show the user page for the logged-in user
+        } else {
+            // Login failed
+            JOptionPane.showMessageDialog(this, "Invalid email or password.");
+        }
     }
 
     private void handleRegister() {
@@ -320,7 +324,6 @@ public class GUI extends JFrame implements ActionListener {
         String postalCode = registerPanel.getPostalCode();
 
         // Registering user through AuthenticationController
-        AuthenticationController authController = new AuthenticationController(null, Database.getOnlyInstance());
         boolean registrationSuccess = authController.registerNewUser(firstName, lastName, email, new String(password), 
                                                                     houseNum, streetName, city, 
                                                                     country, postalCode);

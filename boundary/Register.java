@@ -28,11 +28,11 @@ public class Register extends JPanel {
     private void initializeComponents(ActionListener registerListener, ActionListener backListener) {
         // Name
         firstNameField = new JTextField(15);
-        addComponent(new JLabel("Name:"), firstNameField);
+        addComponent(new JLabel("First Name:"), firstNameField);
         firstNameField.setMaximumSize(new Dimension(200, 25));
 
         lastNameField = new JTextField(15);
-        addComponent(new JLabel("Name:"), lastNameField);
+        addComponent(new JLabel("Last Name:"), lastNameField);
         lastNameField.setMaximumSize(new Dimension(200, 25));
 
         // Email

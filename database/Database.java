@@ -383,8 +383,10 @@ private void readRegisteredUsers() throws SQLException{
                myStmt.setString(7, r.getAddress().getCity());
                myStmt.setString(8, r.getAddress().getCountry());
                myStmt.setString(9, r.getAddress().getPostalCode());
-               myStmt.setString(10, r.getPayment().getCreditCardNumber());
-               myStmt.setString(11, Integer.toString(r.getPayment().getCVV()));
+               myStmt.setString(10, null);
+               myStmt.setString(11, null);
+               //myStmt.setString(10, r.getPayment().getCreditCardNumber());
+               //myStmt.setString(11, Integer.toString(r.getPayment().getCVV()));
 
                int rowCount = myStmt.executeUpdate();
                //System.out.println("Rows affected: " + rowCount);

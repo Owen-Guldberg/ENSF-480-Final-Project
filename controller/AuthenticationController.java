@@ -8,19 +8,18 @@ import database.*;
 import util.*;
 
 public class AuthenticationController {
-    private RegisteredCustomer user;
-    private Database db;
 
-    public AuthenticationController(RegisteredCustomer user, Database db) {
-        this.user = user;
-        this.db = db;
-    }
+    public AuthenticationController() { }
 
     public boolean loginUser(String email, String password) {
 
-        if (user != null && user.getPassword().equals(password)) {
-            // Login successful
-            return true;
+        ArrayList<RegisteredCustomer> registeredCustomers = Database.getOnlyInstance().getRegisteredCustomerData();
+
+        for (RegisteredCustomer customer : registeredCustomers) {
+            if (customer.getEmail().equals(email) && customer.getPassword().equals(password)) {
+                // Login successful
+                return true;
+            }
         }
         return false; // Login failed
     }
@@ -40,14 +39,14 @@ public class AuthenticationController {
     }
 
     public boolean registerUser(RegisteredCustomer user) {
-        ArrayList<RegisteredCustomer> passengerData = db.getRegisteredCustomerData();
+        ArrayList<RegisteredCustomer> passengerData = Database.getOnlyInstance().getRegisteredCustomerData();
         for(RegisteredCustomer passenger : passengerData){
-            if(user == passenger){
+            if (user == passenger) {
                 return false;
             }
         }
         // user doesnt exist in RegisteredCustomer
-        db.saveUser(user);
+        Database.getOnlyInstance().saveUser(user);
         return true;
     }
 }
