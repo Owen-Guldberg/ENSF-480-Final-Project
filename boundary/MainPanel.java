@@ -19,6 +19,10 @@ public class MainPanel extends JPanel {
         welcome.setFont(new Font(welcome.getFont().getName(), Font.PLAIN, 16));
         welcome.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("airline.png")); // Load the image
+        JLabel label = new JLabel(imageIcon); // Set the icon to JLabel
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         JLabel instructions = new JLabel("Please register or login to continue.");
         instructions.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -45,6 +49,7 @@ public class MainPanel extends JPanel {
         buttonsPanel.add(loginButton);
 
         add(welcome);
+        add(label);
         add(instructions);
         add(buttonsPanel);
         add(guestLink);
