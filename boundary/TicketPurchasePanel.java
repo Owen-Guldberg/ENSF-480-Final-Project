@@ -78,20 +78,30 @@ public class TicketPurchasePanel extends JPanel {
         totalPrice = paymentController.getTicketPrice();
         paymentController.createTicket(insuranceSelected, flight.getFlightNum());
         aircraftController.updateSeatAvailability(selectedSeat, false);
+        
 
+        // Send the ticket and receipt information to customer
         try {
+            double insurance_cost = 0;
+            if(insuranceSelected) {
+                insurance_cost = 20;
+            }
             GMailer gMailer = new GMailer();
-            gMailer.sendMail(userEmail,"Skyward Bound Ticket Reciept",
+            gMailer.sendMail("guldbergowen@gmail.com","Skyward Bound Ticket & Receipt",
             "Flight Information: \n Date: " + flight.getFlightDate() + 
             "\nOrigin: " + flight.getOrigin() +
             "\nDestination: " + flight.getDestination() +
             "\nDeparture Time: " + flight.getDepartureTime() +
             "\nArrival Time " + flight.getArrivalTime() +
             "\nFlight Duration: " + flight.getFlightTime() +
-            "\nSeat and Price Information:" + 
+            "\nCancellation Insurance: " + insuranceSelected +
+            "\n\nSeat Information:" + 
             "\nClass: " + selectedSeat.getSeatClass() +
             "\nSelected Seat: " + selectedSeat.getSeatNum() +
-            "\nPrice: $" + String.format("%.2f", totalPrice));
+            "\n\nReceipt:" +
+            "\nSeat Cost: $" + String.format("%.2f", (double)selectedSeat.getPrice()) +
+            "\nInsurance: $" + String.format("%.2f", insurance_cost) +
+            "\nCost after promos: $" + String.format("%.2f", totalPrice));
         } catch (Exception e) {
             e.printStackTrace();
         }
