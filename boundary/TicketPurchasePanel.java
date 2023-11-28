@@ -14,12 +14,16 @@ public class TicketPurchasePanel extends JPanel {
     private PaymentController paymentController;
     private String userEmail;
     private double totalPrice;
+    private JPanel cardPanel;
+    private CardLayout cardLayout;
 
-    public TicketPurchasePanel(String userEmail, Seat seat, AircraftController aircraftController, Flight flight) {
+    public TicketPurchasePanel(String userEmail, Seat seat, AircraftController aircraftController, Flight flight, JPanel cardPanel, CardLayout cardLayout) {
         this.userEmail = userEmail;
         this.selectedSeat = seat;
         this.aircraftController = aircraftController;
         this.flight = flight;
+        this.cardPanel = cardPanel;
+        this.cardLayout = cardLayout;
         paymentController = new PaymentController(userEmail);
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -73,6 +77,9 @@ public class TicketPurchasePanel extends JPanel {
 
         // Process payment and booking
         // Show confirmation message
-        JOptionPane.showMessageDialog(this, "Ticket purchased successfully!");
+        //JOptionPane.showMessageDialog(this, "Ticket purchased successfully!");
+        TicketConfirmationPanel confirmationPanel = new TicketConfirmationPanel(userEmail, flight.toString(), selectedSeat.getSeatNum(), totalPrice, cardPanel, cardLayout);
+        cardPanel.add(confirmationPanel, "ticketConfirmation");
+        cardLayout.show(cardPanel, "ticketConfirmation");
     }
 }
