@@ -118,13 +118,16 @@ VALUES
 ('John', 'Smith', 'johnsmith@gmail.com', 'pass', 1, 'Maple Street', 'Calgary', 'Canada', 'TMS-257', '12345678910', 123);
 
 
--- DROP TABLE IF EXISTS TICKETS;
--- CREATE TABLE TICKETS(
---     TicketID			int not null AUTO_INCREMENT,
---     FlightNumber         varchar(6),
---     ClientEmail          varchar(25),
---     primary key(TicketID) 
--- );
+DROP TABLE IF EXISTS TICKETS;
+CREATE TABLE TICKETS(
+    TicketID			int not null AUTO_INCREMENT,
+    seatNum                   int,
+    FlightNumber         varchar(6),
+    ClientEmail          varchar(25),
+    FName           varchar(25),
+    LName           varchar(25),
+    primary key(TicketID) 
+);
 
 -- DROP TABLE IF EXISTS PAYMENT;
 -- CREATE TABLE PAYMENT(
