@@ -9,13 +9,14 @@ public class Login extends JPanel {
     private JPasswordField passwordField;
     private JButton loginButton;
     private JButton backButton;
+    private JButton registerButton;
 
-    public Login(ActionListener loginAction, ActionListener backAction) {
+    public Login(ActionListener loginAction, ActionListener backAction, ActionListener registerAction) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        initializeComponents(loginAction, backAction);
+        initializeComponents(loginAction, backAction, registerAction);
     }
 
-    private void initializeComponents(ActionListener loginAction, ActionListener backAction) {
+    private void initializeComponents(ActionListener loginAction, ActionListener backAction, ActionListener registerAction) {
         JLabel titleLabel = new JLabel("Please Login Below");
         
         JLabel usernameLabel = new JLabel("Email:");
@@ -35,11 +36,15 @@ public class Login extends JPanel {
         backButton = new JButton("Back");
         backButton.addActionListener(backAction);
 
+        registerButton = new JButton("Don't have an account? Register");
+        registerButton.addActionListener(registerAction);
+
         add(titleLabel);
         addComponent(usernameLabel, emailField);
         addComponent(passwordLabel, passwordField);
         add(showPasswordCheckBox);
         addButtons(loginButton, backButton);
+        //add(registerButton); // need to fix
     }
 
     private void addComponent(JLabel label, JComponent field) {
