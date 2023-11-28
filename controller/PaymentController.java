@@ -88,8 +88,8 @@ public class PaymentController {
         return user.getPayment().getAmountOwed();
     }
 
-    public Ticket createTicket(boolean insurance) {
-        Ticket ticket = new Ticket(seat.getSeatNum(), user.getPayment().getAmountOwed(), insurance, user.getName(), departureTime, seat.getSeatClass());
+    public Ticket createTicket(boolean insurance, String flightNum) {
+        Ticket ticket = new Ticket(seat.getSeatNum(), user.getPayment().getAmountOwed(), flightNum, insurance, departureTime, seat.getSeatClass());
         user.addTicket(ticket);
         //Database.getOnlyInstance().updateUser(user); // alter to add tickets to database
         return ticket;

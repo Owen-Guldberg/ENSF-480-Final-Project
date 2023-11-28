@@ -32,7 +32,7 @@ public class TicketConfirmationPanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         
         // Ticket Confirmation Title
-        JLabel titleLabel = new JLabel("<html>Thank you for using Skyward Bound!</br> Your ticket and receipt have now been emailed to " + userEmail + ".</html>");
+        JLabel titleLabel = new JLabel("<html>" + "Thank you for using Skyward Bound!"+"<br>"+ "Your ticket and receipt have now been emailed to " + userEmail + ".</html>");
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(titleLabel);
     

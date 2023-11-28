@@ -3,14 +3,20 @@ import util.*;
 
 public class Ticket {
     private int seatNum;
-    private int price;
-    private String flightName;
+    private double price;
+    private String flightNumber;
+    private String departureTime;
+    private boolean hasCancellationInsurance = false;
+    private String classSeat;
 
     // Constructor ONLY CALLED BY CONTROLLER
-    public Ticket(int seatNum, int price, Name name,String flightName) {
+    public Ticket(int seatNum, double price, String flightNum, boolean insurance, String departureTime, String classSeat) {
         this.seatNum = seatNum;
         this.price = price;
-        this.flightName = flightName;
+        this.flightNumber = flightNumber;
+        this.hasCancellationInsurance = insurance;
+        this.departureTime = departureTime;
+        this.classSeat = classSeat;
     }
     
     public Ticket getTicket(){
@@ -18,7 +24,7 @@ public class Ticket {
     }
 
     // Getter for price
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
@@ -30,15 +36,6 @@ public class Ticket {
     // Setter for price
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    // Getter for hasCancellationInsurance
-    public boolean hasCancellationInsurance() {
-        return hasCancellationInsurance;
-    }
-
-    public void buyCancellationInsureance() {
-        hasCancellationInsurance = true;
     }
 
     public String toString() {

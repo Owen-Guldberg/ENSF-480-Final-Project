@@ -19,7 +19,7 @@ public class Database {
     private ResultSet results;
     private final String URL = "jdbc:mysql://localhost:3306/skyward_bound"; 
     private final String USERNAME = "root";
-    private final String PASSWORD = "Root";
+    private final String PASSWORD = "";
     private ArrayList<Location> locations = new ArrayList<Location>();
     private ArrayList<RegisteredCustomer> registeredUsers = new ArrayList<RegisteredCustomer>();
     private ArrayList<Aircraft> aircrafts = new ArrayList<Aircraft>(); 
@@ -267,10 +267,10 @@ private void readRegisteredUsers() throws SQLException{
 
                 // Create a Ticket object using the retrieved data
 
-                Ticket tmp = new Ticket(seatNum, price, name, flightNumber);
+                //Ticket tmp = new Ticket(seatNum, price, name, flightNumber);
                 
                 // Add the Ticket object to your list or perform any other necessary operations
-                this.tickets.add(tmp);
+                //this.tickets.add(tmp);
             }
             myStmt.close();
         } catch (SQLException ex) {

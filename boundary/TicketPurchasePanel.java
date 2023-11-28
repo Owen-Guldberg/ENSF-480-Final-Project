@@ -76,6 +76,7 @@ public class TicketPurchasePanel extends JPanel {
         paymentController.setTicketPrice(selectedSeat.getPrice(), insuranceSelected);
         paymentController.setStrat(promoCode);
         totalPrice = paymentController.getTicketPrice();
+        paymentController.createTicket(insuranceSelected, flight.getFlightNum());
         aircraftController.updateSeatAvailability(selectedSeat, false);
 
         try {
