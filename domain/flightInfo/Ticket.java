@@ -22,9 +22,27 @@ public class Ticket {
         return price;
     }
 
+    // Getter for seatNum
+    public int getSeatNum() {
+        return seatNum;
+    }
+
     // Setter for price
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    // Getter for hasCancellationInsurance
+    public boolean hasCancellationInsurance() {
+        return hasCancellationInsurance;
+    }
+
+    public void buyCancellationInsureance() {
+        hasCancellationInsurance = true;
+    }
+
+    public String toString() {
+        return "<html>Seat Number: " + seatNum + "<br>Price: $" + String.format("%.2f", price) + "<br>Departure Time: " + departureTime + "<br>Class: " + classSeat + "<br>Cancellation Insurance: " + (hasCancellationInsurance ? "Yes" : "No"+ "</html>");
     }
 }
 

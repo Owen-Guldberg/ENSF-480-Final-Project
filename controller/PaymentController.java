@@ -90,6 +90,18 @@ public class PaymentController {
 
     public Ticket createTicket(boolean insurance) {
         Ticket ticket = new Ticket(seat.getSeatNum(), user.getPayment().getAmountOwed(), insurance, user.getName(), departureTime, seat.getSeatClass());
+        user.addTicket(ticket);
+        //Database.getOnlyInstance().updateUser(user); // alter to add tickets to database
         return ticket;
+    }
+
+    public String printTicket(String userEmail, int seatNum) {
+        ArrayList<Ticket> tickets = user.getTickets();
+        for (Ticket ticket : tickets) {
+            if (ticket.getSeatNum() == seatNum) {
+                return ticket.toString();
+            }
+        }
+        return null;
     }
 }

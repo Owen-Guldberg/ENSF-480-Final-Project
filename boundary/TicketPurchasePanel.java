@@ -97,7 +97,7 @@ public class TicketPurchasePanel extends JPanel {
         // Process payment and booking
         // Show confirmation message
         //JOptionPane.showMessageDialog(this, "Ticket purchased successfully!");
-        TicketConfirmationPanel confirmationPanel = new TicketConfirmationPanel(userEmail, flight.toString(), selectedSeat, totalPrice, cardPanel, cardLayout);
+        TicketConfirmationPanel confirmationPanel = new TicketConfirmationPanel(paymentController, userEmail, flight.toString(), selectedSeat, totalPrice, cardPanel, cardLayout);
         cardPanel.add(confirmationPanel, "ticketConfirmation");
         cardLayout.show(cardPanel, "ticketConfirmation");
     }
