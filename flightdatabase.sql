@@ -122,6 +122,7 @@ DROP TABLE IF EXISTS TICKETS;
 CREATE TABLE TICKETS(
     TicketID			int not null AUTO_INCREMENT,
     seatNum                   int,
+    price                     int,
     FlightNumber         varchar(6),
     ClientEmail          varchar(25),
     FName           varchar(25),
