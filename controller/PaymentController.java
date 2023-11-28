@@ -21,7 +21,7 @@ public class PaymentController {
     }
 
     public boolean paymentAvailable() {
-        if (user.getPayment() != null) {
+        if (user.getPayment().getCreditCardNumber() != null && user.getPayment().getCVV() != 0) {
             return true;
         }
         return false;
@@ -46,8 +46,13 @@ public class PaymentController {
             return;
         }
         else if (!paymentAvailable()){
-            this.user.setPayment(new Payment(cardNum, Integer.parseInt(cvv)));
+            Payment newPayment = new Payment(cardNum, Integer.parseInt(cvv));
+            System.out.println(newPayment.getCreditCardNumber());
+            System.out.println(newPayment.getCVV());
+            this.user.setPayment(newPayment);
         }
+        System.out.println(user.getPayment().getCreditCardNumber());
+        System.out.println(user.getPayment().getCVV());
         Database.getOnlyInstance().updateUser(user);
     }
 
