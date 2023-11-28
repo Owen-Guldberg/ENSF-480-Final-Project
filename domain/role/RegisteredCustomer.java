@@ -1,6 +1,10 @@
 package role;
 
 import util.*;
+import flightInfo.*;
+
+import java.util.ArrayList;
+
 import database.*;
 
 public class RegisteredCustomer implements Person{
@@ -8,7 +12,8 @@ public class RegisteredCustomer implements Person{
     private String email;
     private String password;
     private Address address; 
-    private Payment payment; 
+    private Payment payment;
+    private ArrayList<Ticket> tickets = new ArrayList<Ticket>(); 
     
     public RegisteredCustomer(Name name, String email, String password, Address a, Payment p){
         this.name = name;
@@ -61,5 +66,17 @@ public class RegisteredCustomer implements Person{
 
     public void setAddress(Address a){
         this.address = a; 
+    }
+
+    public ArrayList<Ticket> getTickets(){
+        return this.tickets; 
+    }
+
+    public void addTicket(Ticket t){
+        this.tickets.add(t); 
+    }
+
+    public void removeTicket(Ticket t){
+        this.tickets.remove(t); 
     }
 }
