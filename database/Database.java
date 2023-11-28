@@ -18,7 +18,7 @@ public class Database {
     private ResultSet results;
     private final String URL = "jdbc:mysql://localhost:3306/skyward_bound"; 
     private final String USERNAME = "root";
-    private final String PASSWORD = "Mathaward1!";
+    private final String PASSWORD = "Root";
     private ArrayList<Location> locations = new ArrayList<Location>();
     private ArrayList<RegisteredCustomer> registeredUsers = new ArrayList<RegisteredCustomer>();
     private ArrayList<Aircraft> aircrafts = new ArrayList<Aircraft>(); 
@@ -249,9 +249,34 @@ private void readRegisteredUsers() throws SQLException{
 
     }
 
-    public void readTicketData(){
-        //need to clarify logic for tickets in db
+    private void readTicketData(){
+        try{
+            Statement myStmt = this.dbConnection.createStatement();
+            String query = "SELECT * FROM TICKETS";
+            ResultSet results = myStmt.executeQuery(query);
+            while(results.next()){
+                int ticketID = results.getInt("TicketID");
+                int seatNum = results.getInt("seatNum");
+                int price = results.getInt("price");
+                String flightNumber = results.getString("FlightNumber");
+                String clientEmail = results.getString("ClientEmail");
+                String fName = results.getString("FName");
+                String lName = results.getString("LName");
+                Name name = new Name(fName, lName);
+
+                // Create a Ticket object using the retrieved data
+
+                Ticket tmp = new Ticket(seatNum, price, name, flightNumber);
+                
+                // Add the Ticket object to your list or perform any other necessary operations
+                this.tickets.add(tmp);
+            }
+            myStmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
+    
 
      /**
      * Gets the ArrayList of airport locations.
