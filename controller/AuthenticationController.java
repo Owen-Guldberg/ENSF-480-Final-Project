@@ -44,9 +44,9 @@ public class AuthenticationController {
         try {
         GMailer gMailer = new GMailer();
         gMailer.sendMail(email,"Thank you for registering with Skyward Bound!",
-                "As a token of our appreciation, we're delighted to offer you a special promotion. Use the promo code below for 10% of your first flight!\r\n" +
+                "As a token of our appreciation, we're delighted to offer you a special promotion. Use the promo code below for 50% of your first flight!\r\n" +
                 "\r\n" +
-                "Promo Code: FIRSTFLIGHT\r\n" +
+                "Promo Code: MEMEBR50\r\n" +
                 "\r\n" +
                 "We look forward to serving you on board and providing you with a great travel experience.\r\n" +
                 "Best regards, \r\n" +
