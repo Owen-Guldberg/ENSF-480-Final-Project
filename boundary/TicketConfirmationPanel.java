@@ -1,20 +1,23 @@
 package boundary;
 
 import javax.swing.*;
+
+import flightInfo.Seat;
+
 import java.awt.*;
 
 public class TicketConfirmationPanel extends JPanel {
     private String userEmail;
     private String flightInfo;
-    private int seatNum;
+    private Seat seat;
     private double price;
     private JPanel cardPanel;
     private CardLayout cardLayout;
 
-    public TicketConfirmationPanel(String userEmail, String flightInfo, int seatNum, double price, JPanel cardPanel, CardLayout cardLayout) {
+    public TicketConfirmationPanel(String userEmail, String flightInfo, Seat seat, double price, JPanel cardPanel, CardLayout cardLayout) {
         this.userEmail = userEmail;
         this.flightInfo = flightInfo;
-        this.seatNum = seatNum;
+        this.seat = seat;
         this.price = price;
         this.cardPanel = cardPanel;
         this.cardLayout = cardLayout;
@@ -32,7 +35,7 @@ public class TicketConfirmationPanel extends JPanel {
         // Flight Information
         JPanel flightInfoPanel = createBorderedPanel("Flight Information", flightInfo);
         JPanel seatPricePanel = createBorderedPanel("Seat and Price Information", 
-                                                "<html>" + "Selected Seat: " + seatNum + "<br>" + "Price: $" + String.format("%.2f", price)+ "</html>");
+                                                "<html>" + "Selected Seat: " + seat.getSeatNum() + "<br>" + "Price: $" + String.format("%.2f", price)+ "</html>");
         // add(new JLabel("Flight Information:"));
         // JTextArea flightInfoArea = new JTextArea(flightInfo);
         // flightInfoArea.setEditable(false);

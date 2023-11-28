@@ -27,7 +27,7 @@ public class TicketPurchasePanel extends JPanel {
         this.flight = flight;
         this.cardPanel = cardPanel;
         this.cardLayout = cardLayout;
-        paymentController = new PaymentController(userEmail, seat.getSeatNum());
+        paymentController = new PaymentController(userEmail, seat, flight.getDepartureTime());
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JLabel ticketPurchaseLabel = new JLabel("<html>Ticket Purchase<br/></html>");
@@ -97,7 +97,7 @@ public class TicketPurchasePanel extends JPanel {
         // Process payment and booking
         // Show confirmation message
         //JOptionPane.showMessageDialog(this, "Ticket purchased successfully!");
-        TicketConfirmationPanel confirmationPanel = new TicketConfirmationPanel(userEmail, flight.toString(), selectedSeat.getSeatNum(), totalPrice, cardPanel, cardLayout);
+        TicketConfirmationPanel confirmationPanel = new TicketConfirmationPanel(userEmail, flight.toString(), selectedSeat, totalPrice, cardPanel, cardLayout);
         cardPanel.add(confirmationPanel, "ticketConfirmation");
         cardLayout.show(cardPanel, "ticketConfirmation");
     }
