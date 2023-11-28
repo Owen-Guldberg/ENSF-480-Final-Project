@@ -14,15 +14,19 @@ public class TicketConfirmationPanel extends JPanel {
     private String flightInfo;
     private Seat seat;
     private double price;
+    private double origPrice;
+    private boolean insurance;
     private JPanel cardPanel;
     private CardLayout cardLayout;
 
-    public TicketConfirmationPanel(PaymentController paymentController, String userEmail, String flightInfo, Seat seat, double price, JPanel cardPanel, CardLayout cardLayout) {
+    public TicketConfirmationPanel(PaymentController paymentController, String userEmail, String flightInfo, Seat seat, double price, double origPrice, boolean insurance, JPanel cardPanel, CardLayout cardLayout) {
         this.paymentController = paymentController;
         this.userEmail = userEmail;
         this.flightInfo = flightInfo;
         this.seat = seat;
         this.price = price;
+        this.origPrice = origPrice;
+        this.insurance = insurance;
         this.cardPanel = cardPanel;
         this.cardLayout = cardLayout;
         initializeComponents();
@@ -51,7 +55,14 @@ public class TicketConfirmationPanel extends JPanel {
         // add(new JLabel("Price: $" + String.format("%.2f", price)));
     
         // Receipt Section
-        JPanel receiptPanel = createBorderedPanel("Receipt", "<html>" + "Detailed receipt information..." + "</html>");
+        double insurance_cost = 0;
+        if(insurance) {
+            insurance_cost = 20;
+        }
+        JPanel receiptPanel = createBorderedPanel("Receipt", "<html>" + "Detailed receipt information..." +
+                "<br>" + "Seat Price: $" + String.format("%.2f", origPrice) + "<br>" +
+                "Insurance: $" + String.format("%.2f", insurance_cost) +
+                "<br>" + "Price after promos: $" + String.format("%.2f", price) + "</html>");
         // add(new JLabel("Receipt:"));
         // JTextArea receiptArea = new JTextArea("Detailed receipt information...");
         // receiptArea.setEditable(false);
