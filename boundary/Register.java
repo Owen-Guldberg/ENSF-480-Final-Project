@@ -26,6 +26,8 @@ public class Register extends JPanel {
     }
 
     private void initializeComponents(ActionListener registerListener, ActionListener backListener) {
+        JLabel titleLabel = new JLabel("Welcome! Create Your Account Below");
+        add(titleLabel);
         // Name
         firstNameField = new JTextField(15);
         addComponent(new JLabel("First Name:"), firstNameField);

@@ -16,6 +16,8 @@ public class Login extends JPanel {
     }
 
     private void initializeComponents(ActionListener loginAction, ActionListener backAction) {
+        JLabel titleLabel = new JLabel("Please Login Below");
+        
         JLabel usernameLabel = new JLabel("Email:");
         emailField = new JTextField(15);
         emailField.setMaximumSize(new Dimension(200, 25));
@@ -33,6 +35,7 @@ public class Login extends JPanel {
         backButton = new JButton("Back");
         backButton.addActionListener(backAction);
 
+        add(titleLabel);
         addComponent(usernameLabel, emailField);
         addComponent(passwordLabel, passwordField);
         add(showPasswordCheckBox);
