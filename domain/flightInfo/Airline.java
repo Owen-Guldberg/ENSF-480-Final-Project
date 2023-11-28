@@ -6,14 +6,12 @@ import role.*;
 public class Airline {
     private String companyName;
     private ArrayList<Aircraft> aircrafts;
-    private AirlineAgent agent;
     private ArrayList<CrewMember> crewMembers;
 
     // Constructor
-    public Airline(String companyName, ArrayList<Aircraft> aircrafts, AirlineAgent agent, ArrayList<CrewMember> crewMembers) {
+    public Airline(String companyName, ArrayList<Aircraft> aircrafts, ArrayList<CrewMember> crewMembers) {
         this.companyName = companyName;
         this.aircrafts = aircrafts;
-        this.agent = agent;
         this.crewMembers = crewMembers;
     }
 
@@ -26,9 +24,6 @@ public class Airline {
         return aircrafts;
     }
 
-    public AirlineAgent getAgent() {
-        return agent;
-    }
 
     public ArrayList<CrewMember> getCrewMembers() {
         return crewMembers;
@@ -43,9 +38,7 @@ public class Airline {
         this.aircrafts = aircrafts;
     }
 
-    public void setAgent(AirlineAgent agent) {
-        this.agent = agent;
-    }
+
     // set an entire crew member list
     public void setCrewMembers(ArrayList<CrewMember> crewMembers) {
         this.crewMembers = crewMembers;
