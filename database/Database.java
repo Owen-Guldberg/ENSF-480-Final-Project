@@ -23,7 +23,7 @@ public class Database {
     private ArrayList<RegisteredCustomer> registeredUsers = new ArrayList<RegisteredCustomer>();
     private ArrayList<Aircraft> aircrafts = new ArrayList<Aircraft>(); 
     private ArrayList<Flight> flights = new ArrayList<Flight>(); 
-    private ArrayList<AirlineAgent> crew = new ArrayList<AirlineAgent>(); 
+    private ArrayList<CrewMember> crew = new ArrayList<CrewMember>(); 
     private ArrayList<Ticket> tickets = new ArrayList<Ticket>();
     
 
@@ -239,7 +239,7 @@ private void readRegisteredUsers() throws SQLException{
               Address ad = new Address(house, street, city, country, postal); //dont need but maybe could add to airline agent if needed
 
 
-                AirlineAgent tmp = new AirlineAgent(n, email); 
+                CrewMember tmp = new CrewMember(n, email, job); 
                 crew.add(tmp); 
               }
               myStmt.close(); 
@@ -294,7 +294,7 @@ private void readRegisteredUsers() throws SQLException{
      *
      * @return the crew ArrayList
      */
-    public ArrayList<AirlineAgent> getCrewMemberData(){
+    public ArrayList<CrewMember> getCrewMemberData(){
         return this.crew; 
     }
 
