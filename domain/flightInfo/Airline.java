@@ -51,4 +51,10 @@ public class Airline {
     public void removeCrewMember(CrewMember crewMember){
         this.crewMembers.remove(crewMember);
     }
+    public void addAircraft(Aircraft a){
+        aircrafts.add(a);
+    }
+    public void removeAircraft(Aircraft a){
+        aircrafts.remove(a);
+    }
 }
