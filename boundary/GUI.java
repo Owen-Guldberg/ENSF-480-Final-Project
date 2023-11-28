@@ -241,22 +241,36 @@ public class GUI extends JFrame implements ActionListener {
     private JPanel createFlightInfoPanel(String flightNum) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        Flight flight = system.getFlightByNum(flightNum);
         String flightInfo = system.getFlightByNum(flightNum).toString();
-        JLabel infoLabel = new JLabel("Flight Information for: ");
+        JLabel infoLabel = new JLabel("Flight Information");
+        infoLabel.setFont(new Font(infoLabel.getFont().getName(), Font.PLAIN, 20));
+        infoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        infoPanel.setBorder(BorderFactory.createEmptyBorder());
+        infoPanel.setBackground(Color.WHITE);
+
         JLabel infoLabel2 = new JLabel(flightInfo);
+        infoLabel2.setFont(new Font(infoLabel.getFont().getName(), Font.PLAIN, 16));
+
         panel.add(Box.createVerticalStrut(20));
         panel.add(infoLabel);
-        panel.add(infoLabel2);
+        panel.add(Box.createVerticalStrut(10));
+        infoPanel.add(infoLabel2);
+        panel.add(infoPanel);
         panel.add(Box.createVerticalStrut(20));
 
         JButton viewSeatsButton = new JButton("View Seats");
         viewSeatsButton.addActionListener(e -> showSeatChart(flightNum));
-        panel.add(viewSeatsButton);
 
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> cardLayout.show(cardPanel, "flightsPanel"));
-        panel.add(backButton);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.add(viewSeatsButton);
+        buttonPanel.add(backButton);
+        panel.add(buttonPanel);
+        add(Box.createVerticalStrut(10));
 
         return panel;
     }
