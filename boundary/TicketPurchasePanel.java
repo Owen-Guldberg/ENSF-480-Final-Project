@@ -23,7 +23,7 @@ public class TicketPurchasePanel extends JPanel {
         paymentController = new PaymentController(userEmail);
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        JLabel ticketPurchaseLabel = new JLabel("<html>Ticket Purchase<br></html>");
+        JLabel ticketPurchaseLabel = new JLabel("<html>Ticket Purchase<br/></html>");
         ticketPurchaseLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Set alignment
         add(ticketPurchaseLabel);
         add(new JLabel("Flight Information"));

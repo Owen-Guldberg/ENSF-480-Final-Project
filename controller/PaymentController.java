@@ -48,7 +48,7 @@ public class PaymentController {
         else if (!paymentAvailable()){
             this.user.setPayment(new Payment(cardNum, Integer.parseInt(cvv)));
         }
-        Database.getOnlyInstance().saveUser(user);
+        Database.getOnlyInstance().updateUser(user);
     }
 
     public void setStrat(String promoCode) {

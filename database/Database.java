@@ -405,6 +405,38 @@ private void readRegisteredUsers() throws SQLException{
         return success;
     }
 
+    public boolean updateUser(RegisteredCustomer r) {
+        boolean success = false;
+        try {
+            String query = "UPDATE REGISTEREDUSERS SET FName = ?, LName = ?, Password = ?, HouseNum = ?, Street = ?, City = ?, Country = ?, PostalCode = ?, CreditCardNumber = ?, CVV = ? WHERE Email = ?";
+    
+            PreparedStatement myStmt = dbConnection.prepareStatement(query);
+    
+            myStmt.setString(1, r.getName().getFirstName());
+            myStmt.setString(2, r.getName().getLastName());
+            myStmt.setString(3, r.getPassword());
+            myStmt.setInt(4, r.getAddress().getHouseNum());
+            myStmt.setString(5, r.getAddress().getStreetName());
+            myStmt.setString(6, r.getAddress().getCity());
+            myStmt.setString(7, r.getAddress().getCountry());
+            myStmt.setString(8, r.getAddress().getPostalCode());
+    
+            myStmt.setString(9, r.getPayment().getCreditCardNumber());
+            myStmt.setString(10, Integer.toString(r.getPayment().getCVV()));
+            myStmt.setString(11, r.getEmail());
+    
+            int rowCount = myStmt.executeUpdate();
+            if (rowCount > 0) {
+                success = true;
+            }
+    
+            myStmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return success;
+    }
+    
     /**
      * Gets the URL of the database.
      * @return the URL of the database
