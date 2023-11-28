@@ -11,17 +11,15 @@ import java.awt.*;
 public class TicketConfirmationPanel extends JPanel {
     private PaymentController paymentController;
     private String userEmail;
-    private String flightNum;
     private String flightInfo;
     private Seat seat;
     private double price;
     private JPanel cardPanel;
     private CardLayout cardLayout;
 
-    public TicketConfirmationPanel(PaymentController paymentController, String flightNum, String userEmail, String flightInfo, Seat seat, double price, JPanel cardPanel, CardLayout cardLayout) {
+    public TicketConfirmationPanel(PaymentController paymentController, String userEmail, String flightInfo, Seat seat, double price, JPanel cardPanel, CardLayout cardLayout) {
         this.paymentController = paymentController;
         this.userEmail = userEmail;
-        this.flightNum = flightNum;
         this.flightInfo = flightInfo;
         this.seat = seat;
         this.price = price;
