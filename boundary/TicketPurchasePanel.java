@@ -24,7 +24,7 @@ public class TicketPurchasePanel extends JPanel {
         this.flight = flight;
         this.cardPanel = cardPanel;
         this.cardLayout = cardLayout;
-        paymentController = new PaymentController(userEmail);
+        paymentController = new PaymentController(userEmail, seat.getSeatNum());
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         JLabel ticketPurchaseLabel = new JLabel("<html>Ticket Purchase<br/></html>");

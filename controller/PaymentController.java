@@ -6,13 +6,16 @@ import java.util.ArrayList;
 
 import database.Database;
 import role.RegisteredCustomer;
+import flightInfo.Ticket;
 
 public class PaymentController {
 
     private RegisteredCustomer user;
+    private int seatNum;
     ArrayList<RegisteredCustomer> registeredCustomers = Database.getOnlyInstance().getRegisteredCustomerData();
 
-    public PaymentController(String userEmail) {
+    public PaymentController(String userEmail, int seatNum) {
+        this.seatNum = seatNum;
         for (RegisteredCustomer customer : registeredCustomers) {
             if (customer.getEmail().equals(userEmail)) {
                 this.user = customer;
@@ -81,4 +84,10 @@ public class PaymentController {
     public double getTicketPrice() {
         return user.getPayment().getAmountOwed();
     }
+
+    // public Ticket createTicket(boolean insurance) {
+    //     int seatNum, int price, boolean hasCancellationInsurance, Name name,String departureTime, String classSeat
+    //     Ticket ticket = new Ticket(seatNum, user.getPayment().getAmountOwed(), insurance, user.getName(), departureTime, classSeat);
+    //     return ticket;
+    // }
 }

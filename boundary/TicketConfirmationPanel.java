@@ -32,7 +32,7 @@ public class TicketConfirmationPanel extends JPanel {
         // Flight Information
         JPanel flightInfoPanel = createBorderedPanel("Flight Information", "<html>" + flightInfo + "</html>");
         JPanel seatPricePanel = createBorderedPanel("Seat and Price Information", 
-                                                "Selected Seat: " + seatNum + "<br>Price: $" + String.format("%.2f", price));
+                                                "Selected Seat: " + seatNum + "</br>Price: $" + String.format("%.2f", price));
         // add(new JLabel("Flight Information:"));
         // JTextArea flightInfoArea = new JTextArea(flightInfo);
         // flightInfoArea.setEditable(false);
