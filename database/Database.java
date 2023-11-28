@@ -1,4 +1,5 @@
 package database;
+import com.owen_guldberg.gmailsender.GMailer;
 
 import util.*;
 import role.*;
@@ -354,7 +355,34 @@ private void readRegisteredUsers() throws SQLException{
              }
              
              for (int i = 0; i < flights.size(); i++){
+                // notifying passengers
                 if (f == flights.get(i)){
+                    for(int j = 0; j < flights.get(i).getPassengers().size();j++){
+                        try {
+                            RegisteredCustomer passenger = flights.get(i).getPassengers().get(j);
+                            GMailer gMailer = new GMailer();
+                            
+                            String flightNum = flights.get(i).getFlightNum();
+                            String flightDate = flights.get(i).getFlightDate();
+                            String destination = flights.get(i).getDestination().getCity();
+                            String orgin = flights.get(i).getOrigin().getCity();
+                            String emailSubject = "Flight Cancellation Notification";
+                            String emailBody = "Hello,\n\n"
+                                    + "We regret to inform you that your flight ("
+                                    + flightNum + ") on " + flightDate + " from "
+                                    + orgin + " to " + destination
+                                    + " has been cancelled.\n\n"
+                                    + "As a token of our appreciation, we're delighted to offer you a special promotion. Use the promo code below for 50% off your next flight!\n\n"
+                                    + "Promo Code: MEMEBR50\n\n"
+                                    + "We look forward to serving you on board and providing you with a great travel experience.\n\n"
+                                    + "Best regards,\n"
+                                    + "The Skyward Bound Team";
+                
+                            gMailer.sendMail(passenger.getEmail(), emailSubject, emailBody);
+                     } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                    }
                     flights.remove(i);
                 }
              }
