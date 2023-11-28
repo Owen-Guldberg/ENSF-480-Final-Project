@@ -5,6 +5,9 @@ import controller.PaymentController;
 import flightInfo.*;
 
 import javax.swing.*;
+
+import com.owen_guldberg.gmailsender.GMailer;
+
 import java.awt.*;
 
 public class TicketPurchasePanel extends JPanel {
@@ -74,6 +77,22 @@ public class TicketPurchasePanel extends JPanel {
         paymentController.setStrat(promoCode);
         totalPrice = paymentController.getTicketPrice();
         aircraftController.updateSeatAvailability(selectedSeat, false);
+
+        try {
+            GMailer gMailer = new GMailer();
+            gMailer.sendMail(userEmail,"Skyward Bound Ticket Reciept",
+            "Flight Information: \n Date: " + flight.getFlightDate() + 
+            "\nOrigin: " + flight.getOrigin() +
+            "\nDestination: " + flight.getDestination() +
+            "\nDeparture Time: " + flight.getDepartureTime() +
+            "\nArrival Time " + flight.getArrivalTime() +
+            "\nFlight Duration: " + flight.getFlightTime() +
+            "\nSeat and Price Information: \n" + 
+            "Selected Seat: " + selectedSeat.getSeatNum() +
+            "\nPrice: $" + String.format("%.2f", totalPrice));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Process payment and booking
         // Show confirmation message
