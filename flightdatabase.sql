@@ -124,9 +124,9 @@ CREATE TABLE TICKETS(
     seatNum                   int,
     price                     int,
     FlightNumber         varchar(6),
-    ClientEmail          varchar(25),
-    FName           varchar(25),
-    LName           varchar(25),
+    insurance                 int,
+    DepartureTime          varchar(25),
+    classSeat           varchar(25),
     primary key(TicketID) 
 );
 
