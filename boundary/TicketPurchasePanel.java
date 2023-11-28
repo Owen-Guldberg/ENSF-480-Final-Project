@@ -34,7 +34,7 @@ public class TicketPurchasePanel extends JPanel {
         ticketPurchaseLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Set alignment
         add(ticketPurchaseLabel);
         add(new JLabel("Flight Information"));
-        add(new JLabel("<html>" + flight.toString() + "</html>"));
+        add(new JLabel(flight.toString()));
         add(new JLabel("Selected Seat: " + seat.getSeatNum()));
         add(new JLabel("Price: $" + seat.getPrice()));
 

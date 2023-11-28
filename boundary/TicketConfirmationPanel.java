@@ -30,9 +30,9 @@ public class TicketConfirmationPanel extends JPanel {
         add(titleLabel);
     
         // Flight Information
-        JPanel flightInfoPanel = createBorderedPanel("Flight Information", "<html>" + flightInfo + "</html>");
+        JPanel flightInfoPanel = createBorderedPanel("Flight Information", flightInfo);
         JPanel seatPricePanel = createBorderedPanel("Seat and Price Information", 
-                                                "Selected Seat: " + seatNum + "</br>Price: $" + String.format("%.2f", price));
+                                                "<html>" + "Selected Seat: " + seatNum + "<br>" + "Price: $" + String.format("%.2f", price)+ "</html>");
         // add(new JLabel("Flight Information:"));
         // JTextArea flightInfoArea = new JTextArea(flightInfo);
         // flightInfoArea.setEditable(false);
@@ -44,7 +44,7 @@ public class TicketConfirmationPanel extends JPanel {
         // add(new JLabel("Price: $" + String.format("%.2f", price)));
     
         // Receipt Section
-        JPanel receiptPanel = createBorderedPanel("Receipt", "Detailed receipt information...");
+        JPanel receiptPanel = createBorderedPanel("Receipt", "<html>" + "Detailed receipt information..." + "</html>");
         // add(new JLabel("Receipt:"));
         // JTextArea receiptArea = new JTextArea("Detailed receipt information...");
         // receiptArea.setEditable(false);
