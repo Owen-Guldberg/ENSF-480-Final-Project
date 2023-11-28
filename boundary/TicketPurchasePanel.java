@@ -88,8 +88,9 @@ public class TicketPurchasePanel extends JPanel {
             "\nDeparture Time: " + flight.getDepartureTime() +
             "\nArrival Time " + flight.getArrivalTime() +
             "\nFlight Duration: " + flight.getFlightTime() +
-            "\nSeat and Price Information: \n" + 
-            "Selected Seat: " + selectedSeat.getSeatNum() +
+            "\nSeat and Price Information:" + 
+            "\nClass: " + selectedSeat.getSeatClass() +
+            "\nSelected Seat: " + selectedSeat.getSeatNum() +
             "\nPrice: $" + String.format("%.2f", totalPrice));
         } catch (Exception e) {
             e.printStackTrace();
