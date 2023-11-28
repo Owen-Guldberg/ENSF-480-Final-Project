@@ -1,6 +1,7 @@
 package boundary;
 
 import controller.AircraftController;
+import controller.PaymentController;
 import flightInfo.*;
 
 import javax.swing.*;
@@ -10,14 +11,21 @@ public class TicketPurchasePanel extends JPanel {
     private Seat selectedSeat;
     private Flight flight;
     private AircraftController aircraftController;
+    private PaymentController paymentController;
+    private String userEmail;
+    private double totalPrice;
 
-    public TicketPurchasePanel(Seat seat, AircraftController aircraftController, Flight flight) {
+    public TicketPurchasePanel(String userEmail, Seat seat, AircraftController aircraftController, Flight flight) {
+        this.userEmail = userEmail;
         this.selectedSeat = seat;
         this.aircraftController = aircraftController;
         this.flight = flight;
+        paymentController = new PaymentController(userEmail);
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        add(new JLabel("Ticket Purchase\n"));
+        JLabel ticketPurchaseLabel = new JLabel("<html>Ticket Purchase<br></html>");
+        ticketPurchaseLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Set alignment
+        add(ticketPurchaseLabel);
         add(new JLabel("Flight Information"));
         add(new JLabel("<html>" + flight.toString() + "</html>"));
         add(new JLabel("Selected Seat: " + seat.getSeatNum()));
@@ -47,12 +55,20 @@ public class TicketPurchasePanel extends JPanel {
         purchaseButton.addActionListener(e -> handlePurchase(insuranceCheckBox.isSelected(), cardNumberField.getText(), cvvField.getText(),
         promoCodeField.getText()));
         add(purchaseButton);
+
+        if (paymentController.paymentAvailable()) {
+            cardNumberField.setText(paymentController.getPaymentCardNum());
+            cvvField.setText(String.valueOf(paymentController.getPaymentCVV()));
+        }
     }
 
     private void handlePurchase(boolean insuranceSelected, String cardNumber, String cvv, String promoCode) {
         // Implement ticket purchase logic
         // Update seat availability
-
+        paymentController.setPaymentInfo(cardNumber, cvv);
+        paymentController.setTicketPrice(selectedSeat.getPrice(), insuranceSelected);
+        paymentController.setStrat(promoCode);
+        totalPrice = paymentController.getTicketPrice();
         aircraftController.updateSeatAvailability(selectedSeat, false);
 
         // Process payment and booking

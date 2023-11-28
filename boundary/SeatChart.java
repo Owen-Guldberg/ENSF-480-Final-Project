@@ -18,8 +18,10 @@ public class SeatChart extends JPanel {
     private JPanel cardPanel;
     private CardLayout cardLayout;
     private SystemController system;
+    private String userEmail;
 
-    public SeatChart(ArrayList<Seat> seats, AircraftController aircraftController, String flightNum, SystemController system, JPanel cardPanel, CardLayout cardLayout) {
+    public SeatChart(String userEmail, ArrayList<Seat> seats, AircraftController aircraftController, String flightNum, SystemController system, JPanel cardPanel, CardLayout cardLayout) {
+        this.userEmail = userEmail;
         this.aircraftController = aircraftController;
         this.flightNum = flightNum;
         this.cardPanel = cardPanel;
@@ -63,7 +65,7 @@ public class SeatChart extends JPanel {
         if (response == JOptionPane.YES_OPTION && seat.getAvailability()) {
             //aircraftController.selectSeat(seat);
             //JOptionPane.showMessageDialog(this, "Seat " + seat.getSeatNum() + " selected!");
-            TicketPurchasePanel purchasePanel = new TicketPurchasePanel(seat, aircraftController, flight);
+            TicketPurchasePanel purchasePanel = new TicketPurchasePanel(userEmail, seat, aircraftController, flight);
             cardPanel.add(purchasePanel, "purchaseTicket");
             cardLayout.show(cardPanel, "purchaseTicket");
         } else if (response == JOptionPane.YES_OPTION && !seat.getAvailability()) {

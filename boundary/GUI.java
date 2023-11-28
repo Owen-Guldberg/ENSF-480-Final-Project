@@ -263,7 +263,7 @@ public class GUI extends JFrame implements ActionListener {
     private void showSeatChart(String flightNum) {
         Aircraft aircraft = system.getFlightByNum(flightNum).getAircraft();
         ArrayList<Seat> seats = aircraftController.seatByAircraft(aircraft);
-        SeatChart seatChart = new SeatChart(seats, aircraftController, flightNum, system, cardPanel, cardLayout);
+        SeatChart seatChart = new SeatChart(currentUsername, seats, aircraftController, flightNum, system, cardPanel, cardLayout);
 
         cardPanel.add(seatChart, "seatChart");
         cardLayout.show(cardPanel, "seatChart");
