@@ -9,6 +9,8 @@ import role.RegisteredCustomer;
 import flightInfo.Ticket;
 import flightInfo.Seat;
 
+import com.owen_guldberg.gmailsender.GMailer;
+
 public class PaymentController {
 
     private RegisteredCustomer user;
@@ -130,17 +132,12 @@ public class PaymentController {
                             + "The Skyward Bound Team";
         
                     gMailer.sendMail(userEmail, emailSubject, emailBody);
-             } catch (Exception e) {
+                } catch (Exception e) {
                         e.printStackTrace();
-                    }
+                }
                 return true;
             }
         }
-
-        return false;
-    }
-}
-
 
         return false;
     }
