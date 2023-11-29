@@ -109,32 +109,32 @@ public class PaymentController {
         }
         return null;
     }
-
-    public boolean deleteTicket(String userEmail, int seatNum) {
+        public boolean deleteTicket(String userEmail, int seatNum) {
         ArrayList<Ticket> tickets = user.getTickets();
         for (Ticket ticket : tickets) {
             if (ticket.getSeatNum() == seatNum) {
-                tickets.remove(ticket);
+                String emailSubject = "Flight Cancellation Notification";
+                String emailBody = "Hello, " + user.getName().getFirstName() + user.getName().getLastName() + "\n" +
+                        "You have canceled flight " + ticket.getFlightNumber();
+    
+                if (ticket.getHasCancellationInsurance()) {
+                    emailBody += "\nSince you have cancellation insurance, you will get a full refund.";
+                    double price = ticket.getPrice();
+                    user.getPayment().setOwed(price);
+                }
+    
+                emailBody += "\nWe look forward to serving you on board and providing you with a great travel experience.\n\n" +
+                        "Best regards,\n" +
+                        "The Skyward Bound Team";
                 Database.getOnlyInstance().deleteTicketFromDB(ticket, userEmail);
                 try {
                     GMailer gMailer = new GMailer();
-                    
-
-                    String emailSubject = "Flight Cancellation Notification";
-                    String emailBody = "Hello,\n\n"
-                            + "You have canceled ("
-                            + ticket.getFlightNumber() + ") on " +  " from "
-                            +   " to " 
-                            + "As a token of our appreciation, we're delighted to offer you a special promotion. Use the promo code below for 50% off your next flight!\n\n"
-                            + "Promo Code: MEMEBR50\n\n"
-                            + "We look forward to serving you on board and providing you with a great travel experience.\n\n"
-                            + "Best regards,\n"
-                            + "The Skyward Bound Team";
-        
+                
+                    System.out.println(emailBody);
                     gMailer.sendMail(userEmail, emailSubject, emailBody);
-                } catch (Exception e) {
+             } catch (Exception e) {
                         e.printStackTrace();
-                }
+                    }
                 return true;
             }
         }
