@@ -13,7 +13,7 @@ public class Ticket {
     public Ticket(int seatNum, double price, String flightNum, boolean insurance, String departureTime, String classSeat) {
         this.seatNum = seatNum;
         this.price = price;
-        this.flightNumber = flightNumber;
+        this.flightNumber = flightNum;
         this.hasCancellationInsurance = insurance;
         this.departureTime = departureTime;
         this.classSeat = classSeat;
