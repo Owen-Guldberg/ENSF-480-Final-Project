@@ -572,6 +572,46 @@ private void readRegisteredUsers() throws SQLException{
         }
         return success;
     }
+
+    /*
+    Adds flight objects to the database - useful for admin 
+     * @param f the Flight object to be added
+     * @return true if the addition is successful, false otherwise
+    */
+    public boolean addFlightToDB(Flight f){
+        boolean success = false; 
+        try{
+            String query = "INSERT INTO FLIGHTS(FlightNum, FlightDate, Origin, Destination, Aircraft, DepartureTime, ArrivalTime, FlightTime) "
+                + "VALUES(?,?,?,?,?,?,?, ?)";
+            
+            PreparedStatement myStmt = dbConnection.prepareStatement(query);
+   
+               myStmt.setString(1, f.getFlightNum());
+               myStmt.setString(2, f.getFlightDate());
+               myStmt.setString(3, f.getOrigin().getAirportName());
+               myStmt.setString(4, f.getDestination().getAirportName());
+               myStmt.setString(5, f.getAircraft().getName());
+               myStmt.setString(6, f.getDepartureTime());
+               myStmt.setString(7, f.getArrivalTime());
+               myStmt.setString(8, f.getFlightTime());
+
+               int rowCount = myStmt.executeUpdate();
+               if(rowCount == 0)
+               {
+                 return false;
+               }
+               else{
+                    success = true;
+                    flights.add(f); 
+                }
+                myStmt.close();
+
+        }
+        catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return success;
+    }
     
     /**
      * Gets the URL of the database.
