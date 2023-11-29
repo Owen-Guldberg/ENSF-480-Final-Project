@@ -87,29 +87,7 @@ VALUES
 ('SEA', 'Seattle', 'USA'),
 ('ORD', 'Chicago', 'USA');
 
-DROP TABLE IF EXISTS CREWMEMBER;
-CREATE TABLE CREWMEMBER(
-    CrewID			int not null AUTO_INCREMENT,
-    FName           varchar(25),
-    LName           varchar(25),
-    Email           varchar(25),
-    Password        varchar(25), 
-    Job             varchar(25),
-    HouseNum        int,
-    Street          varchar(25),
-    City            varchar(25),
-    Country         varchar(50),
-    PostalCode      varchar(7),
-    primary key(CrewID) 
-);
 
-
-INSERT INTO CREWMEMBER(FName, LName, Email,Password, Job, HouseNum, Street, City, Country, PostalCode)
-VALUES
-('Chandler', 'Bing','cbing@gmail.com','house', 'pilot', 22, 'Jump Street', 'New York City', 'USA', 'VPB-176'),
-('Rachel', 'Green', 'rachelgreen12@gmail.com','newpass','crew', 45, 'Madison Avenue', 'Pittsburgh', 'USA', 'WXS-192'),
-('Monica', 'Geller', 'mgeller@hotmail.com','password','crew', 92, 'Circle Drive', 'Saskatoon', 'Canada', 'SSK-189'),
-('Phoebe', 'Buffay', 'phoebe1234@yahoo.ca','123','manager', 111, '32nd Avenue', 'Montreal', 'Canada', 'SPM-232');
 
 
 DROP TABLE IF EXISTS REGISTEREDUSERS;
@@ -156,6 +134,88 @@ CREATE TABLE TICKETS(
     primary key(TicketID) 
 );
 
+
+DROP TABLE IF EXISTS CREWMEMBER;
+CREATE TABLE CREWMEMBER(
+    CrewID			int not null AUTO_INCREMENT,
+    FName           varchar(25),
+    LName           varchar(25),
+    Email           varchar(25),
+    Password        varchar(25), 
+    Job             varchar(25),
+    HouseNum        int,
+    Street          varchar(25),
+    City            varchar(25),
+    Country         varchar(50),
+    PostalCode      varchar(7),
+    primary key(CrewID) 
+);
+
+
+INSERT INTO CREWMEMBER(FName, LName, Email,Password, Job, HouseNum, Street, City, Country, PostalCode)
+VALUES
+('Chandler', 'Bing','cbing@gmail.com','house', 'pilot', 22, 'Jump Street', 'New York City', 'USA', 'VPB-176'),
+('Rachel', 'Green', 'rachelgreen12@gmail.com','newpass','crew', 45, 'Madison Avenue', 'Pittsburgh', 'USA', 'WXS-192'),
+('Monica', 'Geller', 'mgeller@hotmail.com','password','crew', 92, 'Circle Drive', 'Saskatoon', 'Canada', 'SSK-189'),
+('Ross', 'Geller', 'rossg@yahoo.ca','wewereonbreak','pilot', 823, 'Orange Place', 'London', 'England', 'PLD-262'),
+('Phoebe', 'Buffay', 'phoebe1234@yahoo.ca','123','manager', 111, '32nd Avenue', 'Montreal', 'Canada', 'SPM-232'),
+('Joey', 'Tribbiani', 'joeytribbs@yahoo.ca','apple','crew', 220, 'Woodcrest Circle', 'Vancouver', 'Canada', 'VPB-023'),
+('Janice', 'Hosenstein', 'janiceh22@gmail.com','orange','pilot', 278, 'Raddison Place', 'Nashville', 'USA', 'NPT-091'),
+('Richard', 'Burke', 'oldrichard@yahoo.com','ball','pilot', 81, 'Jamieson Place', 'Paris', 'France', 'KDA-812'),
+('Gunther', 'Perk', 'creepygunther@hotmail.com','dog','crew', 1217, '2nd Street', 'Rotterdam', 'Netherlands', 'PLY-273');
+
+
+DROP TABLE IF EXISTS CREWASSIGNMENT;
+CREATE TABLE CREWASSIGNMENT(
+    EntryID			int not null AUTO_INCREMENT,
+    Email				varchar(25),
+    FlightNum 			varchar(6),
+    primary key(EntryID) 
+);
+
+
+INSERT INTO CREWASSIGNMENT(Email, FlightNum) 
+VALUES
+('cbing@gmail.com', 'SB-617'), 
+('rachelgreen12@gmail.com', 'SB-617'),
+('phoebe1234@yahoo.ca','SB-233'),
+('creepygunther@hotmail.com', 'SB-233'),
+('phoebe1234@yahoo.ca','SB-019'),
+('cbing@gmail.com','SB-019'),
+('oldrichard@yahoo.com', 'SB-793'), 
+('joeytribbs@yahoo.ca', 'SB-793'),
+('janiceh22@gmail.com', 'SB-549'), 
+('mgeller@hotmail.com', 'SB-549'), 
+('rachelgreen12@gmail.com','SB-352'),
+('creepygunther@hotmail.com','SB-352'),
+('oldrichard@yahoo.com','SB-092'),
+('cbing@gmail.com','SB-092'),
+('rossg@yahoo.ca','SB-923'), 
+('joeytribbs@yahoo.ca','SB-923'),
+('oldrichard@yahoo.com','SB-122'),
+('mgeller@hotmail.com','SB-122'), 
+('janiceh22@gmail.com','SB-732'),
+('phoebe1234@yahoo.ca','SB-732'),
+('rossg@yahoo.ca','SB-863'),
+('rachelgreen12@gmail.com','SB-863'),
+('oldrichard@yahoo.com','SB-052'),
+('joeytribbs@yahoo.ca','SB-052'), 
+('mgeller@hotmail.com','SB-581'),
+('phoebe1234@yahoo.ca','SB-581'),
+('cbing@gmail.com','SB-189'),
+('joeytribbs@yahoo.ca','SB-189'),
+('oldrichard@yahoo.com','SB-787'),
+('janiceh22@gmail.com','SB-787'),
+('rossg@yahoo.ca','SB-634'),
+('phoebe1234@yahoo.ca','SB-634'),
+('mgeller@hotmail.com','SB-064'),
+('rachelgreen12@gmail.com','SB-064'),
+('cbing@gmail.com','SB-216'),
+('rossg@yahoo.ca','SB-216');
+
+
+
+
 -- DROP TABLE IF EXISTS PAYMENT;
 -- CREATE TABLE PAYMENT(
 --     PaymentID			int not null AUTO_INCREMENT,
@@ -173,6 +233,5 @@ CREATE TABLE TICKETS(
 
 
 /*
-maybe need a crew assignment to flight db?? idk could maybe get around it by just using crew arraylist after it is populated and passing around those objects
 
 */
