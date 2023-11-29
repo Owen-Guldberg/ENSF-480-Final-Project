@@ -29,7 +29,20 @@ VALUES
 ('SB-233', '2023-12-02','LAX', 'JFK', 'Airbus A380', '6:09AM', '2:35PM', '5h 26m'),
 ('SB-019', '2023-12-03','YVR', 'LAS', 'Airbus A320', '9:05AM', '11:53AM', '2h 48m'),
 ('SB-793', '2023-12-04','NYC', 'YYZ', 'Boeing 737', '8:30AM', '10:14AM', '1h 44m'),
-('SB-549', '2023-12-05','LAS', 'YYC', 'Airbus A380', '6:45PM', '10:42PM', '2h 57m');
+('SB-549', '2023-12-05','LAS', 'YYC', 'Airbus A380', '6:45PM', '10:42PM', '2h 57m'),
+('SB-352', '2023-12-06','LHR', 'CDG', 'Boeing 737', '8:00PM', '10:20PM', '1h 20m'),
+('SB-092', '2023-12-07','AMS', 'FRA', 'Airbus A320', '7:25AM', '8:30AM', '1h 05m'),
+('SB-923', '2023-12-08','SEA', 'YYC', 'Boeing 747', '1:50PM', '04:42PM', '1h 52m'),
+('SB-122', '2023-12-09','LAS', 'PMI', 'Boeing 737', '10:49AM', '12:50PM', '21h 50m'),
+('SB-732', '2023-12-10','ORD', 'YVR', 'Airbus A320', '8:50AM', '11:35AM', '4h 45m'),
+('SB-863', '2023-12-11','YYZ', 'CDG', 'Airbus A380', '6:55PM', '8:10AM', '7h 15m'),
+('SB-052', '2023-12-12','LAX', 'PMI', 'Boeing 737', '6:25PM', '5:25PM', '14h 08m'),
+('SB-581', '2023-12-13','LHR', 'SEA', 'Airbus A320', '12:25PM', '2:20PM', '9h 55m'),
+('SB-189', '2023-12-14','FRA', 'JFK', 'Boeing 737', '11:15AM', '2:05PM', '8h 50m'),
+('SB-787', '2023-12-15','AMS', 'CDG', 'Boeing 747', '6:50AM', '8:10AM', '1h 20m'),
+('SB-634', '2023-12-16','CDG', 'YYC', 'Airbus A320', '2:25PM', '3:49PM', '9h 24m'),
+('SB-064', '2023-12-17','ORD', 'LHR', 'Boeing 737', '9:05AM', '10:40PM', '7h 35m'),
+('SB-216', '2023-12-18','YYZ', 'YYC', 'Airbus A380', '7:00AM', '9:30PM', '4h 30m');
 
 
 
@@ -65,7 +78,14 @@ VALUES
 ('YVR', 'Vancouver', 'Canada'),
 ('LAX', 'Los Angeles', 'USA'),
 ('LAS', 'Las Vegas', 'USA'),
-('JFK', 'New York City', 'USA');
+('JFK', 'New York City', 'USA'),
+('LHR', 'London', 'England'),
+('CDG', 'Paris', 'France'),
+('AMS', 'Amsterdam', 'Netherlands'),
+('FRA', 'Frankfurt', 'Germany'),
+('PMI', 'Mallorca', 'Spain'),
+('SEA', 'Seattle', 'USA'),
+('ORD', 'Chicago', 'USA');
 
 DROP TABLE IF EXISTS CREWMEMBER;
 CREATE TABLE CREWMEMBER(
@@ -97,7 +117,7 @@ CREATE TABLE REGISTEREDUSERS(
     UserID			int not null AUTO_INCREMENT,
     FName           varchar(25),
     LName           varchar(25),
-    Email           varchar(25),
+    Email           varchar(50),
     Password        varchar(25), 
     HouseNum        int,
     Street          varchar(25),
@@ -116,7 +136,11 @@ INSERT INTO REGISTEREDUSERS(FName, LName, Email, Password, HouseNum, Street, Cit
 VALUES
 ('Roy', 'Kent','roykent@gmail.com','soccer123', 819, 'Paved Court', 'London', 'England', 'KLM-352','1098765432123132', 201),
 ('Ted', 'Lasso','tedl12@gmail.com','football', 434, 'Wembley Road', 'Kansas', 'USA', 'IHV-164', '0246810121434658', 176),
-('John', 'Smith', 'johnsmith@gmail.com', 'pass', 1, 'Maple Street', 'Calgary', 'Canada', 'TMS-257', '1234567891027493', 123);
+('John', 'Smith', 'johnsmith@gmail.com', 'pass', 1, 'Maple Street', 'Calgary', 'Canada', 'TMS-257', '1234567891027493', 123),
+('Sam', 'Obisanya', 'samo1234@gmail.com', 'nigeria', 32, 'Adams Road', 'Wolverhampton', 'England', 'TGC-347', '1029384756102938', 134),
+('Rebecca', 'Welton', 'rwelts@hotmail.com', 'cookies', 562, 'Tottenham Way', 'York', 'England', 'LFY-224', '1452849274920164', 853),
+('Jamie', 'Tartt', 'jamiet123@hotmail.com', 'keeley', 52, 'Hunter Avenue', 'Edmonton', 'Canada', 'PDA-293', '8375937840293918', 273),
+('Coach', 'Beard', 'coachbeard1@hotmail.com', 'beard', 223, 'Garisson Avenue', 'New York City', 'USA', 'KDA-677', '7539274537194726', 829);
 
 
 DROP TABLE IF EXISTS TICKETS;
@@ -150,4 +174,5 @@ CREATE TABLE TICKETS(
 
 /*
 maybe need a crew assignment to flight db?? idk could maybe get around it by just using crew arraylist after it is populated and passing around those objects
+
 */
