@@ -43,7 +43,7 @@ public class AuthenticationController {
 
         // Creating RegisteredCustomer object
         Name customerName = new Name(firstName, lastName);
-        RegisteredCustomer newCustomer = new RegisteredCustomer(customerName, email, password, address, null); // Assuming null for Payment
+        RegisteredCustomer newCustomer = new RegisteredCustomer(customerName, email, password, address);
         
 
         // Send user a promotion code via gmail for signing up

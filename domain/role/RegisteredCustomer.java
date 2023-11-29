@@ -20,7 +20,14 @@ public class RegisteredCustomer implements Person{
         this.email = email;
         this.password = password;
         this.address = a;
-        this.payment = p; 
+        this.payment = p;
+    }
+   
+    public RegisteredCustomer(Name name, String email, String password, Address a){
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.address = a;
     }
     
     @Override

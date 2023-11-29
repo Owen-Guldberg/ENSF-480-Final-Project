@@ -88,11 +88,14 @@ public class PaymentController {
         return user.getPayment().getAmountOwed();
     }
 
-    public Ticket createTicket(boolean insurance, String flightNum) {
+    public boolean createTicket(boolean insurance, String flightNum) {
         Ticket ticket = new Ticket(seat.getSeatNum(), user.getPayment().getAmountOwed(), flightNum, insurance, departureTime, seat.getSeatClass());
         user.addTicket(ticket);
-        Database.getOnlyInstance().addTicket(ticket, user.getEmail()); // alter to add tickets to database
-        return ticket;
+        boolean success = Database.getOnlyInstance().addTicketToDB(ticket, user.getEmail()); // alter to add tickets to database
+        if (!success) {
+            return false;
+        }
+        return true;
     }
 
     public String printTicket(String userEmail, int seatNum) {
