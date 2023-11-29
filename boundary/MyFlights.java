@@ -56,8 +56,8 @@ public class MyFlights extends JPanel {
             }
         }
 
-        JButton backButton = new JButton("Back");
-        backButton.addActionListener(e -> cardLayout.show(cardPanel, "previousPanelName"));
+        JButton backButton = new JButton("Browse More Flights");
+        backButton.addActionListener(e -> cardLayout.show(cardPanel, "user"));
         add(backButton);
         setVisible(true);
     }
