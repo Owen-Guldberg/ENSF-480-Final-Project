@@ -49,8 +49,8 @@ public class GUI extends JFrame implements ActionListener {
 
         loginPanel = new Login(
             e -> handleLogin(), 
-            e -> showMainScreen(),
-            e -> handleRegister()
+            e -> showMainScreen()
+            //e -> handleRegister()
         );
         cardPanel.add(loginPanel, "login");
 

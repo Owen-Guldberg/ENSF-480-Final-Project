@@ -12,7 +12,7 @@ public class RegisteredCustomer implements Person{
     private String email;
     private String password;
     private Address address; 
-    private Payment payment;
+    private Payment payment = new Payment("", 0);
     private ArrayList<Ticket> tickets = new ArrayList<Ticket>(); 
     
     public RegisteredCustomer(Name name, String email, String password, Address a, Payment p){

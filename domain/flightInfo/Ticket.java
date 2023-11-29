@@ -33,6 +33,26 @@ public class Ticket {
         return seatNum;
     }
 
+    // Getter for flightNumber
+    public String getFlightNumber() {
+        return flightNumber;
+    }
+
+    // Getter for hasCancellationInsurance
+    public boolean getHasCancellationInsurance() {
+        return hasCancellationInsurance;
+    }
+
+    // Getter for departureTime
+    public String getDepartureTime() {
+        return departureTime;
+    }
+
+    // Getter for classSeat
+    public String getClassSeat() {
+        return classSeat;
+    }
+
     // Setter for price
     public void setPrice(int price) {
         this.price = price;

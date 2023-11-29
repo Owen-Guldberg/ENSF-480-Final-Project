@@ -260,17 +260,22 @@ private void readRegisteredUsers() throws SQLException{
                 int seatNum = results.getInt("seatNum");
                 int price = results.getInt("price");
                 String flightNumber = results.getString("FlightNumber");
+                boolean insurance = results.getBoolean("Insurance");
                 String clientEmail = results.getString("ClientEmail");
-                String fName = results.getString("FName");
-                String lName = results.getString("LName");
-                Name name = new Name(fName, lName);
+                String departureTime = results.getString("DepartureTime");
+                String seatClass = results.getString("classSeat");
 
                 // Create a Ticket object using the retrieved data
 
-                //Ticket tmp = new Ticket(seatNum, price, name, flightNumber);
+                Ticket tmp = new Ticket(seatNum, price, flightNumber, insurance, departureTime, seatClass);
                 
+                for (int i = 0; i < registeredUsers.size(); i++){
+                    if(registeredUsers.get(i).getEmail().equals(clientEmail) == true){
+                        registeredUsers.get(i).addTicket(tmp);
+                    }
+                }
                 // Add the Ticket object to your list or perform any other necessary operations
-                //this.tickets.add(tmp);
+                this.tickets.add(tmp);
             }
             myStmt.close();
         } catch (SQLException ex) {
@@ -278,6 +283,48 @@ private void readRegisteredUsers() throws SQLException{
         }
     }
     
+    public ArrayList<Ticket> getTicketData(){
+        return this.tickets;
+    }
+
+    public boolean addTicket(Ticket t, String userEmail){
+        boolean success = false; 
+        try{
+            String query = "INSERT INTO TICKETS(seatNum,price, FlightNumber, insurance, ClientEmail, DepartureTime, classSeat) "
+                + "VALUES(?,?,?,?,?,?,?)";
+
+                PreparedStatement myStmt = dbConnection.prepareStatement(query);
+   
+               myStmt.setInt(1, t.getSeatNum());
+               myStmt.setDouble(2, t.getPrice());
+               myStmt.setString(3, t.getFlightNumber());
+               myStmt.setBoolean(4, t.getHasCancellationInsurance());
+               myStmt.setString(5, userEmail);
+               myStmt.setString(6, t.getDepartureTime());
+               myStmt.setString(7, t.getClassSeat());
+
+               int rowCount = myStmt.executeUpdate();
+               if(rowCount == 0)
+               {
+                 return false;
+               }
+               else{
+                    success = true;
+                    tickets.add(t); 
+                    for (int i = 0; i < registeredUsers.size(); i++){
+                        if(registeredUsers.get(i).getEmail().equals(userEmail) == true){
+                            registeredUsers.get(i).addTicket(t);
+                        }
+                    }
+                }
+                myStmt.close();
+
+        }
+        catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return success;
+    }
 
      /**
      * Gets the ArrayList of airport locations.
@@ -436,8 +483,8 @@ private void readRegisteredUsers() throws SQLException{
                myStmt.setString(7, r.getAddress().getCity());
                myStmt.setString(8, r.getAddress().getCountry());
                myStmt.setString(9, r.getAddress().getPostalCode());
-               myStmt.setString(10, r.getPayment().getCreditCardNumber()!=null ? r.getPayment().getCreditCardNumber(): null);
-               myStmt.setString(11, Integer.toString(r.getPayment().getCVV())!= null ? Integer.toString(r.getPayment().getCVV()): null);
+               myStmt.setString(10, null);
+               myStmt.setString(11, null);
 
                int rowCount = myStmt.executeUpdate();
                //System.out.println("Rows affected: " + rowCount);

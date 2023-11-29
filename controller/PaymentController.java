@@ -91,7 +91,7 @@ public class PaymentController {
     public Ticket createTicket(boolean insurance, String flightNum) {
         Ticket ticket = new Ticket(seat.getSeatNum(), user.getPayment().getAmountOwed(), flightNum, insurance, departureTime, seat.getSeatClass());
         user.addTicket(ticket);
-        //Database.getOnlyInstance().updateUser(user); // alter to add tickets to database
+        Database.getOnlyInstance().addTicket(ticket, user.getEmail()); // alter to add tickets to database
         return ticket;
     }
 
