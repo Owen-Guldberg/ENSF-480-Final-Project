@@ -74,8 +74,12 @@ public class GUI extends JFrame implements ActionListener {
         JPanel userPage = new JPanel();
         userPage.setLayout(new BoxLayout(userPage, BoxLayout.Y_AXIS));
 
-        JLabel welcomeLabel = new JLabel("Welcome, " + (username.isEmpty() ? "Guest" : username) + "!");
+        JLabel welcomeLabel = new JLabel("Welcome, " + (username.isEmpty() ? "Guest" : system.getNameByEmail(username)) + "!");
+        welcomeLabel.setFont(new Font(welcomeLabel.getFont().getName(), Font.PLAIN, 20));
         welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        userPage.add(Box.createVerticalStrut(20));
+        userPage.add(welcomeLabel);
+        userPage.add(Box.createVerticalStrut(20));
 
         if (!username.isEmpty()) {
             JButton myFlightsButton = new JButton("View My Flights");
@@ -85,63 +89,40 @@ public class GUI extends JFrame implements ActionListener {
             userPage.add(Box.createVerticalStrut(10));
         }
 
-        if (username.isEmpty()) {
-            // If the user is a guest display "Return to Home Page" button
-            actionButton = new JButton("Return to Home Page");
-            actionButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    showMainScreen();
-                }
-            });
-        } else {
-            // If the user is logged in display "Logout" button
-            actionButton = new JButton("Logout");
-            actionButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    showMainScreen();
-                }
-            });
-        }
-        actionButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        userPage.add(Box.createVerticalStrut(20));
-        userPage.add(welcomeLabel);
-        userPage.add(Box.createVerticalStrut(20));
-
-        // Panel to hold both location menus
+        JLabel enterLabel = new JLabel("Please select an origin and a destination below.");
+        enterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        userPage.add(enterLabel);
+        userPage.add(Box.createVerticalStrut(10));
         JPanel locationMenusPanel = new JPanel();
-        locationMenusPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); // Or use GridLayout
-
-        // Add scrollable menus for 'Origin' and 'Destination'
+        locationMenusPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); 
         JScrollPane originScrollPane = createLocationMenu("Origin Locations", true);
         JScrollPane destinationScrollPane = createLocationMenu("Destination Locations", false);
-
         locationMenusPanel.add(originScrollPane);
         locationMenusPanel.add(destinationScrollPane);
-
         userPage.add(locationMenusPanel);
         userPage.add(Box.createVerticalStrut(10));
 
+        // View Available Flights Button
         JButton viewFlightsButton = new JButton("View Available Flights");
-        viewFlightsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (selectedOrigin.getAirportName() != null && selectedDestination.getAirportName() != null) {
-                    // Scrollable menu for 'Flights'
-                    JPanel flightsPanel = createFlightsPanel();
-                    cardPanel.add(flightsPanel, "flightsPanel");
-                    cardLayout.show(cardPanel, "flightsPanel");
-                } else {
-                    JOptionPane.showMessageDialog(userPage, "Please select both an origin and a destination.");
-                }
+        viewFlightsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        viewFlightsButton.addActionListener(e -> {
+            if (selectedOrigin.getAirportName() != null && selectedDestination.getAirportName() != null) {
+                JPanel flightsPanel = createFlightsPanel();
+                cardPanel.add(flightsPanel, "flightsPanel");
+                cardLayout.show(cardPanel, "flightsPanel");
+            } else {
+                JOptionPane.showMessageDialog(userPage, "Please select both an origin and a destination.");
             }
         });
         userPage.add(viewFlightsButton);
+        userPage.add(Box.createVerticalStrut(100));
 
-        userPage.add(Box.createVerticalStrut(10));
-
+        // Logout or Return to Home Page Button
+        actionButton = username.isEmpty() ? new JButton("Return to Home Page") : new JButton("Logout");
+        actionButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        actionButton.addActionListener(e -> showMainScreen());
         userPage.add(actionButton);
+        userPage.add(Box.createVerticalStrut(20));
 
         return userPage;
     }

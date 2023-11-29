@@ -74,6 +74,17 @@ public class SystemController {
 		return null;
 	}
 
+	//get name from email
+	public String getNameByEmail(String email){
+		registeredCustomers = Database.getOnlyInstance().getRegisteredCustomerData();
+		for(RegisteredCustomer customer : registeredCustomers){
+			if(customer.getEmail().equals(email)){
+				return customer.getName().toString();
+			}
+		}
+		return null;
+	}
+
 	// get tickets
 	public ArrayList<Ticket> getTickets(){
 		tickets.clear();
