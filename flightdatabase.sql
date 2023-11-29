@@ -114,9 +114,9 @@ could have email as pk
 
 INSERT INTO REGISTEREDUSERS(FName, LName, Email, Password, HouseNum, Street, City, Country, PostalCode, CreditCardNumber, CVV)
 VALUES
-('Roy', 'Kent','roykent@gmail.com','soccer123', 819, 'Paved Court', 'London', 'England', 'KLM-352','10987654321', 201),
-('Ted', 'Lasso','tedl12@gmail.com','football', 434, 'Wembley Road', 'Kansas', 'USA', 'IHV-164', '02468101214', 176),
-('John', 'Smith', 'johnsmith@gmail.com', 'pass', 1, 'Maple Street', 'Calgary', 'Canada', 'TMS-257', '12345678910', 123);
+('Roy', 'Kent','roykent@gmail.com','soccer123', 819, 'Paved Court', 'London', 'England', 'KLM-352','1098765432123132', 201),
+('Ted', 'Lasso','tedl12@gmail.com','football', 434, 'Wembley Road', 'Kansas', 'USA', 'IHV-164', '0246810121434658', 176),
+('John', 'Smith', 'johnsmith@gmail.com', 'pass', 1, 'Maple Street', 'Calgary', 'Canada', 'TMS-257', '1234567891027493', 123);
 
 
 DROP TABLE IF EXISTS TICKETS;
