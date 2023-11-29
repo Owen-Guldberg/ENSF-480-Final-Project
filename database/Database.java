@@ -612,6 +612,39 @@ private void readRegisteredUsers() throws SQLException{
         }
         return success;
     }
+
+    /*
+    Adds aircraft objects to the database - useful for admin 
+     * @param a the Aircraft object to be added
+     * @return true if the addition is successful, false otherwise
+    */
+    public boolean addAircraftToDB(Aircraft a){
+        boolean success = false; 
+        try{
+            String query = "INSERT INTO AIRCRAFT(Name, Capacity) "
+                + "VALUES(?,?)";
+            
+            PreparedStatement myStmt = dbConnection.prepareStatement(query);
+   
+               myStmt.setString(1, a.getName());
+               myStmt.setInt(2, a.getCapacity());
+
+               int rowCount = myStmt.executeUpdate();
+               if(rowCount == 0)
+               {
+                 return false;
+               }
+               else{
+                    success = true;
+                    aircrafts.add(a); 
+                }
+                myStmt.close();
+            }
+            catch(SQLException ex){
+                ex.printStackTrace();
+            }
+            return success;
+        }
     
     /**
      * Gets the URL of the database.
