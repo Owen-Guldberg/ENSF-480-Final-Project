@@ -20,6 +20,16 @@ public class FlightController{
 
     }
 
+    public ArrayList<String> browseFlightNums(Location origin,Location location){
+        ArrayList<Flight> flights = flightsByLocation(origin, location);
+        ArrayList<String> flightDetails = new ArrayList<>();
+        for(Flight f : flights){
+            flightDetails.add(f.getFlightNum());
+        }
+        return flightDetails;
+
+    }
+
     public ArrayList<Flight> flightsByLocation(Location origin,Location location){
         ArrayList<Flight> allFlights = Database.getOnlyInstance().getFlightData();
         ArrayList<Flight> locationFlights = new ArrayList<>();

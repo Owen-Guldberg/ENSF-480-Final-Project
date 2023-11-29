@@ -181,12 +181,17 @@ public class GUI extends JFrame implements ActionListener {
         JPanel flightsPanel = new JPanel();
         flightsPanel.setLayout(new BoxLayout(flightsPanel, BoxLayout.Y_AXIS));
         
-        JLabel flightsLabel = new JLabel("Flights");
+        flightsPanel.add(Box.createVerticalStrut(20));
+        JLabel flightsLabel = new JLabel("Browse Flights");
+        flightsLabel.setFont(new Font(flightsLabel.getFont().getName(), Font.PLAIN, 20));
         flightsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        flightsPanel.add(flightsLabel);
+        flightsPanel.add(Box.createVerticalStrut(20));
 
         JScrollPane flightsScrollPane = createFlightMenu("Flights");
+        flightsScrollPane.setMaximumSize(new Dimension(900, 600));
         flightsPanel.add(flightsScrollPane);
-        flightsPanel.add(Box.createVerticalStrut(10));
+        flightsPanel.add(Box.createVerticalStrut(40));
     
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> cardLayout.show(cardPanel, "user"));
@@ -196,30 +201,25 @@ public class GUI extends JFrame implements ActionListener {
     }
     
     private JScrollPane createFlightMenu(String menuTitle) {
-        ArrayList<Flight> flights = flightController.flightsByLocation(selectedOrigin, selectedDestination);
-
-        JList<String> list = new JList<>(flightController.browseFlightNums(flights).toArray(new String[0]));
-        list.setFont(new Font(list.getFont().getName(), Font.PLAIN, 16));
-
-        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JScrollPane scrollPane = new JScrollPane(list);
-        scrollPane.setPreferredSize(new Dimension(200, 100));
-
+        ArrayList<String> flightStrings = flightController.browseFlightNums(selectedOrigin, selectedDestination);
+        JPanel flightsPanel = new JPanel();
+        flightsPanel.setLayout(new BoxLayout(flightsPanel, BoxLayout.Y_AXIS));
+    
+        for (String flightNum : flightStrings) {
+            JButton flightButton = new JButton(flightNum);
+            flightButton.setMaximumSize(new Dimension(900, 30)); // Set maximum size for uniformity
+            flightButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+    
+            flightButton.addActionListener(e -> handleSelectedFlight(flightNum));
+    
+            flightsPanel.add(flightButton);
+            flightsPanel.add(Box.createVerticalStrut(5)); // Spacing between buttons
+        }
+    
+        JScrollPane scrollPane = new JScrollPane(flightsPanel);
         TitledBorder titledBorder = BorderFactory.createTitledBorder(menuTitle);
         scrollPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), titledBorder));
-
-        // Add a ListSelectionListener to handle item selection
-        list.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    // Get the selected flight
-                    String selectedFlight = list.getSelectedValue();
-                    handleSelectedFlight(selectedFlight);
-                }
-            }
-        });
-
+    
         return scrollPane;
     }
 
