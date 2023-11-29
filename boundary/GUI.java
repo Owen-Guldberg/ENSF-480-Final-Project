@@ -70,7 +70,7 @@ public class GUI extends JFrame implements ActionListener {
         setVisible(true);
     }
     private JPanel createCrewMemberPage(String username){
-        
+        return new JPanel();
     }
     private JPanel createUserPage(String username) {
         JPanel userPage = new JPanel();
@@ -352,7 +352,7 @@ public class GUI extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "Registration failed. User might already exist.");
         }
     }
-    private void showCrewMemberPage(String username{
+    private void showCrewMemberPage(String username) {
             Component[] components = cardPanel.getComponents();
         for (Component component : components) {
             if (component == userPanel) {
