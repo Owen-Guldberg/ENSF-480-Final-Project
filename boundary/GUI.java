@@ -77,6 +77,14 @@ public class GUI extends JFrame implements ActionListener {
         JLabel welcomeLabel = new JLabel("Welcome, " + (username.isEmpty() ? "Guest" : username) + "!");
         welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        if (!username.isEmpty()) {
+            JButton myFlightsButton = new JButton("View My Flights");
+            myFlightsButton.addActionListener(e -> showMyFlights(username));
+            myFlightsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+            userPage.add(myFlightsButton);
+            userPage.add(Box.createVerticalStrut(10));
+        }
+
         if (username.isEmpty()) {
             // If the user is a guest display "Return to Home Page" button
             actionButton = new JButton("Return to Home Page");
@@ -136,6 +144,13 @@ public class GUI extends JFrame implements ActionListener {
         userPage.add(actionButton);
 
         return userPage;
+    }
+
+    private void showMyFlights(String username) {
+        PaymentController paymentController = new PaymentController(username, null, "");
+        MyFlights myFlightsPanel = new MyFlights(paymentController, username, -1, system, cardPanel, cardLayout);
+        cardPanel.add(myFlightsPanel, "myFlights");
+        cardLayout.show(cardPanel, "myFlights");
     }
 
     private JScrollPane createLocationMenu(String title, boolean isOrigin) {

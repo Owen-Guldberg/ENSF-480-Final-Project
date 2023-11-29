@@ -78,19 +78,19 @@ public class MyFlights extends JPanel {
         ticketPanel.add(ticketDetailsLabel);
 
         JButton cancelButton = new JButton("Cancel Ticket");
-        cancelButton.addActionListener(e -> cancelTicket(ticket, userEmail));
+        cancelButton.addActionListener(e -> cancelTicket(ticket));
         ticketPanel.add(cancelButton);
 
         return ticketPanel;
     }
 
-    private void cancelTicket(Ticket ticket, String userEmail) {
+    private void cancelTicket(Ticket ticket) {
         // Implement cancellation logic
         // Remove ticket from user's list and update in database
         // Show confirmation message
         systemController.getUserByEmail(userEmail).removeTicket(ticket);
         JOptionPane.showMessageDialog(this, "Ticket cancelled successfully.");
-        paymentController.deleteTicket(userEmail, seatNum);
+        paymentController.deleteTicket(userEmail, ticket.getSeatNum());
         // Refresh the MyFlights panel to update the list of tickets
         refreshPanel();
     }
