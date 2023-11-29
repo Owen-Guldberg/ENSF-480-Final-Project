@@ -94,7 +94,7 @@ public class TicketPurchasePanel extends JPanel {
                 insurance_cost = 20;
             }
             GMailer gMailer = new GMailer();
-            gMailer.sendMail("guldbergowen@gmail.com","Skyward Bound Ticket & Receipt",
+            gMailer.sendMail(userEmail,"Skyward Bound Ticket & Receipt",
             "Flight Information: \n Date: " + flight.getFlightDate() + 
             "\nOrigin: " + flight.getOrigin() +
             "\nDestination: " + flight.getDestination() +
