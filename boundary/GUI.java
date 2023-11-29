@@ -33,6 +33,7 @@ public class GUI extends JFrame implements ActionListener {
     private AuthenticationController authController = new AuthenticationController();
 
     public GUI() {
+        setBackground(Color.WHITE);
         setTitle("Skyward Bound Flight Reservation System");
         setSize(1000, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
