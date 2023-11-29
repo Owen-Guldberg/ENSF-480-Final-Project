@@ -312,8 +312,11 @@ public class GUI extends JFrame implements ActionListener {
     private void handleLogin() {
         String email = loginPanel.getEmail();
         char[] password = loginPanel.getPassword();
-    
-        if (authController.loginUser(email, new String(password))) {
+        if(authController.loginCrewMember(email, new String(password))){
+            System.out.println("worked");
+            // implement crew member, should see flights, cancel flight
+        }
+        else if (authController.loginUser(email, new String(password))) {
             // Login successful
             currentUsername = email;
             showUserPage(email); // Show the user page for the logged-in user

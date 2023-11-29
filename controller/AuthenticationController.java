@@ -12,7 +12,16 @@ import util.*;
 public class AuthenticationController {
 
     public AuthenticationController() { }
-
+    
+    public boolean loginCrewMember(String email, String password){
+        ArrayList<CrewMember> registeredCrewMembers = Database.getOnlyInstance().getCrewMemberData();
+        for(CrewMember crew : registeredCrewMembers){
+            if(crew.getEmail().equals(email) && crew.getPassword().equals(password)){
+                return true;
+            }
+        }
+        return false;
+    }
     public boolean loginUser(String email, String password) {
 
         ArrayList<RegisteredCustomer> registeredCustomers = Database.getOnlyInstance().getRegisteredCustomerData();

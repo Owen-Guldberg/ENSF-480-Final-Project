@@ -73,6 +73,7 @@ CREATE TABLE CREWMEMBER(
     FName           varchar(25),
     LName           varchar(25),
     Email           varchar(25),
+    Password        varchar(25), 
     Job             varchar(25),
     HouseNum        int,
     Street          varchar(25),
@@ -85,10 +86,10 @@ CREATE TABLE CREWMEMBER(
 
 INSERT INTO CREWMEMBER(FName, LName, Email, Job, HouseNum, Street, City, Country, PostalCode)
 VALUES
-('Chandler', 'Bing','cbing@gmail.com', 'pilot', 22, 'Jump Street', 'New York City', 'USA', 'VPB-176'),
-('Rachel', 'Green', 'rachelgreen12@gmail.com','crew', 45, 'Madison Avenue', 'Pittsburgh', 'USA', 'WXS-192'),
-('Monica', 'Geller', 'mgeller@hotmail.com','crew', 92, 'Circle Drive', 'Saskatoon', 'Canada', 'SSK-189'),
-('Phoebe', 'Buffay', 'phoebe1234@yahoo.ca','pilot', 111, '32nd Avenue', 'Montreal', 'Canada', 'SPM-232');
+('Chandler', 'Bing','cbing@gmail.com','house', 'pilot', 22, 'Jump Street', 'New York City', 'USA', 'VPB-176'),
+('Rachel', 'Green', 'rachelgreen12@gmail.com','newpass','crew', 45, 'Madison Avenue', 'Pittsburgh', 'USA', 'WXS-192'),
+('Monica', 'Geller', 'mgeller@hotmail.com','password','crew', 92, 'Circle Drive', 'Saskatoon', 'Canada', 'SSK-189'),
+('Phoebe', 'Buffay', 'phoebe1234@yahoo.ca','123','pilot', 111, '32nd Avenue', 'Montreal', 'Canada', 'SPM-232');
 
 
 DROP TABLE IF EXISTS REGISTEREDUSERS;
@@ -125,7 +126,7 @@ CREATE TABLE TICKETS(
     price                     int,
     FlightNumber         varchar(6),
     insurance                 boolean,
-    ClientEmail				varchar(25),
+    Email				varchar(25),
     DepartureTime          varchar(25),
     classSeat           varchar(25),
     primary key(TicketID) 

@@ -5,11 +5,14 @@ public class CrewMember implements Person{
     private Name name; 
     private String email;
     private String job;
+    private String password;
+
     
-    public CrewMember(Name name, String email,String job){
+    public CrewMember(Name name, String email,String job,String password){
         this.name = name;
         this.email = email;
         this.job = job;
+        this.password = password;
     }
     public CrewMember getCrewMember(){
         return this;
@@ -39,5 +42,11 @@ public class CrewMember implements Person{
     }
     public Name name() {
         return null;
+    }
+    public void setPassword(String password){
+        this.password = password;
+    }
+    public String getPassword(){
+        return password;
     }
 }

@@ -229,6 +229,7 @@ private void readRegisteredUsers() throws SQLException{
               String FName= results.getString("FName");
               String LName= results.getString("LName");
               String email= results.getString("Email");
+              String password = results.getString("Password");
               String job= results.getString("Job");
               int house = results.getInt("HouseNum");
               String street= results.getString("Street");
@@ -240,7 +241,7 @@ private void readRegisteredUsers() throws SQLException{
               Address ad = new Address(house, street, city, country, postal); //dont need but maybe could add to airline agent if needed
 
 
-                CrewMember tmp = new CrewMember(n, email, job); 
+                CrewMember tmp = new CrewMember(n, email, job,password); 
                 crew.add(tmp); 
               }
               myStmt.close(); 
