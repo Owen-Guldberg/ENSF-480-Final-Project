@@ -19,7 +19,7 @@ public class Database {
     private ResultSet results;
     private final String URL = "jdbc:mysql://localhost:3306/skyward_bound"; 
     private final String USERNAME = "root";
-    private final String PASSWORD = "";
+    private final String PASSWORD = "Root";
     private ArrayList<Location> locations = new ArrayList<Location>();
     private ArrayList<RegisteredCustomer> registeredUsers = new ArrayList<RegisteredCustomer>();
     private ArrayList<Aircraft> aircrafts = new ArrayList<Aircraft>(); 
@@ -290,9 +290,10 @@ private void readRegisteredUsers() throws SQLException{
     public boolean addTicket(Ticket t, String userEmail){
         boolean success = false; 
         try{
-            String query = "INSERT INTO TICKETS(seatNum,price, FlightNumber, insurance, ClientEmail, DepartureTime, classSeat) "
+        
+                String query = "INSERT INTO TICKETS(seatNum, price, FlightNumber, insurance, Email, DepartureTime, classSeat) "
                 + "VALUES(?,?,?,?,?,?,?)";
-
+            
                 PreparedStatement myStmt = dbConnection.prepareStatement(query);
    
                myStmt.setInt(1, t.getSeatNum());
@@ -313,7 +314,7 @@ private void readRegisteredUsers() throws SQLException{
                     tickets.add(t); 
                     for (int i = 0; i < registeredUsers.size(); i++){
                         if(registeredUsers.get(i).getEmail().equals(userEmail) == true){
-                            registeredUsers.get(i).addTicket(t);
+                            // registeredUsers.get(i).addTicket(t);
                         }
                     }
                 }
