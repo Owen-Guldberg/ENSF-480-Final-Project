@@ -29,7 +29,7 @@ public class MainPanel extends JPanel {
         JLabel label = new JLabel(imageIcon);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel sloganLabel = new JLabel("Skyward Bound - Elevating Your Journey!");
+        JLabel sloganLabel = new JLabel("Elevating Your Journey!");
         sloganLabel.setFont(new Font(sloganLabel.getFont().getName(), Font.ITALIC, 18));
         sloganLabel.setForeground(new Color(102, 153, 255)); // A shade of blue that complements the logo
         sloganLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -67,6 +67,7 @@ public class MainPanel extends JPanel {
         add(Box.createVerticalStrut(20));
         add(buttonsPanel);
         add(guestLink);
+        add(Box.createVerticalStrut(30));
     }
 
     public JButton getRegisterButton() {
