@@ -69,7 +69,9 @@ public class GUI extends JFrame implements ActionListener {
 
         setVisible(true);
     }
-
+    private JPanel createCrewMemberPage(String username){
+        
+    }
     private JPanel createUserPage(String username) {
         JPanel userPage = new JPanel();
         userPage.setLayout(new BoxLayout(userPage, BoxLayout.Y_AXIS));
@@ -310,7 +312,8 @@ public class GUI extends JFrame implements ActionListener {
         String email = loginPanel.getEmail();
         char[] password = loginPanel.getPassword();
         if(authController.loginCrewMember(email, new String(password))){
-            System.out.println("worked");
+            currentUsername = email;
+            showCrewMemberPage(email);
             // implement crew member, should see flights, cancel flight
         }
         else if (authController.loginUser(email, new String(password))) {
@@ -349,7 +352,22 @@ public class GUI extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "Registration failed. User might already exist.");
         }
     }
+    private void showCrewMemberPage(String username{
+            Component[] components = cardPanel.getComponents();
+        for (Component component : components) {
+            if (component == userPanel) {
+                cardPanel.remove(userPanel);
+                break;
+            }
+        }
 
+        // Create a new user panel and add it to the cardPanel
+        userPanel = createCrewMemberPage(username);
+        cardPanel.add(userPanel, "user");
+
+        // Show user page
+        cardLayout.show(cardPanel, "user");
+    }
     private void showUserPage(String username) {
         // Check if the user panel already exists and remove it
         Component[] components = cardPanel.getComponents();
