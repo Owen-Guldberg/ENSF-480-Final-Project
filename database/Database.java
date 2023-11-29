@@ -40,6 +40,7 @@ public class Database {
         readAircraftData();
         readFlightData();
         readCrewMemberData(); 
+        readTicketData();
     }
 
 
@@ -262,7 +263,7 @@ private void readRegisteredUsers() throws SQLException{
                 int price = results.getInt("price");
                 String flightNumber = results.getString("FlightNumber");
                 boolean insurance = results.getBoolean("Insurance");
-                String clientEmail = results.getString("ClientEmail");
+                String clientEmail = results.getString("Email");
                 String departureTime = results.getString("DepartureTime");
                 String seatClass = results.getString("classSeat");
 
@@ -285,6 +286,8 @@ private void readRegisteredUsers() throws SQLException{
     }
     
     public ArrayList<Ticket> getTicketData(){
+        tickets.clear();
+        readTicketData();
         return this.tickets;
     }
 
@@ -326,6 +329,35 @@ private void readRegisteredUsers() throws SQLException{
             ex.printStackTrace();
         }
         return success;
+    }
+
+    public boolean deleteTicketFromDB(Ticket t, String userEmail){
+        boolean success = false; 
+        try{
+            String query = "DELETE FROM TICKETS WHERE seatNum = ? AND Email = ?"; //matches by flight number 
+               PreparedStatement myStmt = dbConnection.prepareStatement(query);
+   
+               myStmt.setInt(1,t.getSeatNum());
+               myStmt.setString(2,userEmail);
+            
+               int rowCount = myStmt.executeUpdate();
+               //System.out.println("Rows affected: " + rowCount);
+               if(rowCount == 0)
+               {
+                 return false;
+               }
+               else{
+                success = true;
+                }
+                myStmt.close();
+                tickets.clear();
+                readTicketData();
+             }
+             catch (SQLException ex) {
+               ex.printStackTrace();
+               return false;
+             }
+             return success;
     }
 
      /**

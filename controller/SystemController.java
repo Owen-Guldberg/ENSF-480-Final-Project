@@ -16,7 +16,7 @@ public class SystemController {
 	private ArrayList<Location> locations = Database.getOnlyInstance().getLocationData();
 	private ArrayList<CrewMember> crewMembers;
 	private ArrayList<RegisteredCustomer> registeredCustomers;
-	private ArrayList<Ticket> tickets;
+	private ArrayList<Ticket> tickets = Database.getOnlyInstance().getTicketData();
 	//private ArrayList<Payment> payment;
 	private HashMap<String, Location> locationMap = new HashMap<>();
 	private HashMap<String, Flight> flightMap = new HashMap<>();
@@ -62,7 +62,26 @@ public class SystemController {
 	public ArrayList<Flight> getFlights(){
 		return flights;
 	}
-    public static void main(String[] args) {
+
+	//get user by email
+	public RegisteredCustomer getUserByEmail(String email){
+		registeredCustomers = Database.getOnlyInstance().getRegisteredCustomerData();
+		for(RegisteredCustomer customer : registeredCustomers){
+			if(customer.getEmail().equals(email)){
+				return customer;
+			}
+		}
+		return null;
+	}
+
+	// get tickets
+	public ArrayList<Ticket> getTickets(){
+		tickets.clear();
+		tickets = Database.getOnlyInstance().getTicketData();
+		return tickets;
+	}
+
+		public static void main(String[] args) {
 		SystemController system = new SystemController();
 	}
 	

@@ -3,6 +3,7 @@ package boundary;
 import javax.swing.*;
 
 import controller.PaymentController;
+import controller.SystemController;
 import flightInfo.Seat;
 import util.Payment;
 
@@ -18,8 +19,9 @@ public class TicketConfirmationPanel extends JPanel {
     private boolean insurance;
     private JPanel cardPanel;
     private CardLayout cardLayout;
+    private SystemController system;
 
-    public TicketConfirmationPanel(PaymentController paymentController, String userEmail, String flightInfo, Seat seat, double price, double origPrice, boolean insurance, JPanel cardPanel, CardLayout cardLayout) {
+    public TicketConfirmationPanel(PaymentController paymentController, String userEmail, String flightInfo, Seat seat, double price, double origPrice, boolean insurance, JPanel cardPanel, CardLayout cardLayout, SystemController system) {
         this.paymentController = paymentController;
         this.userEmail = userEmail;
         this.flightInfo = flightInfo;
@@ -29,6 +31,7 @@ public class TicketConfirmationPanel extends JPanel {
         this.insurance = insurance;
         this.cardPanel = cardPanel;
         this.cardLayout = cardLayout;
+        this.system = system;
         initializeComponents();
     }
 
@@ -124,7 +127,9 @@ public class TicketConfirmationPanel extends JPanel {
 
     private void viewFlights() {
         // Implement view flights functionality
-        cardLayout.show(cardPanel, "userFlights");
+        MyFlights myFlightsPanel = new MyFlights(paymentController, userEmail, seat.getSeatNum(), system, cardPanel, cardLayout); // Pass null or default values for now
+        cardPanel.add(myFlightsPanel, "myFlights");
+        cardLayout.show(cardPanel, "myFlights");
     }
 
     private void browseFlights() {

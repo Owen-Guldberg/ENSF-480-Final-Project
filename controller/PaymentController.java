@@ -107,4 +107,17 @@ public class PaymentController {
         }
         return null;
     }
+
+    public boolean deleteTicket(String userEmail, int seatNum) {
+        ArrayList<Ticket> tickets = user.getTickets();
+        for (Ticket ticket : tickets) {
+            if (ticket.getSeatNum() == seatNum) {
+                tickets.remove(ticket);
+                Database.getOnlyInstance().deleteTicketFromDB(ticket, userEmail);
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

@@ -2,6 +2,7 @@ package boundary;
 
 import controller.AircraftController;
 import controller.PaymentController;
+import controller.SystemController;
 import flightInfo.*;
 
 import javax.swing.*;
@@ -19,14 +20,16 @@ public class TicketPurchasePanel extends JPanel {
     private double totalPrice;
     private JPanel cardPanel;
     private CardLayout cardLayout;
+    private SystemController system;
 
-    public TicketPurchasePanel(String userEmail, Seat seat, AircraftController aircraftController, Flight flight, JPanel cardPanel, CardLayout cardLayout) {
+    public TicketPurchasePanel(String userEmail, Seat seat, AircraftController aircraftController, Flight flight, JPanel cardPanel, CardLayout cardLayout, SystemController system) {
         this.userEmail = userEmail;
         this.selectedSeat = seat;
         this.aircraftController = aircraftController;
         this.flight = flight;
         this.cardPanel = cardPanel;
         this.cardLayout = cardLayout;
+        this.system = system;
         paymentController = new PaymentController(userEmail, seat, flight.getDepartureTime());
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -113,7 +116,7 @@ public class TicketPurchasePanel extends JPanel {
         // Process payment and booking
         // Show confirmation message
         //JOptionPane.showMessageDialog(this, "Ticket purchased successfully!");
-        TicketConfirmationPanel confirmationPanel = new TicketConfirmationPanel(paymentController, userEmail, flight.toString(), selectedSeat, totalPrice, selectedSeat.getPrice(), insuranceSelected, cardPanel, cardLayout);
+        TicketConfirmationPanel confirmationPanel = new TicketConfirmationPanel(paymentController, userEmail, flight.toString(), selectedSeat, totalPrice, selectedSeat.getPrice(), insuranceSelected, cardPanel, cardLayout, system);
         cardPanel.add(confirmationPanel, "ticketConfirmation");
         cardLayout.show(cardPanel, "ticketConfirmation");
     }

@@ -303,8 +303,9 @@ public class GUI extends JFrame implements ActionListener {
         cardLayout.show(cardPanel, "main");
 
         // Clear the username and password fields
-        usernameField.setText("");
-        passwordField.setText("");
+        currentUsername = "";
+        //usernameField.setText("");
+        //passwordField.setText("");
         selectedOrigin = null;
         selectedDestination = null;
     }
@@ -320,6 +321,7 @@ public class GUI extends JFrame implements ActionListener {
             // Login successful
             currentUsername = email;
             showUserPage(email); // Show the user page for the logged-in user
+            
         } else {
             // Login failed
             JOptionPane.showMessageDialog(this, "Invalid email or password.");

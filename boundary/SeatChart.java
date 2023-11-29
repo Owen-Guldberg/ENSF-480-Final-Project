@@ -65,7 +65,7 @@ public class SeatChart extends JPanel {
             if (userEmail == "") {
                 cardLayout.show(cardPanel, "login");
             } else {
-                TicketPurchasePanel purchasePanel = new TicketPurchasePanel(userEmail, seat, aircraftController, flight, cardPanel, cardLayout);
+                TicketPurchasePanel purchasePanel = new TicketPurchasePanel(userEmail, seat, aircraftController, flight, cardPanel, cardLayout, system);
                 cardPanel.add(purchasePanel, "purchaseTicket");
                 cardLayout.show(cardPanel, "purchaseTicket");
             }
