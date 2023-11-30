@@ -2,6 +2,7 @@ package boundary;
 
 import controller.*;
 import flightInfo.*;
+import role.CrewMember;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -72,7 +73,40 @@ public class GUI extends JFrame implements ActionListener {
         setVisible(true);
     }
     private JPanel createCrewMemberPage(String username){
-        return new JPanel();
+        JPanel userPage = new JPanel();
+        userPage.setLayout(new BoxLayout(userPage, BoxLayout.Y_AXIS));
+
+        JLabel welcomeLabel = new JLabel("Welcome, " + username+ "!");
+        welcomeLabel.setFont(new Font(welcomeLabel.getFont().getName(), Font.PLAIN, 20));
+        welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        userPage.add(Box.createVerticalStrut(20));
+        userPage.add(welcomeLabel);
+        userPage.add(Box.createVerticalStrut(20));
+
+
+
+        JLabel enterLabel = new JLabel("Please select flights to show passengers");
+        enterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        userPage.add(enterLabel);
+        userPage.add(Box.createVerticalStrut(10));
+        JPanel locationMenusPanel = new JPanel();
+        locationMenusPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); 
+        JScrollPane CrewMemberScrollPane = createCrewMemberMenu("Crew Member flights",username);
+        locationMenusPanel.add(CrewMemberScrollPane);
+        userPage.add(locationMenusPanel);
+        userPage.add(Box.createVerticalStrut(10));
+
+
+        userPage.add(Box.createVerticalStrut(100));
+
+        // Logout or Return to Home Page Button
+        actionButton = username.isEmpty() ? new JButton("Return to Home Page") : new JButton("Logout");
+        actionButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        actionButton.addActionListener(e -> showMainScreen());
+        userPage.add(actionButton);
+        userPage.add(Box.createVerticalStrut(20));
+
+        return userPage;    
     }
     private JPanel createUserPage(String username) {
         JPanel userPage = new JPanel();
@@ -137,7 +171,33 @@ public class GUI extends JFrame implements ActionListener {
         cardPanel.add(myFlightsPanel, "myFlights");
         cardLayout.show(cardPanel, "myFlights");
     }
+    private JScrollPane createCrewMemberMenu(String title, String username) {
+        ArrayList<Flight> flights = system.getFlightsCrewmembers(username);
+        ArrayList<String> flightStrings = system.getFlightStrings(flights);
+        JList<String> flightList = new JList<>(flightStrings.toArray(new String[0]));
 
+        flightList.setFont(new Font(flightList.getFont().getName(), Font.PLAIN, 16));
+        flightList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane flightScrollPane = new JScrollPane(flightList);
+        flightScrollPane.setPreferredSize(new Dimension(400, 400));
+
+        TitledBorder titledBorder = BorderFactory.createTitledBorder(title);
+        flightScrollPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), titledBorder));
+
+        // Add listener to handle location selection
+        flightList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    String selectedFlight = flightList.getSelectedValue();
+                    // handleSelectedFlightInfo(selectedFlight);
+
+                }
+            }
+        });
+
+        return flightScrollPane;
+    }
     private JScrollPane createLocationMenu(String title, boolean isOrigin) {
         ArrayList<Location> locations = system.getLocations();
         ArrayList<String> locationStrings = system.getLocationStrings(locations);
