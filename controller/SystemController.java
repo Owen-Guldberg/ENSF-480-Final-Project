@@ -82,6 +82,15 @@ public class SystemController {
 		return locationStrings;
 	}
 
+	public ArrayList<String> getLocationStrings(){
+		ArrayList<Location> locations = getLocations();
+		ArrayList<String> locationStrings = new ArrayList<>();
+		for (Location location : locations) {
+			locationStrings.add(location.toString());
+		}
+		return locationStrings;
+	}
+
 	public Flight getFlightByNum(String num) {
         return flightMap.get(num);
     }
