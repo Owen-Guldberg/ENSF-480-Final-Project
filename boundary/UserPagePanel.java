@@ -34,6 +34,7 @@ public class UserPagePanel extends JPanel {
         if (!user.isEmpty()) {
             JButton myFlightsButton = styleButton(new JButton("View My Flights"));
             myFlightsButton.addActionListener(viewMyFlightsListener);
+            add(Box.createVerticalStrut(20));
             add(myFlightsButton);
             add(Box.createVerticalStrut(10));
         }
@@ -41,6 +42,7 @@ public class UserPagePanel extends JPanel {
         JLabel enterLabel = new JLabel("Please select an origin and a destination below.");
         enterLabel.setFont(new Font(enterLabel.getFont().getName(), Font.PLAIN, 16));
         enterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(Box.createVerticalStrut(30));
         add(enterLabel);
         add(Box.createVerticalStrut(10));
 
@@ -64,13 +66,13 @@ public class UserPagePanel extends JPanel {
         viewFlightsButton = styleButton(new JButton("View Available Flights"));
         viewFlightsButton.addActionListener(viewFlightsListener);
         add(viewFlightsButton);
-        add(Box.createVerticalStrut(10));
+        add(Box.createVerticalStrut(40));
 
         // Logout Button
         logoutButton = styleButton(new JButton(user.isEmpty() ? "Return to Home Page" : "Logout"));
         logoutButton.addActionListener(logoutListener);
         add(logoutButton);
-        add(Box.createVerticalStrut(20));
+        add(Box.createVerticalStrut(80));
     }
 
     private JButton styleButton(JButton button) {
@@ -87,7 +89,7 @@ public class UserPagePanel extends JPanel {
 
     private JScrollPane createScrollableList(JList<String> list, String title) {
         JScrollPane scrollPane = new JScrollPane(list);
-        scrollPane.setPreferredSize(new Dimension(400, 200));
+        scrollPane.setPreferredSize(new Dimension(400, 400));
         TitledBorder titledBorder = BorderFactory.createTitledBorder(title);
         scrollPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), titledBorder));
         return scrollPane;
