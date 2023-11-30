@@ -19,7 +19,7 @@ public class Database {
     private ResultSet results;
     private final String URL = "jdbc:mysql://localhost:3306/skyward_bound"; 
     private final String USERNAME = "root";
-    private final String PASSWORD = "Root";
+    private final String PASSWORD = "";
     private ArrayList<Location> locations = new ArrayList<Location>();
     private ArrayList<RegisteredCustomer> registeredUsers = new ArrayList<RegisteredCustomer>();
     private ArrayList<Aircraft> aircrafts = new ArrayList<Aircraft>(); 

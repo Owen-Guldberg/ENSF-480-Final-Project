@@ -134,6 +134,6 @@ public class TicketConfirmationPanel extends JPanel {
 
     private void browseFlights() {
         // Implement browse flights functionality
-        cardLayout.show(cardPanel, "browseFlights");
+        cardLayout.show(cardPanel, "user");
     }
 }
