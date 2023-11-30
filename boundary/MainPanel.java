@@ -34,7 +34,7 @@ public class MainPanel extends JPanel {
         sloganLabel.setForeground(new Color(102, 153, 255)); // A shade of blue that complements the logo
         sloganLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel instructions = new JLabel("Please register or login to continue.");
+        JLabel instructions = new JLabel("Please register or log in to continue.");
         instructions.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JPanel buttonsPanel = new JPanel();
@@ -45,7 +45,7 @@ public class MainPanel extends JPanel {
 
         registerButton = createStyledButton("Register", new Color(255, 215, 0), new Color(0, 102, 204), buttonSize); // Yellow button with blue text
         registerButton.addActionListener(registerListener);
-        loginButton = createStyledButton("Login", new Color(0, 102, 204), Color.WHITE, buttonSize); // Blue button with white text
+        loginButton = createStyledButton("Log In", new Color(0, 102, 204), Color.WHITE, buttonSize); // Blue button with white text
         loginButton.addActionListener(loginListener);
 
         // Continue as Guest Link
