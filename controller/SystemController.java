@@ -51,10 +51,13 @@ public class SystemController {
 		}
 		ArrayList<Flight> f = new ArrayList<>();
 		for(int i = 0 ; i < flights.size(); i++){
-			if(flights.get(i).getCrewMembers() == null);
+			if(flights.get(i).getCrewMembers() == null){
+				System.out.println(flights.get(i).getCrewMembers().get(0));
+			}
 			else if(flights.get(i).getCrewMembers().contains(crewmember)){
 				f.add(flights.get(i));
 			}
+			
 		}
 		return f;
 	}

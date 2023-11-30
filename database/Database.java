@@ -38,8 +38,8 @@ public class Database {
         readLocationData();
         readRegisteredUsers();
         readAircraftData();
-        readFlightData();
         readCrewMemberData(); 
+        readFlightData();
         readTicketData();
     }
 
@@ -206,16 +206,57 @@ private void readRegisteredUsers() throws SQLException{
                
 
               Flight tmp= new Flight(origin,destination, flightNum, flightDate, departTime, arriveTime, flightTime, a); 
+
+              // Read crew members assigned to the flight from the CREWASSIGNMENT table
+              String flightNumber = results.getString("FlightNum");
+              ArrayList<CrewMember> assignedCrew = readCrewMembersForFlight(flightNumber);
+  
+              // Add the crew members to the Flight object
+              tmp.setCrewMembers(assignedCrew);
+  
+              // Add the Flight object to the flights list
               this.flights.add(tmp);
-              
-            }
+          }
             myStmt.close(); 
             }catch (SQLException ex) {
                 //ex.printStackTrace();
              }
              
     }
-
+    private ArrayList<CrewMember> readCrewMembersForFlight(String flightNumber) {
+        ArrayList<CrewMember> assignedCrew = new ArrayList<>();
+    
+        try {
+            Statement myStmt = this.dbConnection.createStatement();
+            String query = "SELECT Email FROM CREWASSIGNMENT WHERE FlightNum = '" + flightNumber + "'";
+            ResultSet results = myStmt.executeQuery(query);
+    
+            while (results.next()) {
+                // Read crew member details using the email
+                String crewMemberEmail = results.getString("Email");
+                CrewMember crewMember = findCrewMemberByEmail(crewMemberEmail);
+    
+                // Add the crew member to the list
+                assignedCrew.add(crewMember);
+            }
+    
+            myStmt.close();
+        } catch (SQLException ex) {
+            // Handle exceptions
+            ex.printStackTrace();
+        }
+    
+        return assignedCrew;
+    }
+    
+    private CrewMember findCrewMemberByEmail(String crewMemberEmail) {
+        for (CrewMember member : crew) {
+            if (member.getEmail().equals(crewMemberEmail)) {
+                return member;
+            }
+        }
+        return null; // Crew member not found
+    }
 // /** WORKS
 //  * Reads crew member data from the database and populates the crew ArrayList.
 //  */
