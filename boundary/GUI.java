@@ -34,6 +34,7 @@ public class GUI extends JFrame implements ActionListener {
     private JPasswordField passwordField;
     private JButton viewAllFlightsButton; // View flighst as admin
     private JScrollPane allFlightsScrollPane; // View flights as admin
+    private JList<String> flightList;
     private String currentEmail; // Track username of currently logged in user
     private String selectedOriginName;
     private String selectedDestinationName;
@@ -105,6 +106,10 @@ public class GUI extends JFrame implements ActionListener {
         userPage.add(locationMenusPanel);
         userPage.add(Box.createVerticalStrut(10));
 
+        JButton viewPassengersButton = new JButton("View Passengers");
+        viewPassengersButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        viewPassengersButton.addActionListener(e -> handleViewPassengers(username));
+        userPage.add(viewPassengersButton);
 
         userPage.add(Box.createVerticalStrut(100));
 
@@ -118,6 +123,19 @@ public class GUI extends JFrame implements ActionListener {
         return userPage;    
     }
 
+    private void handleViewPassengers(String username) {
+        // Assuming flightList is a JList<String> member variable that stores the list of flights
+        String selectedFlight = flightList.getSelectedValue();
+        if (selectedFlight != null) {
+            // Show passengers for the selected flight
+            // Implement logic to retrieve and display passengers list
+            System.out.println("Selected Flight: " + selectedFlight);
+            // For example, you can show a new panel or dialog with the passengers list
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a flight first.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
     private void showMyFlights(String username) {
         PaymentController paymentController = new PaymentController(username, null, "");
         MyFlights myFlightsPanel = new MyFlights(paymentController, username, -1, system, cardPanel, cardLayout);
@@ -127,7 +145,7 @@ public class GUI extends JFrame implements ActionListener {
     private JScrollPane createCrewMemberMenu(String title, String username) {
         ArrayList<Flight> flights = system.getFlightsCrewmembers(username);
         ArrayList<String> flightStrings = system.getFlightStrings(flights);
-        JList<String> flightList = new JList<>(flightStrings.toArray(new String[0]));
+        flightList = new JList<>(flightStrings.toArray(new String[0]));
 
         flightList.setFont(new Font(flightList.getFont().getName(), Font.PLAIN, 16));
         flightList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -137,17 +155,17 @@ public class GUI extends JFrame implements ActionListener {
         TitledBorder titledBorder = BorderFactory.createTitledBorder(title);
         flightScrollPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), titledBorder));
 
-        // Add listener to handle location selection
-        flightList.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    String selectedFlight = flightList.getSelectedValue();
-                    // handleSelectedFlightInfo(selectedFlight);
+        // // Add listener to handle location selection
+        // flightList.addListSelectionListener(new ListSelectionListener() {
+        //     @Override
+        //     public void valueChanged(ListSelectionEvent e) {
+        //         if (!e.getValueIsAdjusting()) {
+        //             String selectedFlight = flightList.getSelectedValue();
+        //             //handleSelectedFlight(selectedFlight);
 
-                }
-            }
-        });
+        //         }
+        //     }
+        // });
 
         return flightScrollPane;
     }
