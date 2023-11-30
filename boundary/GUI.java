@@ -8,8 +8,12 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 import java.util.ArrayList;
 
 
@@ -27,6 +31,8 @@ public class GUI extends JFrame implements ActionListener {
     private JButton loginBackButton; // Separate button for the back action on the login page
     private JTextField usernameField;
     private JPasswordField passwordField;
+    private JButton viewAllFlightsButton; // View flighst as admin
+    private JScrollPane allFlightsScrollPane; // View flights as admin
     private String currentUsername; // Track username of currently logged in user
     private SystemController system = new SystemController();
     private FlightController flightController = new FlightController();
@@ -374,22 +380,22 @@ public class GUI extends JFrame implements ActionListener {
     private void handleLogin() {
         String email = loginPanel.getEmail();
         char[] password = loginPanel.getPassword();
-
+    
         if (email.isEmpty() || password.length == 0) {
             JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
-        if(authController.loginCrewMember(email, new String(password))){
+    
+        if (authController.loginCrewMember(email, new String(password))) {
             currentUsername = email;
             showCrewMemberPage(email);
-            // implement crew member, should see flights, cancel flight
-        }
-        else if (authController.loginUser(email, new String(password))) {
-            // Login successful
+        } else if (authController.loginUser(email, new String(password))) {
+            // Login successful for a regular user
             currentUsername = email;
-            showUserPage(email); // Show the user page for the logged-in user
-            
+            showUserPage(email);
+        } else if (email.equals("admin") && new String(password).equals("admin")) {
+            // Login successful for admin
+            showAdminPage();
         } else {
             // Login failed
             JOptionPane.showMessageDialog(this, "Invalid email or password.");
@@ -469,6 +475,412 @@ public class GUI extends JFrame implements ActionListener {
         // Show user page
         cardLayout.show(cardPanel, "user");
     }
+
+    // Method to create admin page
+    private void showAdminPage() {
+        // Check if the user panel already exists and remove it
+        Component[] components = cardPanel.getComponents();
+        for (Component component : components) {
+            if (component == userPanel) {
+                cardPanel.remove(userPanel);
+                break;
+            }
+        }
+    
+        // Create a new admin panel and add it to the cardPanel
+        userPanel = createAdminPage();
+        cardPanel.add(userPanel, "user");
+        
+        cardLayout.show(cardPanel, "user");
+    }
+
+    private void handleAddFlight(Location origin, Location destination, String flightNum, String date, String departureTime, String arrivalTime, String flightTime, Aircraft aircraft) {
+
+        // Create a Flight object
+        Flight newFlight = new Flight(origin, destination, flightNum, date, departureTime, arrivalTime, flightTime, aircraft);
+
+        // Call the addFlight method
+        boolean addSuccess = system.addFlight(newFlight);
+
+        if (addSuccess) {
+            // Flight added successfully
+            JOptionPane.showMessageDialog(this, "Flight added successfully.");
+            showAdminPage(); 
+        } else {
+            // Flight addition failed
+            JOptionPane.showMessageDialog(this, "Failed to add the flight.");
+        }
+    }
+
+    // Admin panel content
+    private JPanel createAdminPage() {
+        JPanel adminPage = new JPanel();
+        adminPage.setLayout(new BoxLayout(adminPage, BoxLayout.Y_AXIS));
+    
+        JLabel welcomeLabel = new JLabel("Welcome, Admin!");
+        welcomeLabel.setFont(new Font(welcomeLabel.getFont().getName(), Font.PLAIN, 20));
+        welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        adminPage.add(Box.createVerticalStrut(20));
+        adminPage.add(welcomeLabel);
+        adminPage.add(Box.createVerticalStrut(20));
+    
+        viewAllFlightsButton = new JButton("Manage Flights");
+        viewAllFlightsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        viewAllFlightsButton.addActionListener(e -> showAllFlights());
+        adminPage.add(viewAllFlightsButton);
+        adminPage.add(Box.createVerticalStrut(20));
+    
+        JButton manageAircraftButton = new JButton("Manage Aircraft");
+        manageAircraftButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        manageAircraftButton.addActionListener(e -> showManageAircraftPage());
+        adminPage.add(manageAircraftButton);
+        adminPage.add(Box.createVerticalStrut(20));
+    
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> showMainScreen());
+        adminPage.add(backButton);
+        adminPage.add(Box.createVerticalStrut(20));
+    
+        return adminPage;
+    }
+
+    private void showManageAircraftPage() {
+        // Create and show the page for managing aircraft
+        JPanel manageAircraftPanel = createManageAircraftPage();
+        cardPanel.add(manageAircraftPanel, "manageAircraftPanel");
+        cardLayout.show(cardPanel, "manageAircraftPanel");
+    }
+
+    private JPanel createManageAircraftPage() {
+        JPanel manageAircraftPage = new JPanel();
+        manageAircraftPage.setLayout(new BoxLayout(manageAircraftPage, BoxLayout.Y_AXIS));
+    
+        JLabel titleLabel = new JLabel("Manage Aircraft");
+        titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.PLAIN, 20));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        manageAircraftPage.add(Box.createVerticalStrut(20));
+        manageAircraftPage.add(titleLabel);
+        manageAircraftPage.add(Box.createVerticalStrut(20));
+    
+        // Get the list of aircraft from the system controller
+        ArrayList<Aircraft> allAircrafts = system.getAircrafts();
+    
+        DefaultListModel<String> aircraftListModel = new DefaultListModel<>();
+        for (Aircraft aircraft : allAircrafts) {
+            aircraftListModel.addElement("Aircraft ID: " + aircraft.getId() + ", Aircraft Name: " + aircraft.getName());
+        }
+    
+        JList<String> aircraftList = new JList<>(aircraftListModel);
+        aircraftList.setFont(new Font(aircraftList.getFont().getName(), Font.PLAIN, 16));
+        aircraftList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    
+        // Create a JScrollPane for the JList
+        JScrollPane aircraftScrollPane = new JScrollPane(aircraftList);
+        aircraftScrollPane.setPreferredSize(new Dimension(600, 400));
+    
+        TitledBorder titledBorder = BorderFactory.createTitledBorder("All Aircraft");
+        aircraftScrollPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), titledBorder));
+    
+        manageAircraftPage.add(aircraftScrollPane);
+        manageAircraftPage.add(Box.createVerticalStrut(20));
+    
+        JButton addAircraftButton = new JButton("Add Aircraft");
+        addAircraftButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        addAircraftButton.addActionListener(e -> showAddAircraftPage());
+        manageAircraftPage.add(addAircraftButton);
+        manageAircraftPage.add(Box.createVerticalStrut(20));
+    
+        JButton backButton = new JButton("Back");
+        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        backButton.addActionListener(e -> showAdminPage());
+        manageAircraftPage.add(backButton);
+        manageAircraftPage.add(Box.createVerticalStrut(20));
+    
+        return manageAircraftPage;
+    }
+    
+    private void showAddAircraftPage() {
+        // Create and show the page for adding an aircraft
+        JPanel addAircraftPanel = createAddAircraftPage();
+        cardPanel.add(addAircraftPanel, "addAircraftPanel");
+        cardLayout.show(cardPanel, "addAircraftPanel");
+    }
+
+    private JPanel createAddAircraftPage() {
+        JPanel addAircraftPage = new JPanel();
+        addAircraftPage.setLayout(new BoxLayout(addAircraftPage, BoxLayout.Y_AXIS));
+    
+        JLabel titleLabel = new JLabel("Add New Aircraft");
+        titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.PLAIN, 20));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        addAircraftPage.add(Box.createVerticalStrut(20));
+        addAircraftPage.add(titleLabel);
+        addAircraftPage.add(Box.createVerticalStrut(20));
+    
+        // Add text fields for ID, Name, and Capacity
+        JPanel idPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        idPanel.add(new JLabel("ID: "));
+        JTextField idField = new JTextField(15);
+        idPanel.add(idField);
+        addAircraftPage.add(idPanel);
+        addAircraftPage.add(Box.createVerticalStrut(10));
+    
+        JPanel namePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        namePanel.add(new JLabel("Name: "));
+        JTextField nameField = new JTextField(15);
+        namePanel.add(nameField);
+        addAircraftPage.add(namePanel);
+        addAircraftPage.add(Box.createVerticalStrut(10));
+    
+        JPanel capacityPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        capacityPanel.add(new JLabel("Capacity: "));
+        JTextField capacityField = new JTextField(15);
+        capacityPanel.add(capacityField);
+        addAircraftPage.add(capacityPanel);
+        addAircraftPage.add(Box.createVerticalStrut(20));
+    
+        JButton addButton = new JButton("Add Aircraft");
+        addButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        addButton.addActionListener(e -> 
+            handleAddAircraft(
+                Integer.parseInt(idField.getText()), 
+                nameField.getText(), 
+                Integer.parseInt(capacityField.getText())
+            )
+        );
+
+        addAircraftPage.add(addButton);
+        addAircraftPage.add(Box.createVerticalStrut(20));
+    
+        JButton backButton = new JButton("Back");
+        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        backButton.addActionListener(e -> showManageAircraftPage());
+        addAircraftPage.add(backButton);
+        addAircraftPage.add(Box.createVerticalStrut(20));
+    
+        return addAircraftPage;
+    }
+    
+
+    private void handleAddAircraft(int id, String name, int capacity) {
+        // Create the Aircraft object using the provided parameters
+        Aircraft newAircraft = new Aircraft(id, name, null, capacity);
+        boolean addSuccess = system.addAircraft(newAircraft);
+    
+        if (addSuccess) {
+            // Aircraft added successfully
+            JOptionPane.showMessageDialog(this, "Aircraft added successfully.");
+        } else {
+            // Aircraft addition failed
+            JOptionPane.showMessageDialog(this, "Failed to add the aircraft.");
+        }
+        showManageAircraftPage();
+    }
+    
+    
+    
+    
+    
+
+    private void showAddFlightPage() {
+        // Create and show the page for adding a flight
+        JPanel addFlightPanel = createAddFlightPage();
+        cardPanel.add(addFlightPanel, "addFlightPanel");
+        cardLayout.show(cardPanel, "addFlightPanel");
+    }
+
+    private JPanel createAddFlightPage() {
+        JPanel addFlightPage = new JPanel();
+        addFlightPage.setLayout(new BoxLayout(addFlightPage, BoxLayout.Y_AXIS));
+    
+        JLabel titleLabel = new JLabel("Add New Flight");
+        titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.PLAIN, 20));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        addFlightPage.add(Box.createVerticalStrut(20));
+        addFlightPage.add(titleLabel);
+        addFlightPage.add(Box.createVerticalStrut(20));
+    
+        // Add Origin
+        JPanel originPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        originPanel.add(new JLabel("Airport 1: "));
+        JTextField airport1Field = new JTextField(15);
+        originPanel.add(airport1Field);
+        originPanel.add(new JLabel("City 1: "));
+        JTextField city1Field = new JTextField(15);
+        originPanel.add(city1Field);
+        originPanel.add(new JLabel("Country 1: "));
+        JTextField country1Field = new JTextField(15);
+        originPanel.add(country1Field);
+        addFlightPage.add(originPanel);
+        addFlightPage.add(Box.createVerticalStrut(10));
+    
+        // Add Destination
+        JPanel destinationPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        destinationPanel.add(new JLabel("Airport 2: "));
+        JTextField airport2Field = new JTextField(15);
+        destinationPanel.add(airport2Field);
+        destinationPanel.add(new JLabel("City 2: "));
+        JTextField city2Field = new JTextField(15);
+        destinationPanel.add(city2Field);
+        destinationPanel.add(new JLabel("Country 2: "));
+        JTextField country2Field = new JTextField(15);
+        destinationPanel.add(country2Field);
+        addFlightPage.add(destinationPanel);
+        addFlightPage.add(Box.createVerticalStrut(10));
+    
+        // Add Flight Number
+        JPanel flightNumberPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        flightNumberPanel.add(new JLabel("Flight Number: "));
+        JTextField flightNumField = new JTextField(15);
+        flightNumberPanel.add(flightNumField);
+        addFlightPage.add(flightNumberPanel);
+        addFlightPage.add(Box.createVerticalStrut(10));
+    
+        // Add Flight Date
+        JPanel flightDatePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        flightDatePanel.add(new JLabel("Flight Date (YYYY-MM-DD): "));
+        JTextField dateField = new JTextField(15);
+        flightDatePanel.add(dateField);
+        addFlightPage.add(flightDatePanel);
+        addFlightPage.add(Box.createVerticalStrut(10));
+    
+        // Add Departure Time
+        JPanel departureTimePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        departureTimePanel.add(new JLabel("Departure Time (HH:mm): "));
+        JTextField departureTimeField = new JTextField(15);
+        departureTimePanel.add(departureTimeField);
+        addFlightPage.add(departureTimePanel);
+        addFlightPage.add(Box.createVerticalStrut(10));
+    
+        // Add Arrival Time
+        JPanel arrivalTimePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        arrivalTimePanel.add(new JLabel("Arrival Time (HH:mm): "));
+        JTextField arrivalTimeField = new JTextField(15);
+        arrivalTimePanel.add(arrivalTimeField);
+        addFlightPage.add(arrivalTimePanel);
+        addFlightPage.add(Box.createVerticalStrut(10));
+    
+        // Add Flight Time
+        JPanel flightTimePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        flightTimePanel.add(new JLabel("Flight Time (HH:mm): "));
+        JTextField flightTimeField = new JTextField(15);
+        flightTimePanel.add(flightTimeField);
+        addFlightPage.add(flightTimePanel);
+        addFlightPage.add(Box.createVerticalStrut(20));
+    
+        JButton addButton = new JButton("Add Flight");
+        addButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        addButton.addActionListener(e -> handleAddFlight(
+                new Location(
+                airport1Field.getText(),
+                city1Field.getText(),
+                country1Field.getText()),
+                
+                new Location(
+                airport2Field.getText(),
+                city2Field.getText(),
+                country2Field.getText()),
+
+                flightNumField.getText(),
+                dateField.getText(),
+                departureTimeField.getText(),
+                arrivalTimeField.getText(),
+                flightTimeField.getText(),
+                new Aircraft()
+            ));
+
+        addFlightPage.add(addButton);
+        addFlightPage.add(Box.createVerticalStrut(20));
+    
+        JButton backButton = new JButton("Back");
+        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        backButton.addActionListener(e -> showAdminPage());
+        addFlightPage.add(backButton);
+        addFlightPage.add(Box.createVerticalStrut(20));
+    
+        return addFlightPage;
+    }
+    
+
+    private void showAllFlights() {
+        ArrayList<Flight> allFlights = system.getFlights(); // Adjust this based on your implementation
+        ArrayList<String> flightStrings = system.getFlightStrings(allFlights);
+    
+        JList<String> allFlightsList = new JList<>(flightStrings.toArray(new String[0]));
+        allFlightsList.setFont(new Font(allFlightsList.getFont().getName(), Font.PLAIN, 16));
+        allFlightsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    
+        // Add ListSelectionListener to the flight list
+        allFlightsList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    int selectedIndex = allFlightsList.getSelectedIndex();
+                    if (selectedIndex != -1) {
+                        handleSelectedAdminFlight(allFlights.get(selectedIndex));
+                        allFlightsList.clearSelection(); // Deselect the item after handling
+                    }
+                }
+            }
+        });
+    
+        JScrollPane allFlightsScrollPane = new JScrollPane(allFlightsList);
+        allFlightsScrollPane.setPreferredSize(new Dimension(600, 400));
+    
+        TitledBorder titledBorder = BorderFactory.createTitledBorder("All Flights");
+        allFlightsScrollPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), titledBorder));
+    
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> cardLayout.show(cardPanel, "user"));
+    
+        // Add the "Add Flight" button
+        JButton addFlightButton = new JButton("Add Flight");
+        addFlightButton.addActionListener(e -> showAddFlightPage());
+        
+        JPanel allFlightsPanel = new JPanel();
+        allFlightsPanel.setLayout(new BoxLayout(allFlightsPanel, BoxLayout.Y_AXIS));
+        allFlightsPanel.add(allFlightsScrollPane);
+        allFlightsPanel.add(Box.createVerticalStrut(20));
+        allFlightsPanel.add(addFlightButton);
+        allFlightsPanel.add(Box.createVerticalStrut(20));
+        allFlightsPanel.add(backButton);
+    
+        cardPanel.add(allFlightsPanel, "allFlightsPanel");
+        cardLayout.show(cardPanel, "allFlightsPanel");
+    }
+    
+
+    private void handleSelectedAdminFlight(Flight selectedFlight) {
+        int choice = JOptionPane.showOptionDialog(
+                this,
+                "Do you want to cancel the flight?",
+                "Cancel Flight",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                new Object[]{"Cancel flight", "Back"},
+                "Back");
+    
+        if (choice == JOptionPane.YES_OPTION) {
+            // User chose to cancel the flight
+            boolean cancellationSuccess = system.cancelFlight(selectedFlight);
+    
+            if (cancellationSuccess) {
+                // Cancellation successful
+                JOptionPane.showMessageDialog(this, "Flight canceled successfully.");
+    
+                // Navigate back to the "Show All Flights" page
+                showAllFlights();
+            } else {
+                // Cancellation failed
+                JOptionPane.showMessageDialog(this, "Failed to cancel the flight.");
+            }
+        } else {
+            // User chose to go back
+            // Do nothing or add any additional logic as needed
+        }
+    }
+    
 
     @Override
     public void actionPerformed(ActionEvent e) {

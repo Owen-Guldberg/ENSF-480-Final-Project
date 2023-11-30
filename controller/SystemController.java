@@ -4,6 +4,7 @@ import util.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.google.gson.internal.bind.DateTypeAdapter;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import database.*;
@@ -61,9 +62,11 @@ public class SystemController {
 		}
 		return f;
 	}
+
 	public ArrayList<Location> getLocations(){
 		return locations;
 	}
+
 	public ArrayList<String> getFlightStrings(ArrayList<Flight> flights){
 		ArrayList<String> flightStrings = new ArrayList<>();
 		for (Flight flight : flights) {
@@ -119,5 +122,24 @@ public class SystemController {
 		public static void main(String[] args) {
 		SystemController system = new SystemController();
 	}
+
+	// Cancel flight via controller accessing database instance
+	public boolean cancelFlight(Flight f) {
+		return Database.getOnlyInstance().cancelFlight(f);
+	}
+
+	public boolean addFlight(Flight f) {
+		return Database.getOnlyInstance().addFlightToDB(f);
+	}
+
+	public ArrayList<Aircraft> getAircrafts() {
+		return Database.getOnlyInstance().getAircraftData();
+	}
+
+	public boolean addAircraft(Aircraft a) {
+		return Database.getOnlyInstance().addAircraftToDB(a);
+	}
 	
 }
+
+
