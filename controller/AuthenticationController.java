@@ -38,13 +38,33 @@ public class AuthenticationController {
     public boolean registerNewUser(String firstName, String lastName, String email, String password, 
                                int houseNum, String streetName, String city, 
                                String country, String postalCode) {
+
+        ArrayList<RegisteredCustomer> registeredCustomers = Database.getOnlyInstance().getRegisteredCustomerData();
+        for (RegisteredCustomer customer : registeredCustomers) {
+            if (customer.getEmail().equals(email)) {
+                // Email already exists, return false
+                return false;
+            }
+        }
+
         // Creating Address object
         Address address = new Address(houseNum, streetName, city, country, postalCode);
 
         // Creating RegisteredCustomer object
         Name customerName = new Name(firstName, lastName);
         RegisteredCustomer newCustomer = new RegisteredCustomer(customerName, email, password, address);
-        
+
+        // Attempt to register the user in the database
+        return registerUser(newCustomer, email);
+    }
+
+    public boolean registerUser(RegisteredCustomer user, String email) {
+        ArrayList<RegisteredCustomer> passengerData = Database.getOnlyInstance().getRegisteredCustomerData();
+        for(RegisteredCustomer passenger : passengerData){
+            if (user == passenger) {
+                return false;
+            }
+        }
 
         // Send user a promotion code via gmail for signing up
         // First time running app will be prompted to login to the gmail acc in browser
@@ -64,17 +84,6 @@ public class AuthenticationController {
             e.printStackTrace();
         }
 
-        // Attempt to register the user in the database
-        return registerUser(newCustomer);
-    }
-
-    public boolean registerUser(RegisteredCustomer user) {
-        ArrayList<RegisteredCustomer> passengerData = Database.getOnlyInstance().getRegisteredCustomerData();
-        for(RegisteredCustomer passenger : passengerData){
-            if (user == passenger) {
-                return false;
-            }
-        }
         // user doesnt exist in RegisteredCustomer
         Database.getOnlyInstance().saveUser(user);
         return true;

@@ -99,7 +99,7 @@ public class Register extends JPanel {
         registerButton.addActionListener(registerListener);
         add(registerButton, gbc);
     
-        backButton = new JButton("Back");
+        backButton = new JButton("Back to Home");
         styleButton(backButton);
         backButton.addActionListener(backListener);
         add(backButton, gbc);
@@ -213,5 +213,17 @@ public class Register extends JPanel {
 
     public char[] getPassword() {
         return passwordField.getPassword();
+    }
+
+    public void clearFields() {
+        firstNameField.setText("");
+        lastNameField.setText("");
+        emailField.setText("");
+        houseNumField.setText("");
+        streetNameField.setText("");
+        cityField.setText("");
+        countryField.setText("");
+        postalCodeField.setText("");
+        passwordField.setText("");
     }
 }

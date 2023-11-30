@@ -56,7 +56,7 @@ public class Login extends JPanel {
         loginButton.addActionListener(loginAction);
         add(loginButton, gbc);
     
-        backButton = new JButton("Back");
+        backButton = new JButton("Back to Home");
         styleButton(backButton);
         backButton.addActionListener(backAction);
         add(backButton, gbc);
@@ -140,5 +140,10 @@ public class Login extends JPanel {
 
     public char[] getPassword() {
         return passwordField.getPassword();
+    }
+
+    public void clearFields() {
+        emailField.setText("");
+        passwordField.setText("");
     }
 }

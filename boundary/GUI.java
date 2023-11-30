@@ -291,11 +291,12 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     private void showRegisterScreen() {
-        // Switch to the register panel
+        registerPanel.clearFields();
         cardLayout.show(cardPanel, "register");
     }
 
     private void showLoginScreen() {
+        loginPanel.clearFields();
         cardLayout.show(cardPanel, "login");
     }
 
@@ -313,6 +314,12 @@ public class GUI extends JFrame implements ActionListener {
     private void handleLogin() {
         String email = loginPanel.getEmail();
         char[] password = loginPanel.getPassword();
+
+        if (email.isEmpty() || password.length == 0) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         if(authController.loginCrewMember(email, new String(password))){
             currentUsername = email;
             showCrewMemberPage(email);
@@ -334,12 +341,27 @@ public class GUI extends JFrame implements ActionListener {
         String lastName = registerPanel.getLastName();
         String email = registerPanel.getEmail();
         char[] password = registerPanel.getPassword();
-    
-        int houseNum = Integer.parseInt(registerPanel.getHouseNum()); // Assuming house number is always a valid integer
+        String houseNumStr = registerPanel.getHouseNum().trim();
         String streetName = registerPanel.getStreetName();
         String city = registerPanel.getCity();
         String country = registerPanel.getCountry();
         String postalCode = registerPanel.getPostalCode();
+
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() ||
+            houseNumStr.isEmpty() || streetName.isEmpty() || city.isEmpty() ||
+            country.isEmpty() || postalCode.isEmpty() || password.length == 0) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Validate and parse house number
+        int houseNum;
+        try {
+            houseNum = Integer.parseInt(houseNumStr);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Invalid house number.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         // Registering user through AuthenticationController
         boolean registrationSuccess = authController.registerNewUser(firstName, lastName, email, new String(password), 
