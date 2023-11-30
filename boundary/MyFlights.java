@@ -88,7 +88,11 @@ public class MyFlights extends JPanel {
         // Implement cancellation logic
         // Remove ticket from user's list and update in database
         // Show confirmation message
+        
+        
         systemController.getUserByEmail(userEmail).removeTicket(ticket);
+        systemController.getFlightByNum(ticket.getFlightNumber()).getPassengers().remove(systemController.getUserByEmail(userEmail));
+
         JOptionPane.showMessageDialog(this, "Ticket cancelled successfully.");
         paymentController.deleteTicket(userEmail, ticket.getSeatNum());
         // Refresh the MyFlights panel to update the list of tickets
