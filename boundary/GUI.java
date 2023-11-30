@@ -182,7 +182,8 @@ public class GUI extends JFrame implements ActionListener {
     
         // Logout or Return to Home Page Button
         JButton backButton = new JButton("Back");
-        backButton.addActionListener(e -> cardLayout.show(cardPanel, "user"));
+        backButton.addActionListener(e -> showCrewMemberPage(username));
+        
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         userPage.add(backButton);
     
