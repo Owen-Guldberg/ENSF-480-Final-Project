@@ -21,13 +21,16 @@ public class GUI extends JFrame implements ActionListener {
     private Login loginPanel;
     private Register registerPanel;
     private JPanel userPanel;
+    private UserPagePanel userPagePanel;
     private JPanel flightInfoPanel;  // New panel for flight information
     private JButton backToMainButton;
     private JButton actionButton; // Used for both login and register actions
     private JButton loginBackButton; // Separate button for the back action on the login page
     private JTextField usernameField;
     private JPasswordField passwordField;
-    private String currentUsername; // Track username of currently logged in user
+    private String currentEmail; // Track username of currently logged in user
+    private String selectedOriginName;
+    private String selectedDestinationName;
     private SystemController system = new SystemController();
     private FlightController flightController = new FlightController();
     private AircraftController aircraftController = new AircraftController();
@@ -72,6 +75,7 @@ public class GUI extends JFrame implements ActionListener {
 
         setVisible(true);
     }
+
     private JPanel createCrewMemberPage(String username){
         JPanel userPage = new JPanel();
         userPage.setLayout(new BoxLayout(userPage, BoxLayout.Y_AXIS));
@@ -108,62 +112,6 @@ public class GUI extends JFrame implements ActionListener {
 
         return userPage;    
     }
-    private JPanel createUserPage(String username) {
-        JPanel userPage = new JPanel();
-        userPage.setLayout(new BoxLayout(userPage, BoxLayout.Y_AXIS));
-
-        JLabel welcomeLabel = new JLabel("Welcome, " + (username.isEmpty() ? "Guest" : system.getNameByEmail(username)) + "!");
-        welcomeLabel.setFont(new Font(welcomeLabel.getFont().getName(), Font.PLAIN, 20));
-        welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        userPage.add(Box.createVerticalStrut(20));
-        userPage.add(welcomeLabel);
-        userPage.add(Box.createVerticalStrut(20));
-
-        if (!username.isEmpty()) {
-            JButton myFlightsButton = new JButton("View My Flights");
-            myFlightsButton.addActionListener(e -> showMyFlights(username));
-            myFlightsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-            userPage.add(myFlightsButton);
-            userPage.add(Box.createVerticalStrut(10));
-        }
-
-        JLabel enterLabel = new JLabel("Please select an origin and a destination below.");
-        enterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        userPage.add(enterLabel);
-        userPage.add(Box.createVerticalStrut(10));
-        JPanel locationMenusPanel = new JPanel();
-        locationMenusPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); 
-        JScrollPane originScrollPane = createLocationMenu("Origin Locations", true);
-        JScrollPane destinationScrollPane = createLocationMenu("Destination Locations", false);
-        locationMenusPanel.add(originScrollPane);
-        locationMenusPanel.add(destinationScrollPane);
-        userPage.add(locationMenusPanel);
-        userPage.add(Box.createVerticalStrut(10));
-
-        // View Available Flights Button
-        JButton viewFlightsButton = new JButton("View Available Flights");
-        viewFlightsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        viewFlightsButton.addActionListener(e -> {
-            if (selectedOrigin.getAirportName() != null && selectedDestination.getAirportName() != null) {
-                JPanel flightsPanel = createFlightsPanel();
-                cardPanel.add(flightsPanel, "flightsPanel");
-                cardLayout.show(cardPanel, "flightsPanel");
-            } else {
-                JOptionPane.showMessageDialog(userPage, "Please select both an origin and a destination.");
-            }
-        });
-        userPage.add(viewFlightsButton);
-        userPage.add(Box.createVerticalStrut(100));
-
-        // Logout or Return to Home Page Button
-        actionButton = username.isEmpty() ? new JButton("Return to Home Page") : new JButton("Logout");
-        actionButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        actionButton.addActionListener(e -> showMainScreen());
-        userPage.add(actionButton);
-        userPage.add(Box.createVerticalStrut(20));
-
-        return userPage;
-    }
 
     private void showMyFlights(String username) {
         PaymentController paymentController = new PaymentController(username, null, "");
@@ -176,6 +124,7 @@ public class GUI extends JFrame implements ActionListener {
         ArrayList<String> flightStrings = system.getFlightStrings(flights);
         JList<String> flightList = new JList<>(flightStrings.toArray(new String[0]));
 
+<<<<<<< HEAD
         flightList.setFont(new Font(flightList.getFont().getName(), Font.PLAIN, 16));
         flightList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane flightScrollPane = new JScrollPane(flightList);
@@ -233,10 +182,14 @@ public class GUI extends JFrame implements ActionListener {
 
     private void handleSelectedOrigin(String origin) {
         selectedOrigin = system.getLocationByName(origin);
+=======
+    private Location handleSelectedOrigin(String origin) {
+        return system.getLocationByName(origin);
+>>>>>>> ebc5f08e679f720ebf83493583d401c3dd2419c7
     }
     
-    private void handleSelectedDestination(String destination) {
-        selectedDestination = system.getLocationByName(destination);
+    private Location handleSelectedDestination(String destination) {
+        return system.getLocationByName(destination);
     }
 
     private JPanel createFlightsPanel() {
@@ -263,7 +216,7 @@ public class GUI extends JFrame implements ActionListener {
     }
     
     private JScrollPane createFlightMenu(String menuTitle) {
-        ArrayList<String> flightStrings = flightController.browseFlightNums(selectedOrigin, selectedDestination);
+        ArrayList<String> flightStrings = flightController.browseFlightNums(handleSelectedOrigin(selectedOriginName), handleSelectedDestination(selectedDestinationName));
         JPanel flightsPanel = new JPanel();
         flightsPanel.setLayout(new BoxLayout(flightsPanel, BoxLayout.Y_AXIS));
     
@@ -338,7 +291,7 @@ public class GUI extends JFrame implements ActionListener {
     private void showSeatChart(String flightNum) {
         Aircraft aircraft = system.getFlightByNum(flightNum).getAircraft();
         ArrayList<Seat> seats = aircraftController.seatByAircraft(aircraft);
-        SeatChart seatChart = new SeatChart(currentUsername, seats, aircraftController, flightNum, system, cardPanel, cardLayout);
+        SeatChart seatChart = new SeatChart(currentEmail, seats, aircraftController, flightNum, system, cardPanel, cardLayout);
 
         cardPanel.add(seatChart, "seatChart");
         cardLayout.show(cardPanel, "seatChart");
@@ -346,8 +299,8 @@ public class GUI extends JFrame implements ActionListener {
 
     private void continueAsGuest() {
         // Show the user page for the guest
-        currentUsername = "";
-        showUserPage(currentUsername);
+        currentEmail = "";
+        showUserPage(currentEmail);
     }
 
     private void showRegisterScreen() {
@@ -364,11 +317,11 @@ public class GUI extends JFrame implements ActionListener {
         cardLayout.show(cardPanel, "main");
 
         // Clear the username and password fields
-        currentUsername = "";
+        currentEmail = "";
         //usernameField.setText("");
         //passwordField.setText("");
-        selectedOrigin = null;
-        selectedDestination = null;
+        selectedOriginName = null;
+        selectedDestinationName = null;
     }
 
     private void handleLogin() {
@@ -381,13 +334,13 @@ public class GUI extends JFrame implements ActionListener {
         }
 
         if(authController.loginCrewMember(email, new String(password))){
-            currentUsername = email;
+            currentEmail = email;
             showCrewMemberPage(email);
             // implement crew member, should see flights, cancel flight
         }
         else if (authController.loginUser(email, new String(password))) {
             // Login successful
-            currentUsername = email;
+            currentEmail = email;
             showUserPage(email); // Show the user page for the logged-in user
             
         } else {
@@ -452,8 +405,9 @@ public class GUI extends JFrame implements ActionListener {
         // Show user page
         cardLayout.show(cardPanel, "user");
     }
+    
     private void showUserPage(String username) {
-        // Check if the user panel already exists and remove it
+        // Remove existing userPanel if it exists
         Component[] components = cardPanel.getComponents();
         for (Component component : components) {
             if (component == userPanel) {
@@ -461,11 +415,29 @@ public class GUI extends JFrame implements ActionListener {
                 break;
             }
         }
-
-        // Create a new user panel and add it to the cardPanel
-        userPanel = createUserPage(username);
-        cardPanel.add(userPanel, "user");
-
+    
+        ArrayList<String> locationStrings = system.getLocationStrings();
+    
+        // Create UserPagePanel and add it to the cardPanel
+        userPagePanel = new UserPagePanel(
+            username.isEmpty() ? "" : system.getNameByEmail(username),
+            e -> showMyFlights(username),
+            e -> {
+                selectedOriginName = userPagePanel.getSelectedOrigin();
+                selectedDestinationName = userPagePanel.getSelectedDestination();
+                if (selectedOriginName != null && selectedDestinationName != null) {
+                    JPanel flightsPanel = createFlightsPanel();
+                    cardPanel.add(flightsPanel, "flightsPanel");
+                    cardLayout.show(cardPanel, "flightsPanel");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Please select both an origin and a destination.");
+                }
+            },
+            e -> showMainScreen(),
+            locationStrings
+        );
+        cardPanel.add(userPagePanel, "user");
+    
         // Show user page
         cardLayout.show(cardPanel, "user");
     }

@@ -61,6 +61,7 @@ public class SystemController {
 	public ArrayList<Location> getLocations(){
 		return locations;
 	}
+<<<<<<< HEAD
 	public ArrayList<String> getFlightStrings(ArrayList<Flight> flights){
 		ArrayList<String> flightStrings = new ArrayList<>();
 		for (Flight flight : flights) {
@@ -69,6 +70,11 @@ public class SystemController {
 		return flightStrings;
 	}
 	public ArrayList<String> getLocationStrings(ArrayList<Location> locations){
+=======
+
+	public ArrayList<String> getLocationStrings(){
+		ArrayList<Location> locations = getLocations();
+>>>>>>> ebc5f08e679f720ebf83493583d401c3dd2419c7
 		ArrayList<String> locationStrings = new ArrayList<>();
 		for (Location location : locations) {
 			locationStrings.add(location.toString());

@@ -46,6 +46,6 @@ public class Location {
     }
 
     public String toString(){
-        return "Airport: " + airportName + " City: " + city + " Country: " + country;
+        return "Airport: " + airportName + " | City: " + city + " | Country: " + country;
     }
 }
