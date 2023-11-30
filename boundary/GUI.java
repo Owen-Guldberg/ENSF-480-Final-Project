@@ -199,6 +199,7 @@ public class GUI extends JFrame implements ActionListener {
         }
     
         ArrayList<String> customerStrings = system.getPassengerStrings(customers);
+        System.out.println(customerStrings.get(0));
         JList<String> flightList = new JList<>(customerStrings.toArray(new String[0]));
     
         flightList.setFont(new Font(flightList.getFont().getName(), Font.PLAIN, 16));

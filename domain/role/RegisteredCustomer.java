@@ -86,4 +86,16 @@ public class RegisteredCustomer implements Person{
     public void removeTicket(Ticket t){
         this.tickets.remove(t); 
     }
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        
+        String firstName = this.name.getFirstName();
+        String lastName = this.name.getLastName();
+
+        stringBuilder.append(firstName)
+                     .append(" ")
+                     .append(lastName);
+    
+        return stringBuilder.toString();
+    }
 }
