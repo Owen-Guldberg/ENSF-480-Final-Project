@@ -129,6 +129,9 @@ public class Flight {
     }
 
     public void addPassenger(RegisteredCustomer passenger){
+        if(this.passengers == null){
+            passengers = new ArrayList<>();
+        }
         this.passengers.add(passenger);
     }
 

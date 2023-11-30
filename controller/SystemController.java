@@ -16,7 +16,7 @@ public class SystemController {
 	private ArrayList<Aircraft> aircrafts;
 	private ArrayList<Location> locations = Database.getOnlyInstance().getLocationData();
 	private ArrayList<CrewMember> crewMembers = Database.getOnlyInstance().getCrewMemberData();
-	private ArrayList<RegisteredCustomer> registeredCustomers;
+	private ArrayList<RegisteredCustomer> registeredCustomers = Database.getOnlyInstance().getRegisteredCustomerData();
 	private ArrayList<Ticket> tickets = Database.getOnlyInstance().getTicketData();
 	//private ArrayList<Payment> payment;
 	private HashMap<String, Location> locationMap = new HashMap<>();
@@ -32,7 +32,9 @@ public class SystemController {
             flightMap.put(flight.getFlightNum(), flight);
         }
     }
-
+	public ArrayList<RegisteredCustomer> getRegisteredCustomers() {
+		return registeredCustomers;
+	}
 	public void start() {
 		
 	}
@@ -62,7 +64,21 @@ public class SystemController {
 		}
 		return f;
 	}
-
+	public ArrayList<RegisteredCustomer> getFlightsPassengers(String flightnumer){
+		for(Flight f : flights){
+			if(f.getFlightNum().equals(flightnumer)){
+				return f.getPassengers();
+			}
+		}
+		return null;
+	}
+	public ArrayList<String> getPassengerStrings(ArrayList<RegisteredCustomer> customers){
+		ArrayList<String> customerStrings = new ArrayList<>();
+		for(RegisteredCustomer customer: customers){
+			customerStrings.add(customer.toString());
+		}
+		return customerStrings;
+	}
 	public ArrayList<Location> getLocations(){
 		return locations;
 	}

@@ -3,6 +3,7 @@ package boundary;
 import controller.*;
 import flightInfo.*;
 import role.CrewMember;
+import role.RegisteredCustomer;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -15,6 +16,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class GUI extends JFrame implements ActionListener {
@@ -124,24 +127,91 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     private void handleViewPassengers(String username) {
-        // Assuming flightList is a JList<String> member variable that stores the list of flights
         String selectedFlight = flightList.getSelectedValue();
         if (selectedFlight != null) {
-            // Show passengers for the selected flight
-            // Implement logic to retrieve and display passengers list
-            System.out.println("Selected Flight: " + selectedFlight);
-            // For example, you can show a new panel or dialog with the passengers list
+            // Use regular expression to extract the flight number
+            String regex = "Flight Number: (SB-\\d+)";
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(selectedFlight);
+
+            if (matcher.find()) {
+                String flightNumber = matcher.group(1);
+                System.out.println("Selected Flight: " + flightNumber);
+                userPanel = createPassengerPage(username, flightNumber);
+                cardPanel.add(userPanel, "user");
+
+        // Show user page
+        cardLayout.show(cardPanel, "user");
+                
+            } else {
+                JOptionPane.showMessageDialog(this, "Flight number not found in the selected flight information.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         } else {
             JOptionPane.showMessageDialog(this, "Please select a flight first.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+    private JPanel createPassengerPage(String username, String flightNumber){
+                JPanel userPage = new JPanel();
+                userPage.setLayout(new BoxLayout(userPage, BoxLayout.Y_AXIS));
 
+                JLabel welcomeLabel = new JLabel("Flight : " +flightNumber+  " Passengers");
+                welcomeLabel.setFont(new Font(welcomeLabel.getFont().getName(), Font.PLAIN, 20));
+                welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+                userPage.add(Box.createVerticalStrut(20));
+                userPage.add(welcomeLabel);
+                userPage.add(Box.createVerticalStrut(20));
+
+                userPage.add(Box.createVerticalStrut(10));
+                JPanel locationMenusPanel = new JPanel();
+                locationMenusPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); 
+                JScrollPane CrewMemberScrollPane = createFlightPassengerMenu("Passengers",flightNumber);
+                locationMenusPanel.add(CrewMemberScrollPane);
+                userPage.add(locationMenusPanel);
+                userPage.add(Box.createVerticalStrut(10));
+
+
+                // Logout or Return to Home Page Button
+                JButton backButton = new JButton("Back");
+                backButton.addActionListener(e -> cardLayout.show(cardPanel, "user"));
+                backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+                userPage.add(backButton);
+
+                actionButton = username.isEmpty() ? new JButton("Return to Home Page") : new JButton("Logout");
+                actionButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+                actionButton.addActionListener(e -> showMainScreen());
+                userPage.add(actionButton);
+                userPage.add(Box.createVerticalStrut(20));
+            return userPage;
+    }
     private void showMyFlights(String username) {
         PaymentController paymentController = new PaymentController(username, null, "");
         MyFlights myFlightsPanel = new MyFlights(paymentController, username, -1, system, cardPanel, cardLayout);
         cardPanel.add(myFlightsPanel, "myFlights");
         cardLayout.show(cardPanel, "myFlights");
     }
+    private JScrollPane createFlightPassengerMenu(String title, String flightnumber) {
+        ArrayList<RegisteredCustomer> customers = system.getFlightsPassengers(flightnumber);
+    
+        if (customers == null) {
+            // Handle the case where customers is null, for example:
+            JOptionPane.showMessageDialog(null, "No passengers found for the flight", "No Passengers", JOptionPane.INFORMATION_MESSAGE);
+            return null; // or return an empty JScrollPane, or handle it in a way that fits your requirements
+        }
+    
+        ArrayList<String> customerStrings = system.getPassengerStrings(customers);
+        JList<String> flightList = new JList<>(customerStrings.toArray(new String[0]));
+    
+        flightList.setFont(new Font(flightList.getFont().getName(), Font.PLAIN, 16));
+        flightList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane flightScrollPane = new JScrollPane(flightList);
+        flightScrollPane.setPreferredSize(new Dimension(400, 400));
+    
+        TitledBorder titledBorder = BorderFactory.createTitledBorder(title);
+        flightScrollPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), titledBorder));
+    
+        return flightScrollPane;
+    }
+    
     private JScrollPane createCrewMemberMenu(String title, String username) {
         ArrayList<Flight> flights = system.getFlightsCrewmembers(username);
         ArrayList<String> flightStrings = system.getFlightStrings(flights);

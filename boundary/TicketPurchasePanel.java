@@ -4,12 +4,14 @@ import controller.AircraftController;
 import controller.PaymentController;
 import controller.SystemController;
 import flightInfo.*;
+import role.RegisteredCustomer;
 
 import javax.swing.*;
 
 import com.owen_guldberg.gmailsender.GMailer;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class TicketPurchasePanel extends JPanel {
     private Seat selectedSeat;
@@ -63,7 +65,7 @@ public class TicketPurchasePanel extends JPanel {
 
         JButton purchaseButton = new JButton("Purchase Ticket");
         purchaseButton.addActionListener(e -> handlePurchase(insuranceCheckBox.isSelected(), cardNumberField.getText(), cvvField.getText(),
-        promoCodeField.getText()));
+        promoCodeField.getText(), userEmail, flight));
         add(purchaseButton);
 
         if (paymentController.paymentAvailable()) {
@@ -72,8 +74,14 @@ public class TicketPurchasePanel extends JPanel {
         }
     }
 
-    private void handlePurchase(boolean insuranceSelected, String cardNumber, String cvv, String promoCode) {
+    private void handlePurchase(boolean insuranceSelected, String cardNumber, String cvv, String promoCode, String username, Flight flight) {
         // Implement ticket purchase logic
+        ArrayList<RegisteredCustomer> customers= system.getRegisteredCustomers();
+        for(RegisteredCustomer a : customers){
+            if(a.getEmail().equals(username)){
+                flight.addPassenger(a);
+            }
+        }
         // Update seat availability
         paymentController.setPaymentInfo(cardNumber, cvv);
         paymentController.setTicketPrice(selectedSeat.getPrice(), insuranceSelected);
