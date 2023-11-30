@@ -47,7 +47,8 @@ public class SystemController {
 		return locations;
 	}
 
-	public ArrayList<String> getLocationStrings(ArrayList<Location> locations){
+	public ArrayList<String> getLocationStrings(){
+		ArrayList<Location> locations = getLocations();
 		ArrayList<String> locationStrings = new ArrayList<>();
 		for (Location location : locations) {
 			locationStrings.add(location.toString());
