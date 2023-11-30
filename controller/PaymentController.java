@@ -93,6 +93,7 @@ public class PaymentController {
     public boolean createTicket(boolean insurance, String flightNum) {
         Ticket ticket = new Ticket(seat.getSeatNum(), user.getPayment().getAmountOwed(), flightNum, insurance, departureTime, seat.getSeatClass());
         user.addTicket(ticket);
+        seat.setAvailable(false);
         boolean success = Database.getOnlyInstance().addTicketToDB(ticket, user.getEmail()); // alter to add tickets to database
         if (!success) {
             return false;
@@ -109,7 +110,9 @@ public class PaymentController {
         }
         return null;
     }
-        public boolean deleteTicket(String userEmail, int seatNum) {
+
+    public boolean deleteTicket(String userEmail, int seatNum) {
+        seat.setAvailable(true);
         ArrayList<Ticket> tickets = user.getTickets();
         for (Ticket ticket : tickets) {
             if (ticket.getSeatNum() == seatNum) {
