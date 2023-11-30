@@ -150,39 +150,50 @@ public class GUI extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "Please select a flight first.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    private JPanel createPassengerPage(String username, String flightNumber){
-                JPanel userPage = new JPanel();
-                userPage.setLayout(new BoxLayout(userPage, BoxLayout.Y_AXIS));
-
-                JLabel welcomeLabel = new JLabel("Flight : " +flightNumber+  " Passengers");
-                welcomeLabel.setFont(new Font(welcomeLabel.getFont().getName(), Font.PLAIN, 20));
-                welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-                userPage.add(Box.createVerticalStrut(20));
-                userPage.add(welcomeLabel);
-                userPage.add(Box.createVerticalStrut(20));
-
-                userPage.add(Box.createVerticalStrut(10));
-                JPanel locationMenusPanel = new JPanel();
-                locationMenusPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); 
-                JScrollPane CrewMemberScrollPane = createFlightPassengerMenu("Passengers",flightNumber);
-                locationMenusPanel.add(CrewMemberScrollPane);
-                userPage.add(locationMenusPanel);
-                userPage.add(Box.createVerticalStrut(10));
-
-
-                // Logout or Return to Home Page Button
-                JButton backButton = new JButton("Back");
-                backButton.addActionListener(e -> cardLayout.show(cardPanel, "user"));
-                backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-                userPage.add(backButton);
-
-                actionButton = username.isEmpty() ? new JButton("Return to Home Page") : new JButton("Logout");
-                actionButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-                actionButton.addActionListener(e -> showMainScreen());
-                userPage.add(actionButton);
-                userPage.add(Box.createVerticalStrut(20));
-            return userPage;
+    private JPanel createPassengerPage(String username, String flightNumber) {
+        JPanel userPage = new JPanel();
+        userPage.setLayout(new BoxLayout(userPage, BoxLayout.Y_AXIS));
+    
+        JLabel welcomeLabel = new JLabel("Flight : " + flightNumber + " Passengers");
+        welcomeLabel.setFont(new Font(welcomeLabel.getFont().getName(), Font.PLAIN, 20));
+        welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        userPage.add(Box.createVerticalStrut(20));
+        userPage.add(welcomeLabel);
+        userPage.add(Box.createVerticalStrut(20));
+    
+        userPage.add(Box.createVerticalStrut(10));
+        JPanel locationMenusPanel = new JPanel();
+        locationMenusPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+    
+        JScrollPane CrewMemberScrollPane = createFlightPassengerMenu("Passengers", flightNumber);
+    
+        // Check if there are passengers to display
+        if (CrewMemberScrollPane != null && CrewMemberScrollPane.getComponentCount() > 0) {
+            locationMenusPanel.add(CrewMemberScrollPane);
+            userPage.add(locationMenusPanel);
+            userPage.add(Box.createVerticalStrut(10));
+        } else {
+            // Handle case when there are no passengers
+            JLabel noPassengersLabel = new JLabel("No passengers for this flight.");
+            noPassengersLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            userPage.add(noPassengersLabel);
+            userPage.add(Box.createVerticalStrut(10));
+        }
+    
+        // Logout or Return to Home Page Button
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(e -> cardLayout.show(cardPanel, "user"));
+        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        userPage.add(backButton);
+    
+        actionButton = username.isEmpty() ? new JButton("Return to Home Page") : new JButton("Logout");
+        actionButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        actionButton.addActionListener(e -> showMainScreen());
+        userPage.add(actionButton);
+        userPage.add(Box.createVerticalStrut(20));
+        return userPage;
     }
+    
     private void showMyFlights(String username) {
         PaymentController paymentController = new PaymentController(username, null, "");
         MyFlights myFlightsPanel = new MyFlights(paymentController, username, -1, system, cardPanel, cardLayout);
@@ -194,12 +205,10 @@ public class GUI extends JFrame implements ActionListener {
     
         if (customers == null) {
             // Handle the case where customers is null, for example:
-            JOptionPane.showMessageDialog(null, "No passengers found for the flight", "No Passengers", JOptionPane.INFORMATION_MESSAGE);
             return null; // or return an empty JScrollPane, or handle it in a way that fits your requirements
         }
     
         ArrayList<String> customerStrings = system.getPassengerStrings(customers);
-        System.out.println(customerStrings.get(0));
         JList<String> flightList = new JList<>(customerStrings.toArray(new String[0]));
     
         flightList.setFont(new Font(flightList.getFont().getName(), Font.PLAIN, 16));
@@ -459,6 +468,7 @@ public class GUI extends JFrame implements ActionListener {
 
         // Show user page
         cardLayout.show(cardPanel, "user");
+
     }
     private void showUserPage(String username) {
         // Check if the user panel already exists and remove it
