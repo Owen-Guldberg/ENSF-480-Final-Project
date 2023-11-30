@@ -3,13 +3,14 @@ package boundary;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Register extends JPanel {
     private JTextField firstNameField;
     private JTextField lastNameField;
     private JTextField emailField;
 
-    //private JTextField addressField;
     private JTextField houseNumField;
     private JTextField streetNameField;
     private JTextField cityField;
@@ -19,87 +20,162 @@ public class Register extends JPanel {
     private JPasswordField passwordField;
     private JButton registerButton;
     private JButton backButton;
+    private JButton loginLink;
 
-    public Register(ActionListener registerListener, ActionListener backListener) {
+    public Register(ActionListener registerListener, ActionListener backListener, ActionListener loginListener) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        initializeComponents(registerListener, backListener);
+        setBackground(Color.WHITE);
+        initializeComponents(registerListener, backListener, loginListener);
     }
 
-    private void initializeComponents(ActionListener registerListener, ActionListener backListener) {
+    private void initializeComponents(ActionListener registerListener, ActionListener backListener, ActionListener loginListener) {
+        add(Box.createVerticalStrut(20));
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+    
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 50, 5, 50);
+        gbc.weightx = 1;
+        gbc.gridx = 0;
+
         JLabel titleLabel = new JLabel("Welcome! Create Your Account Below");
-        add(titleLabel);
+        titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.BOLD, 18));
+        titleLabel.setHorizontalAlignment(JLabel.CENTER);
+        gbc.anchor = GridBagConstraints.CENTER;
+        add(titleLabel, gbc);
+
         // Name
         firstNameField = new JTextField(15);
-        addComponent(new JLabel("First Name:"), firstNameField);
-        firstNameField.setMaximumSize(new Dimension(200, 25));
+        JPanel firstNamePanel = createInputPanel("First Name:", firstNameField);
+        add(firstNamePanel, gbc);
 
         lastNameField = new JTextField(15);
-        addComponent(new JLabel("Last Name:"), lastNameField);
-        lastNameField.setMaximumSize(new Dimension(200, 25));
+        JPanel lastNamePanel = createInputPanel("Last Name:", lastNameField);
+        add(lastNamePanel, gbc);
 
         // Email
         emailField = new JTextField(15);
-        addComponent(new JLabel("Email:"), emailField);
-        emailField.setMaximumSize(new Dimension(200, 25));
+        JPanel emailPanel = createInputPanel("Email:", emailField);
+        gbc.anchor = GridBagConstraints.WEST;
+        add(emailPanel, gbc);
 
         // Address
         houseNumField = new JTextField(15);
-        addComponent(new JLabel("House Number:"), houseNumField);
-        houseNumField.setMaximumSize(new Dimension(200, 25));
+        JPanel houseNumPanel = createInputPanel("House Number:", houseNumField);
+        add(houseNumPanel, gbc);
 
         streetNameField = new JTextField(15);
-        addComponent(new JLabel("Street Name:"), streetNameField);
-        streetNameField.setMaximumSize(new Dimension(200, 25));
+        JPanel streetNamePanel = createInputPanel("Street Name:", streetNameField);
+        add(streetNamePanel, gbc);
 
         cityField = new JTextField(15);
-        addComponent(new JLabel("City:"), cityField);
-        cityField.setMaximumSize(new Dimension(200, 25));
+        JPanel cityPanel = createInputPanel("City:", cityField);
+        add(cityPanel, gbc);
 
         countryField = new JTextField(15);
-        addComponent(new JLabel("Country:"), countryField);
-        countryField.setMaximumSize(new Dimension(200, 25));
+        JPanel countryPanel = createInputPanel("Country:", countryField);
+        add(countryPanel, gbc);
 
         postalCodeField = new JTextField(15);
-        addComponent(new JLabel("Postal Code:"), postalCodeField);
-        postalCodeField.setMaximumSize(new Dimension(200, 25));
+        JPanel postalCodePanel = createInputPanel("Postal Code:", postalCodeField);
+        add(postalCodePanel, gbc);
 
         // Password
         passwordField = new JPasswordField(15);
-        addComponent(new JLabel("Password:"), passwordField);
-        passwordField.setMaximumSize(new Dimension(200, 25));
-
-        // Show/Hide password checkbox
+        JPanel passwordPanel = createInputPanel("Password:", passwordField);
+        add(passwordPanel, gbc);
+    
         JCheckBox showPasswordCheckBox = new JCheckBox("Show Password");
-        showPasswordCheckBox.addActionListener(e -> 
-            passwordField.setEchoChar(showPasswordCheckBox.isSelected() ? '\u0000' : '*'));
-        add(showPasswordCheckBox);
+        showPasswordCheckBox.addActionListener(e -> passwordField.setEchoChar(showPasswordCheckBox.isSelected() ? '\u0000' : '*'));
+        gbc.anchor = GridBagConstraints.CENTER;
+        add(showPasswordCheckBox, gbc);
+
+        gbc.anchor = GridBagConstraints.CENTER;
 
         // Buttons
         registerButton = new JButton("Register");
+        styleButton(registerButton);
         registerButton.addActionListener(registerListener);
+        add(registerButton, gbc);
+    
         backButton = new JButton("Back");
+        styleButton(backButton);
         backButton.addActionListener(backListener);
-        addButtons(registerButton, backButton);
+        add(backButton, gbc);
+
+        loginLink = new JButton("Already have an account? Log in");
+        styleLinkButton(loginLink);
+        loginLink.addActionListener(loginListener);
+        add(loginLink, gbc);
+    
+        gbc.weighty = 1;
+        add(Box.createGlue(), gbc);
+
     }
 
-    private void addComponent(JLabel label, JComponent field) {
+    private JPanel createInputPanel(String labelText, JComponent field) {
         JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
-        panel.add(Box.createHorizontalGlue());
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.WHITE);
+    
+        JLabel label = new JLabel(labelText);
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.add(label);
+    
+        field.setMinimumSize(new Dimension(900, 25));
+        field.setAlignmentX(Component.LEFT_ALIGNMENT);
         panel.add(field);
-        panel.add(Box.createHorizontalGlue());
-        add(Box.createVerticalStrut(10));
-        add(label);
-        add(panel);
+    
+        return panel;
     }
 
-    private void addButtons(JButton... buttons) {
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        for (JButton button : buttons) {
-            buttonPanel.add(button);
-        }
-        add(Box.createVerticalStrut(10));
-        add(buttonPanel);
+    private void styleButton(JButton button) {
+        Color color = new Color(0, 102, 204);
+        button.setBackground(color); // Blue background
+        button.setForeground(Color.WHITE); // White text
+        button.setFocusPainted(false);
+        button.setFont(new Font(button.getFont().getName(), Font.BOLD, 16));
+        button.setOpaque(true);
+        button.setBorderPainted(false);
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(color.darker());
+            }
+    
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(color);
+            }
+        });
+    }
+
+    private void styleLinkButton(JButton button) {
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+        button.setFocusPainted(false);
+        button.setOpaque(false);
+        button.setForeground(new Color(0, 102, 204)); // Blue color
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        button.setFont(new Font(button.getFont().getName(), Font.PLAIN, 16));
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        button.setText("<html><span style='text-decoration: none;'>" + button.getText() + "</span></html>");
+
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setText("<html><span style='text-decoration: underline;'>" + button.getText().replaceAll("<[^>]*>", "") + "</span></html>");
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setText("<html><span style='text-decoration: none;'>" + button.getText().replaceAll("<[^>]*>", "") + "</span></html>");
+            }
+        });
     }
 
     // Getters
