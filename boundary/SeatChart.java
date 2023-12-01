@@ -28,12 +28,16 @@ public class SeatChart extends JPanel {
         this.cardLayout = cardLayout;
         this.system = system;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBackground(Color.WHITE);
+        add(Box.createVerticalStrut(20));
 
         JLabel seatChartLabel = new JLabel("Seat Chart");
         seatChartLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        seatChartLabel.setFont(new Font(seatChartLabel.getFont().getName(), Font.BOLD, 18));
 
         JPanel seatsPanel = new JPanel(new GridLayout(0, 4)); // 4 seats per row
         seatsPanel.setPreferredSize(new Dimension(900, 600));
+        seatsPanel.setBackground(Color.WHITE);
 
         for (Seat seat : seats) {
             JButton seatButton = new JButton();
@@ -49,8 +53,10 @@ public class SeatChart extends JPanel {
         // Create a wrapper panel with FlowLayout
         JPanel wrapperPanel = new JPanel();
         wrapperPanel.add(seatsPanel);
+        wrapperPanel.setBackground(Color.WHITE);
 
         add(seatChartLabel);
+        add(Box.createVerticalStrut(20));
         add(wrapperPanel);
         addLegend();
     }
@@ -80,6 +86,7 @@ public class SeatChart extends JPanel {
     // Method to add a legend for seat colors
     public void addLegend() {
         JPanel legendPanel = new JPanel();
+        legendPanel.setBackground(Color.WHITE);
         legendPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
         JPanel availableBox = createLegendBox("Available", lightGreen);
