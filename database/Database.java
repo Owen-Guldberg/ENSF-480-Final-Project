@@ -647,6 +647,48 @@ private void readRegisteredUsers() throws SQLException{
         return success;
     }
 
+    public boolean updateFlight(Flight f){
+        boolean success = false; 
+        try{
+            String query = "UPDATE FLIGHTS SET FlightDate = ?, Origin = ?, Destination = ?, Aircraft= ?, DepartureTime = ?, ArrivalTime = ?, FlightTime = ? WHERE FlightNum = ?";
+            
+            PreparedStatement myStmt = dbConnection.prepareStatement(query);
+   
+               myStmt.setString(8, f.getFlightNum());
+               myStmt.setString(1, f.getFlightDate());
+               myStmt.setString(2, f.getOrigin().getAirportName());
+               myStmt.setString(3, f.getDestination().getAirportName());
+               myStmt.setString(4, f.getAircraft().getName());
+               myStmt.setString(5, f.getDepartureTime());
+               myStmt.setString(6, f.getArrivalTime());
+               myStmt.setString(7, f.getFlightTime());
+
+               int rowCount = myStmt.executeUpdate();
+               if(rowCount == 0)
+               {
+                 return false;
+               }
+               else{
+                    success = true;
+                    //flights.add(f); 
+                    for (int i = 0; i < flights.size(); i++){
+                        if (flights.get(i).getFlightNum().equals(f.getFlightNum()) == true){
+                            flights.remove(i); 
+                            flights.add(f);
+                        }
+                    }
+                    // flights.clear();
+                    // readFlightData();
+                }
+                myStmt.close();
+
+        }
+        catch(SQLException ex){
+            ex.printStackTrace();
+        }
+        return success;
+    }
+
     /*
     Adds flight objects to the database - useful for admin 
      * @param f the Flight object to be added
@@ -695,13 +737,13 @@ private void readRegisteredUsers() throws SQLException{
     public boolean addAircraftToDB(Aircraft a){
         boolean success = false; 
         try{
-            String query = "INSERT INTO AIRCRAFT(Name, Capacity) "
-                + "VALUES(?,?)";
+            String query = "INSERT INTO AIRCRAFT(AircraftID, Name, Capacity) "
+                + "VALUES(?,?,?)";
             
             PreparedStatement myStmt = dbConnection.prepareStatement(query);
-   
-               myStmt.setString(1, a.getName());
-               myStmt.setInt(2, a.getCapacity());
+                myStmt.setInt(1, a.getId());
+               myStmt.setString(2, a.getName());
+               myStmt.setInt(3, a.getCapacity());
 
                int rowCount = myStmt.executeUpdate();
                if(rowCount == 0)
@@ -719,6 +761,34 @@ private void readRegisteredUsers() throws SQLException{
             }
             return success;
         }
+
+    public boolean deleteAircraft(Aircraft a){
+            boolean success = false; 
+            try{
+                String query = "DELETE FROM AIRCRAFT WHERE AircraftID = ?";
+                
+                PreparedStatement myStmt = dbConnection.prepareStatement(query);
+       
+                   myStmt.setString(1, Integer.toString(a.getId()));
+    
+                   int rowCount = myStmt.executeUpdate();
+                   if(rowCount == 0)
+                   {
+                     return false;
+                   }
+                   else{
+                        success = true;
+                        aircrafts.clear();
+                        readAircraftData();
+                        //aircrafts.add(a); 
+                    }
+                    myStmt.close();
+                }
+                catch(SQLException ex){
+                    ex.printStackTrace();
+                }
+                return success;
+            }
     
     /**
      * Gets the URL of the database.
