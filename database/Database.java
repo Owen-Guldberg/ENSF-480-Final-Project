@@ -311,25 +311,42 @@ private void readRegisteredUsers() throws SQLException{
                 // Create a Ticket object using the retrieved data
 
                 Ticket tmp = new Ticket(seatNum, price, flightNumber, insurance, departureTime, seatClass);
-                
-                for (int i = 0; i < registeredUsers.size(); i++){
-                    if(registeredUsers.get(i).getEmail().equals(clientEmail) == true){
-                        for(int j = 0; j < registeredUsers.get(i).getTickets().size(); j++){
-                                if(registeredUsers.get(i).getTickets().get(j).getSeatNum() != tmp.getSeatNum() && registeredUsers.get(i).getTickets().get(j).getFlightNumber() != tmp.getFlightNumber()){
-                                    registeredUsers.get(i).addTicket(tmp);
+                for (int i = 0; i < registeredUsers.size(); i++) {
+                    if (registeredUsers.get(i).getEmail().equals(clientEmail)) {
+                        if (registeredUsers.get(i).getTickets().isEmpty()) {
+                            passengerHelper(flightNumber, registeredUsers.get(i));
+                            registeredUsers.get(i).addTicket(tmp);
+                        } else {
+                            boolean ticketExists = false;
+                            for (int j = 0; j < registeredUsers.get(i).getTickets().size(); j++) {
+                                if (registeredUsers.get(i).getTickets().get(j).getSeatNum() == tmp.getSeatNum() && registeredUsers.get(i).getTickets().get(j).getFlightNumber().equals(tmp.getFlightNumber())) {
+                                    ticketExists = true;
+                                    break;
                                 }
+                            }
+                            if (!ticketExists) {
+                                registeredUsers.get(i).addTicket(tmp);
+                                passengerHelper(flightNumber, registeredUsers.get(i));
+                            }
                         }
                     }
                 }
                 // Add the Ticket object to your list or perform any other necessary operations
                 this.tickets.add(tmp);
             }
+            
             myStmt.close();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
     }
-    
+    private void passengerHelper(String flightNum, RegisteredCustomer passenger){
+        for(Flight f : flights){
+            if(f.getFlightNum().equals(flightNum)){
+                f.addPassenger(passenger);
+            }
+        }
+    }
     public ArrayList<Ticket> getTicketData(){
         tickets.clear();
         readTicketData();
@@ -363,7 +380,8 @@ private void readRegisteredUsers() throws SQLException{
                     tickets.add(t); 
                     for (int i = 0; i < registeredUsers.size(); i++){
                         if(registeredUsers.get(i).getEmail().equals(userEmail) == true){
-                            //registeredUsers.get(i).addTicket(t);
+                            // passengerHelper(t.getFlightNumber(), registeredUsers.get(i));
+                            break;
                         }
                     }
                 }
@@ -393,6 +411,16 @@ private void readRegisteredUsers() throws SQLException{
                }
                else{
                 success = true;
+                }
+                RegisteredCustomer registerd = null;
+                for(RegisteredCustomer reg:registeredUsers){
+                    if(reg.getEmail().equals(userEmail)){registerd = reg;}
+                    
+                }
+                for(Flight f : flights){
+                    if (f.getFlightNum().equals(t.getFlightNumber())){
+                        f.getPassengers().remove(registerd);
+                    }
                 }
                 myStmt.close();
                 tickets.clear();
@@ -530,7 +558,9 @@ private void readRegisteredUsers() throws SQLException{
             flights.clear();
             readFlightData();
             crew.clear(); 
-            readCrewMemberData(); 
+            readCrewMemberData();
+            tickets.clear();
+            readTicketData();
         }
         catch(SQLException e){
             e.printStackTrace();
@@ -576,8 +606,7 @@ private void readRegisteredUsers() throws SQLException{
                 registeredUsers.add(r); 
                 }
                 myStmt.close();
-                registeredUsers.clear();
-                readRegisteredUsers();
+
 
         }
         catch(SQLException ex){
@@ -730,3 +759,4 @@ private void readRegisteredUsers() throws SQLException{
         }
     }
 }
+
