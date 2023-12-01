@@ -88,8 +88,13 @@ public class MyFlights extends JPanel {
         // Implement cancellation logic
         // Remove ticket from user's list and update in database
         // Show confirmation message
-        
-        
+        for(int i = 0 ; i < systemController.getFlightByNum(ticket.getFlightNumber()).getAircraft().getSeats().size(); i++){
+            if(systemController.getFlightByNum(ticket.getFlightNumber()).getAircraft().getSeats().get(i).getSeatNum() == ticket.getSeatNum()){
+                systemController.getFlightByNum(ticket.getFlightNumber()).getAircraft().getSeats().get(i).setAvailable(true);
+            }
+
+        }
+
         systemController.getUserByEmail(userEmail).removeTicket(ticket);
         systemController.getFlightByNum(ticket.getFlightNumber()).getPassengers().remove(systemController.getUserByEmail(userEmail));
 
@@ -99,3 +104,4 @@ public class MyFlights extends JPanel {
         refreshPanel();
     }
 }
+
