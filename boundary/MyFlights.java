@@ -45,9 +45,8 @@ public class MyFlights extends JPanel {
         JLabel titleLabel = new JLabel("My Flights");
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(titleLabel);
-
-        ArrayList<Ticket> tickets = systemController.getTickets();
-        System.out.println(tickets.size());
+        RegisteredCustomer customer = systemController.getUserByEmail(userEmail);
+        ArrayList<Ticket> tickets = customer.getTickets();
         if (tickets.isEmpty()) {
             add(new JLabel("No flights booked."));
         } else {
