@@ -314,7 +314,11 @@ private void readRegisteredUsers() throws SQLException{
                 
                 for (int i = 0; i < registeredUsers.size(); i++){
                     if(registeredUsers.get(i).getEmail().equals(clientEmail) == true){
-                        registeredUsers.get(i).addTicket(tmp);
+                        for(int j = 0; j < registeredUsers.get(i).getTickets().size(); i++){
+                                if(registeredUsers.get(i).getTickets().get(j).getSeatNum() != tmp.getSeatNum() && registeredUsers.get(i).getTickets().get(j).getFlightNumber() != tmp.getFlightNumber()){
+                                    registeredUsers.get(i).addTicket(tmp);
+                                }
+                        }
                     }
                 }
                 // Add the Ticket object to your list or perform any other necessary operations
