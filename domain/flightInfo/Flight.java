@@ -136,13 +136,13 @@ public class Flight {
     }
 
     public String toString() {
-        return "<html>Flight Number: " + getFlightNum() +
-           "<br>Date: " + getFlightDate() +
-           "<br>Origin: " + getOrigin().toString() +
-           "<br>Destination: " + getDestination().toString() +
-           "<br>Departure Time: " + getDepartureTime() +
-           "<br>Arrival Time: " + getArrivalTime() +
-           "<br>Flight Duration: " + getFlightTime() +
+        return "<html><u>Flight Number:</u> " + getFlightNum() +
+           "<br><u>Date:</u> " + getFlightDate() +
+           "<br><u>Origin:</u> " + getOrigin().toString() +
+           "<br><u>Destination:</u> " + getDestination().toString() +
+           "<br><u>Departure Time:</u> " + getDepartureTime() +
+           "<br><u>Arrival Time:</u> " + getArrivalTime() +
+           "<br><u>Flight Duration:</u> " + getFlightTime() +
            "<br></html>";
     }
 }
