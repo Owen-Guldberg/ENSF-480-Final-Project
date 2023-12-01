@@ -138,11 +138,27 @@ public class SystemController {
 	}
 
 	// get tickets
-	public ArrayList<Ticket> getTickets(){
-		tickets.clear();
-		tickets = Database.getOnlyInstance().getTicketData();
-		return tickets;
-	}
+    public ArrayList<Ticket> getTickets() {
+        ArrayList<Ticket> newTickets = Database.getOnlyInstance().getTicketData();
+
+        for (Ticket newTicket : newTickets) {
+            if (!containsTicket(newTicket)) {
+                tickets.add(newTicket);
+            }
+        }
+
+        return tickets;
+    }
+
+    private boolean containsTicket(Ticket newTicket) {
+        for (Ticket existingTicket : tickets) {
+            if (existingTicket.getSeatNum() == newTicket.getSeatNum() && existingTicket.getFlightNumber().equals(newTicket.getFlightNumber())) {
+                return true; // Ticket with the same seat number and flight number already exists
+            }
+        }
+        return false; // Ticket is unique based on seat number and flight number
+    }
+
 
 		public static void main(String[] args) {
 		SystemController system = new SystemController();
@@ -166,5 +182,7 @@ public class SystemController {
 	}
 	
 }
+
+
 
 
