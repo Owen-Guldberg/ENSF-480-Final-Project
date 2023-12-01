@@ -47,6 +47,9 @@ public class MyFlights extends JPanel {
         add(titleLabel);
         RegisteredCustomer customer = systemController.getUserByEmail(userEmail);
         ArrayList<Ticket> tickets = customer.getTickets();
+
+
+        // issue is now with cancel
         if (tickets.isEmpty()) {
             add(new JLabel("No flights booked."));
         } else {
@@ -94,15 +97,14 @@ public class MyFlights extends JPanel {
 
         }
         paymentController.deleteTicket(userEmail, ticket.getSeatNum());
+        systemController.getFlightByNum(ticket.getFlightNumber()).getPassengers().remove(systemController.getUserByEmail(userEmail));
 
         systemController.getUserByEmail(userEmail).removeTicket(ticket);
-        systemController.getFlightByNum(ticket.getFlightNumber()).getPassengers().remove(systemController.getUserByEmail(userEmail));
 
         JOptionPane.showMessageDialog(this, "Ticket cancelled successfully.");
         // Refresh the MyFlights panel to update the list of tickets
         refreshPanel();
     }
 }
-
 
 
