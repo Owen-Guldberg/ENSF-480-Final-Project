@@ -204,12 +204,12 @@ public class GUI extends JFrame implements ActionListener {
     }
     private JScrollPane createFlightPassengerMenu(String title, String flightnumber) {
         ArrayList<RegisteredCustomer> customers = system.getFlightsPassengers(flightnumber);
-    
         if (customers == null) {
             // Handle the case where customers is null, for example:
             return null; // or return an empty JScrollPane, or handle it in a way that fits your requirements
         }
-    
+            System.out.println(customers.size());
+
         ArrayList<String> customerStrings = system.getPassengerStrings(customers);
         JList<String> flightList = new JList<>(customerStrings.toArray(new String[0]));
     
