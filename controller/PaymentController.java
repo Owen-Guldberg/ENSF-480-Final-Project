@@ -112,7 +112,6 @@ public class PaymentController {
     }
 
     public boolean deleteTicket(String userEmail, int seatNum) {
-        seat.setAvailable(true);
         ArrayList<Ticket> tickets = user.getTickets();
         for (Ticket ticket : tickets) {
             if (ticket.getSeatNum() == seatNum) {
@@ -129,15 +128,18 @@ public class PaymentController {
                 emailBody += "\nWe look forward to serving you on board and providing you with a great travel experience.\n\n" +
                         "Best regards,\n" +
                         "The Skyward Bound Team";
-                Database.getOnlyInstance().deleteTicketFromDB(ticket, userEmail);
                 try {
                     GMailer gMailer = new GMailer();
                 
                     System.out.println(emailBody);
+
                     gMailer.sendMail(userEmail, emailSubject, emailBody);
              } catch (Exception e) {
                         e.printStackTrace();
                     }
+
+                Database.getOnlyInstance().deleteTicketFromDB(ticket, userEmail);
+
                 return true;
             }
         }
@@ -145,3 +147,4 @@ public class PaymentController {
         return false;
     }
 }
+
