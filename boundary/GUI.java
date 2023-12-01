@@ -128,9 +128,10 @@ public class GUI extends JFrame implements ActionListener {
 
     private void handleViewPassengers(String username) {
         String selectedFlight = flightList.getSelectedValue();
+        System.out.println(selectedFlight);
         if (selectedFlight != null) {
             // Use regular expression to extract the flight number
-            String regex = "Flight Number: (SB-\\d+)";
+            String regex = "Flight Number:</u> (SB-\\d+)";
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(selectedFlight);
 
