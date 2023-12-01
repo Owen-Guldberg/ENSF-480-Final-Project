@@ -262,22 +262,28 @@ public class GUI extends JFrame implements ActionListener {
     private JPanel createFlightsPanel() {
         JPanel flightsPanel = new JPanel();
         flightsPanel.setLayout(new BoxLayout(flightsPanel, BoxLayout.Y_AXIS));
+        flightsPanel.setBackground(Color.WHITE);
         
         flightsPanel.add(Box.createVerticalStrut(20));
-        JLabel flightsLabel = new JLabel("Browse Flights");
-        flightsLabel.setFont(new Font(flightsLabel.getFont().getName(), Font.PLAIN, 20));
+        JLabel flightsLabel = new JLabel("Browse Flights", SwingConstants.CENTER);
+        flightsLabel.setFont(new Font(flightsLabel.getFont().getName(), Font.BOLD, 18));
         flightsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        flightsPanel.add(flightsLabel);
+        //flightsPanel.add(flightsLabel);
+        flightsPanel.add(flightsLabel, BorderLayout.NORTH);
+
         flightsPanel.add(Box.createVerticalStrut(20));
 
         JScrollPane flightsScrollPane = createFlightMenu("Flights");
-        flightsScrollPane.setMaximumSize(new Dimension(900, 600));
-        flightsPanel.add(flightsScrollPane);
-        flightsPanel.add(Box.createVerticalStrut(40));
+        flightsScrollPane.setMaximumSize(new Dimension(900, 600)); // Set preferred size
+        flightsPanel.add(flightsScrollPane, BorderLayout.CENTER); // Add the scroll pane to the center
     
+        flightsPanel.add(Box.createVerticalStrut(20));
         JButton backButton = new JButton("Back");
+        styleButton(backButton);
+        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         backButton.addActionListener(e -> cardLayout.show(cardPanel, "user"));
         flightsPanel.add(backButton);
+        flightsPanel.add(Box.createVerticalStrut(20));
 
         return flightsPanel;
     }
@@ -291,12 +297,14 @@ public class GUI extends JFrame implements ActionListener {
             JButton flightButton = new JButton(flightNum);
             flightButton.setMaximumSize(new Dimension(900, 30)); // Set maximum size for uniformity
             flightButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+            styleButton(flightButton);
     
             flightButton.addActionListener(e -> handleSelectedFlight(flightNum));
     
             flightsPanel.add(flightButton);
             flightsPanel.add(Box.createVerticalStrut(5)); // Spacing between buttons
         }
+        flightsPanel.setMinimumSize(new Dimension(900, flightsPanel.getPreferredSize().height));
     
         JScrollPane scrollPane = new JScrollPane(flightsPanel);
         TitledBorder titledBorder = BorderFactory.createTitledBorder(menuTitle);
@@ -321,9 +329,11 @@ public class GUI extends JFrame implements ActionListener {
     private JPanel createFlightInfoPanel(String flightNum) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.WHITE);
+
         String flightInfo = system.getFlightByNum(flightNum).toString();
         JLabel infoLabel = new JLabel("Flight Information");
-        infoLabel.setFont(new Font(infoLabel.getFont().getName(), Font.PLAIN, 20));
+        infoLabel.setFont(new Font(infoLabel.getFont().getName(), Font.BOLD, 18));
         infoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JPanel infoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -341,12 +351,15 @@ public class GUI extends JFrame implements ActionListener {
         panel.add(Box.createVerticalStrut(20));
 
         JButton viewSeatsButton = new JButton("View Seats");
+        styleButton(viewSeatsButton);
         viewSeatsButton.addActionListener(e -> showSeatChart(flightNum));
 
         JButton backButton = new JButton("Back");
+        styleButton(backButton);
         backButton.addActionListener(e -> cardLayout.show(cardPanel, "flightsPanel"));
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setBackground(Color.WHITE);
         buttonPanel.add(viewSeatsButton);
         buttonPanel.add(backButton);
         panel.add(buttonPanel);
@@ -903,6 +916,29 @@ public class GUI extends JFrame implements ActionListener {
             // User chose to go back
             // Do nothing or add any additional logic as needed
         }
+    }
+
+    private void styleButton(JButton button) {
+        Color color = new Color(0, 102, 204);
+        button.setBackground(color); // Blue background
+        button.setForeground(Color.WHITE); // White text
+        button.setFocusPainted(false);
+        button.setFont(new Font(button.getFont().getName(), Font.BOLD, 16));
+        button.setOpaque(true);
+        button.setBorderPainted(false);
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(color.darker());
+            }
+    
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(color);
+            }
+        });
     }
     
     @Override
