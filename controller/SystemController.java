@@ -178,6 +178,10 @@ public class SystemController {
 	public boolean deleteAircraft(Aircraft a) {
 		return Database.getOnlyInstance().deleteAircraft(a);
 	}
+
+	public boolean modifyFlight(Flight f) {
+		return Database.getOnlyInstance().updateFlight(f);
+	}
 	
 }
 

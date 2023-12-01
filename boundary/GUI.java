@@ -38,6 +38,7 @@ public class GUI extends JFrame implements ActionListener {
     private JButton viewAllFlightsButton; // View flighst as admin
     private JScrollPane allFlightsScrollPane; // View flights as admin
     private JList<String> flightList;
+    private JList<String> allFlightsList;
     private String currentEmail; // Track username of currently logged in user
     private String selectedOriginName;
     private String selectedDestinationName;
@@ -907,13 +908,13 @@ public class GUI extends JFrame implements ActionListener {
         allFlightsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     
         // Add ListSelectionListener to the flight list
-        allFlightsList.addListSelectionListener(new ListSelectionListener() {
+        allFlightsList.addMouseListener(new MouseAdapter() {
             @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) { // Double-click
                     int selectedIndex = allFlightsList.getSelectedIndex();
                     if (selectedIndex != -1) {
-                        handleSelectedAdminFlight(allFlights.get(selectedIndex));
+                        showFlightOptionsDialog(allFlights.get(selectedIndex));
                         allFlightsList.clearSelection(); // Deselect the item after handling
                     }
                 }
@@ -932,7 +933,7 @@ public class GUI extends JFrame implements ActionListener {
         // Add the "Add Flight" button
         JButton addFlightButton = new JButton("Add Flight");
         addFlightButton.addActionListener(e -> showAddFlightPage());
-        
+    
         JPanel allFlightsPanel = new JPanel();
         allFlightsPanel.setLayout(new BoxLayout(allFlightsPanel, BoxLayout.Y_AXIS));
         allFlightsPanel.add(allFlightsScrollPane);
@@ -945,35 +946,136 @@ public class GUI extends JFrame implements ActionListener {
         cardLayout.show(cardPanel, "allFlightsPanel");
     }
     
-    private void handleSelectedAdminFlight(Flight selectedFlight) {
+    
+    private void showFlightOptionsDialog(Flight selectedFlight) {
+        String[] options = {"Cancel Flight", "Modify Flight", "Back"};
+    
         int choice = JOptionPane.showOptionDialog(
                 this,
-                "Do you want to cancel the flight?",
-                "Cancel Flight",
-                JOptionPane.YES_NO_OPTION,
+                "What do you want to do with the flight?",
+                "Flight Options",
+                JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,
-                new Object[]{"Cancel flight", "Back"},
-                "Back");
+                options,
+                options[2]);
     
-        if (choice == JOptionPane.YES_OPTION) {
-            // User chose to cancel the flight
-            boolean cancellationSuccess = system.cancelFlight(selectedFlight);
+        switch (choice) {
+            case JOptionPane.YES_OPTION:
+                // User chose to cancel the flight
+                handleCancelAdminFlight(selectedFlight);
+                break;
     
-            if (cancellationSuccess) {
-                // Cancellation successful
-                JOptionPane.showMessageDialog(this, "Flight canceled successfully.");
+            case JOptionPane.NO_OPTION:
+                // User chose to modify the flight
+                handleModifyAdminFlight(selectedFlight);
+                break;
     
-                // Navigate back to the "Show All Flights" page
+            default:
+                // User chose to go back or closed the dialog
+                // Do nothing or add any additional logic as needed
+                break;
+        }
+    }
+    
+    private void handleCancelAdminFlight(Flight selectedFlight) {
+        boolean cancellationSuccess = system.cancelFlight(selectedFlight);
+    
+        if (cancellationSuccess) {
+            // Cancellation successful
+            JOptionPane.showMessageDialog(this, "Flight canceled successfully.");
+    
+            // Recreate the list of flights and update the UI
+            showAllFlights();
+        } else {
+            // Cancellation failed
+            JOptionPane.showMessageDialog(this, "Failed to cancel the flight.");
+        }
+    }
+
+    private void handleModifyAdminFlight(Flight selectedFlight) {
+        // Create a new panel for flight modification
+        JPanel modifyPanel = new JPanel();
+        modifyPanel.setLayout(new GridLayout(5, 2, 10, 10));
+    
+        // Labels and text fields for modification options
+        JLabel departureLabel = new JLabel("Departure Time:");
+        JTextField departureField = new JTextField(selectedFlight.getDepartureTime());
+    
+        JLabel arrivalLabel = new JLabel("Arrival Time:");
+        JTextField arrivalField = new JTextField(selectedFlight.getArrivalTime());
+    
+        JLabel dateLabel = new JLabel("Date (yyyy-MM-dd):");
+        JTextField dateField = new JTextField(selectedFlight.getFlightDate());
+    
+        JLabel flightTimeLabel = new JLabel("Flight Time (hh:mm):");
+        JTextField flightTimeField = new JTextField(selectedFlight.getFlightTime());
+    
+        // Add labels and text fields to the panel
+        modifyPanel.add(departureLabel);
+        modifyPanel.add(departureField);
+        modifyPanel.add(arrivalLabel);
+        modifyPanel.add(arrivalField);
+        modifyPanel.add(dateLabel);
+        modifyPanel.add(dateField);
+        modifyPanel.add(flightTimeLabel);
+        modifyPanel.add(flightTimeField);
+    
+        // Create a button for flight modification
+        JButton modifyButton = new JButton("Modify Flight");
+        styleButton(modifyButton); // Assuming you have a styleButton method
+    
+        // Add action listener to the modify button
+        modifyButton.addActionListener(e -> {
+            // Get the modified values from text fields
+            String newDepartureTime = departureField.getText();
+            String newArrivalTime = arrivalField.getText();
+            String newDate = dateField.getText();
+            String newFlightTime = flightTimeField.getText();
+    
+            // Perform flight modification (update system, database, etc.)
+            Flight modifiedFlight = new Flight(
+                    selectedFlight.getOrigin(),
+                    selectedFlight.getDestination(),
+                    selectedFlight.getFlightNum(),
+                    newDate,
+                    newDepartureTime,
+                    newArrivalTime,
+                    newFlightTime,
+                    selectedFlight.getAircraft()
+            );
+    
+            boolean modificationSuccess = system.modifyFlight(modifiedFlight);
+    
+            if (modificationSuccess) {
+                // Modification successful
+                JOptionPane.showMessageDialog(this, "Flight modified successfully.");
+    
+                // Close the modification panel
+                ((Window) SwingUtilities.getRoot(modifyPanel)).dispose();
+    
+                // Update the list of flights and refresh the UI
                 showAllFlights();
             } else {
-                // Cancellation failed
-                JOptionPane.showMessageDialog(this, "Failed to cancel the flight.");
+                // Modification failed
+                JOptionPane.showMessageDialog(this, "Failed to modify the flight. Please check the input.");
             }
-        } else {
-            // User chose to go back
-            // Do nothing or add any additional logic as needed
-        }
+        });
+    
+        // Add the modify button to the panel
+        modifyPanel.add(modifyButton);
+    
+        // Show the modification panel in a dialog
+        JOptionPane.showOptionDialog(
+                this,
+                modifyPanel,
+                "Modify Flight",
+                JOptionPane.DEFAULT_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                new Object[]{},
+                null
+        );
     }
 
     private void styleButton(JButton button) {
