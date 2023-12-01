@@ -65,6 +65,7 @@ public class SystemController {
 		return f;
 	}
 	public ArrayList<RegisteredCustomer> getFlightsPassengers(String flightnumer){
+
 		for(Flight f : flights){
 			if(f.getFlightNum().equals(flightnumer)){
 				return f.getPassengers();
@@ -139,13 +140,6 @@ public class SystemController {
 
 	// get tickets
     public ArrayList<Ticket> getTickets() {
-        ArrayList<Ticket> newTickets = Database.getOnlyInstance().getTicketData();
-
-        for (Ticket newTicket : newTickets) {
-            if (!containsTicket(newTicket)) {
-                tickets.add(newTicket);
-            }
-        }
 
         return tickets;
     }
@@ -182,6 +176,8 @@ public class SystemController {
 	}
 	
 }
+
+
 
 
 
