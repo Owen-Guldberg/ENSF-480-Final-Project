@@ -59,7 +59,7 @@ public class Ticket {
     }
 
     public String toString() {
-        return "<html>Seat Number: " + seatNum + "<br>Price: $" + String.format("%.2f", price) + "<br>Departure Time: " + departureTime + "<br>Class: " + classSeat + "<br>Cancellation Insurance: " + (hasCancellationInsurance ? "Yes" : "No"+ "</html>");
+        return "<html><u>Seat Number:</u> " + seatNum + "<br><u>Price:</u> $" + String.format("%.2f", price) + "<br><u>Departure Time:</u> " + departureTime + "<br><u>Class:</u> " + classSeat + "<br><u>Cancellation Insurance:</u> " + (hasCancellationInsurance ? "Yes" : "No"+ "</html>");
     }
 }
 
