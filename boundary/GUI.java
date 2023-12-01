@@ -343,12 +343,18 @@ public class GUI extends JFrame implements ActionListener {
         JLabel infoLabel2 = new JLabel(flightInfo);
         infoLabel2.setFont(new Font(infoLabel.getFont().getName(), Font.PLAIN, 16));
 
-        panel.add(Box.createVerticalStrut(20));
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("airline.png"));
+        JLabel label = new JLabel(imageIcon);
+        label.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        panel.add(Box.createVerticalStrut(30));
         panel.add(infoLabel);
-        panel.add(Box.createVerticalStrut(10));
+        panel.add(Box.createVerticalStrut(30));
         infoPanel.add(infoLabel2);
+        infoPanel.setMaximumSize(new Dimension(800, 80));
         panel.add(infoPanel);
-        panel.add(Box.createVerticalStrut(20));
+        panel.add(label);
+        panel.add(Box.createVerticalStrut(30));
 
         JButton viewSeatsButton = new JButton("View Seats");
         styleButton(viewSeatsButton);
