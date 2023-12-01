@@ -93,14 +93,16 @@ public class MyFlights extends JPanel {
             }
 
         }
+        paymentController.deleteTicket(userEmail, ticket.getSeatNum());
 
         systemController.getUserByEmail(userEmail).removeTicket(ticket);
         systemController.getFlightByNum(ticket.getFlightNumber()).getPassengers().remove(systemController.getUserByEmail(userEmail));
 
         JOptionPane.showMessageDialog(this, "Ticket cancelled successfully.");
-        paymentController.deleteTicket(userEmail, ticket.getSeatNum());
         // Refresh the MyFlights panel to update the list of tickets
         refreshPanel();
     }
 }
+
+
 
