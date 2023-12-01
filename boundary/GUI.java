@@ -1042,8 +1042,9 @@ public class GUI extends JFrame implements ActionListener {
                     newDepartureTime,
                     newArrivalTime,
                     newFlightTime,
-                    selectedFlight.getAircraft()
-            );
+                    selectedFlight.getAircraft(),
+                    selectedFlight.getCrewMembers(),
+                    selectedFlight.getPassengers());
     
             boolean modificationSuccess = system.modifyFlight(modifiedFlight);
     

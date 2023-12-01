@@ -651,43 +651,57 @@ private void readRegisteredUsers() throws SQLException{
         return success;
     }
 
-    public boolean updateFlight(Flight f){
-        boolean success = false; 
-        try{
+    public boolean updateFlight(Flight f) {
+        boolean success = false;
+        try {
             String query = "UPDATE FLIGHTS SET FlightDate = ?, Origin = ?, Destination = ?, Aircraft= ?, DepartureTime = ?, ArrivalTime = ?, FlightTime = ? WHERE FlightNum = ?";
-            
+                
             PreparedStatement myStmt = dbConnection.prepareStatement(query);
-   
-               myStmt.setString(8, f.getFlightNum());
-               myStmt.setString(1, f.getFlightDate());
-               myStmt.setString(2, f.getOrigin().getAirportName());
-               myStmt.setString(3, f.getDestination().getAirportName());
-               myStmt.setString(4, f.getAircraft().getName());
-               myStmt.setString(5, f.getDepartureTime());
-               myStmt.setString(6, f.getArrivalTime());
-               myStmt.setString(7, f.getFlightTime());
-
-               int rowCount = myStmt.executeUpdate();
-               if(rowCount == 0)
-               {
-                 return false;
-               }
-               else{
-                    success = true;
-                    //flights.add(f); 
-                    for (int i = 0; i < flights.size(); i++){
-                        if (flights.get(i).getFlightNum().equals(f.getFlightNum()) == true){
-                            flights.remove(i); 
-                            flights.add(f);
+       
+            myStmt.setString(8, f.getFlightNum());
+            myStmt.setString(1, f.getFlightDate());
+            myStmt.setString(2, f.getOrigin().getAirportName());
+            myStmt.setString(3, f.getDestination().getAirportName());
+            myStmt.setString(4, f.getAircraft().getName());
+            myStmt.setString(5, f.getDepartureTime());
+            myStmt.setString(6, f.getArrivalTime());
+            myStmt.setString(7, f.getFlightTime());
+    
+            int rowCount = myStmt.executeUpdate();
+            if (rowCount == 0) {
+                return false;
+            } else {
+                success = true;
+                
+                // Notify passengers about the flight update if passengers list is not null
+                if (f.getPassengers() != null) {
+                    for (RegisteredCustomer passenger : f.getPassengers()) {
+                        try {
+                            GMailer gMailer = new GMailer();
+                            String flightNum = f.getFlightNum();
+                            String flightDate = f.getFlightDate();
+                            String destination = f.getDestination().getCity();
+                            String origin = f.getOrigin().getCity();
+                            String emailSubject = "Flight Update Notification";
+                            String emailBody = "Hello,\n\n"
+                                    + "We want to inform you that there have been updates to your flight ("
+                                    + flightNum + ") on " + flightDate + " from "
+                                    + origin + " to " + destination
+                                    + ".\n\n"
+                                    + "Please review the changes and make any necessary adjustments to your travel plans.\n\n"
+                                    + "We look forward to serving you on board and providing you with a great travel experience.\n\n"
+                                    + "Best regards,\n"
+                                    + "The Skyward Bound Team";
+                        
+                            gMailer.sendMail(passenger.getEmail(), emailSubject, emailBody);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
-                    // flights.clear();
-                    // readFlightData();
                 }
-                myStmt.close();
-
-        }
-        catch(SQLException ex){
+            }
+            myStmt.close();
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return success;
