@@ -48,18 +48,18 @@ VALUES
 
 DROP TABLE IF EXISTS AIRCRAFT;
 CREATE TABLE AIRCRAFT(
-	AircraftID			int not null AUTO_INCREMENT,
+	AircraftID			int,
 	Name			varchar(50),
 	Capacity	    int,
 	primary key (AircraftID)
 );
 
-INSERT INTO AIRCRAFT (Name, Capacity)
+INSERT INTO AIRCRAFT (AircraftID, Name, Capacity)
 VALUES
-('Airbus A380', 100),
-('Airbus A320', 80),
-('Boeing 737', 90),
-('Boeing 747', 120);
+(1, 'Airbus A380', 100),
+(2, 'Airbus A320', 80),
+(3, 'Boeing 737', 90),
+(4, 'Boeing 747', 120);
 
 
 DROP TABLE IF EXISTS LOCATIONS;
