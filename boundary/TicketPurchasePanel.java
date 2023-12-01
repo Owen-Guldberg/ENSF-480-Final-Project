@@ -8,6 +8,9 @@ import role.RegisteredCustomer;
 
 import javax.swing.*;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import com.owen_guldberg.gmailsender.GMailer;
 
 import java.awt.*;
@@ -24,6 +27,10 @@ public class TicketPurchasePanel extends JPanel {
     private CardLayout cardLayout;
     private SystemController system;
 
+    private JTextField cardNumberField;
+    private JTextField cvvField;
+    private JTextField promoCodeField;
+
     public TicketPurchasePanel(String userEmail, Seat seat, AircraftController aircraftController, Flight flight, JPanel cardPanel, CardLayout cardLayout, SystemController system) {
         this.userEmail = userEmail;
         this.selectedSeat = seat;
@@ -33,40 +40,80 @@ public class TicketPurchasePanel extends JPanel {
         this.cardLayout = cardLayout;
         this.system = system;
         paymentController = new PaymentController(userEmail, seat, flight.getDepartureTime());
-
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        JLabel ticketPurchaseLabel = new JLabel("<html>Ticket Purchase<br/></html>");
-        ticketPurchaseLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // Set alignment
-        add(ticketPurchaseLabel);
-        add(new JLabel("Flight Information"));
-        add(new JLabel(flight.toString()));
-        add(new JLabel("Selected Seat: " + seat.getSeatNum()));
-        add(new JLabel("Price: $" + seat.getPrice()));
+
+        setBackground(Color.WHITE);
+        setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        add(Box.createVerticalStrut(20));
+
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(5, 50, 5, 50);
+        gbc.weightx = 1;
+        gbc.gridx = 0;
+
+        JLabel ticketPurchaseLabel = new JLabel("Ticket Purchase Information");
+        ticketPurchaseLabel.setFont(new Font(ticketPurchaseLabel.getFont().getName(), Font.BOLD, 18));
+        ticketPurchaseLabel.setHorizontalAlignment(JLabel.CENTER);
+        gbc.anchor = GridBagConstraints.CENTER;
+        add(ticketPurchaseLabel, gbc);
+
+        JLabel infoLabel2 = new JLabel(flight.toString());
+        infoLabel2.setFont(new Font(infoLabel2.getFont().getName(), Font.PLAIN, 16));
+        infoLabel2.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel infoLabel3 = new JLabel("<html><u>Selected Seat:</u> " + seat.getSeatNum() + "</html>");
+        infoLabel3.setFont(new Font(infoLabel3.getFont().getName(), Font.PLAIN, 16));
+        infoLabel3.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel infoLabel4 = new JLabel("<html><u>Price:</u> $" + seat.getPrice() + "</html>");
+        infoLabel4.setFont(new Font(infoLabel4.getFont().getName(), Font.PLAIN, 16));
+        infoLabel4.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        add(Box.createVerticalStrut(30));
+        add(infoLabel2, gbc);
+        add(infoLabel3, gbc);
+        add(infoLabel4, gbc);
+        add(Box.createVerticalStrut(20));
 
         // Add options for ticket cancellation insurance
         JCheckBox insuranceCheckBox = new JCheckBox("Add Ticket Cancellation Insurance ($20)");
-        add(insuranceCheckBox);
+        insuranceCheckBox.setAlignmentX(Component.CENTER_ALIGNMENT);
+        gbc.anchor = GridBagConstraints.CENTER;
+        add(insuranceCheckBox, gbc);
 
-        // Add payment information fields
-        JTextField cardNumberField = new JTextField(16);
-        cardNumberField.setMaximumSize(new Dimension(200, 20));
-        add(new JLabel("Card Number:"));
-        add(cardNumberField);
+        cardNumberField = new JTextField(16);
+        JPanel cardNumberPanel = createInputPanel("Card Number:", cardNumberField);
+        add(cardNumberPanel, gbc);
 
-        JTextField cvvField = new JTextField(4);
-        cvvField.setMaximumSize(new Dimension(60, 20)); // Smaller field for CVV
-        add(new JLabel("CVV:"));
-        add(cvvField);
+        cvvField = new JTextField(4);
+        JPanel cvvPanel = createInputPanel("CVV:", cvvField);
+        add(cvvPanel, gbc);
 
-        JTextField promoCodeField = new JTextField(10);
-        promoCodeField.setMaximumSize(new Dimension(200, 20));
-        add(new JLabel("Promotion Code (optional):"));
-        add(promoCodeField);
+        promoCodeField = new JTextField(10);
+        JPanel promoCodePanel = createInputPanel("Promotion Code (optional):", promoCodeField);
+        add(promoCodePanel, gbc);
+
+        add(Box.createVerticalStrut(20));
+
+        gbc.anchor = GridBagConstraints.CENTER;
 
         JButton purchaseButton = new JButton("Purchase Ticket");
+        styleButton(purchaseButton);
         purchaseButton.addActionListener(e -> handlePurchase(insuranceCheckBox.isSelected(), cardNumberField.getText(), cvvField.getText(),
         promoCodeField.getText(), userEmail, flight));
-        add(purchaseButton);
+        add(purchaseButton, gbc);
+        add(Box.createVerticalStrut(10));
+
+        JButton backButton = new JButton("Back");
+        styleButton(backButton);
+        backButton.addActionListener(e -> cardLayout.show(cardPanel, "seatChart"));
+        add(backButton, gbc);
+        add(Box.createVerticalStrut(80));
+
+        gbc.weighty = 1;
+        add(Box.createGlue(), gbc);
 
         if (paymentController.paymentAvailable()) {
             cardNumberField.setText(paymentController.getPaymentCardNum());
@@ -127,5 +174,44 @@ public class TicketPurchasePanel extends JPanel {
         TicketConfirmationPanel confirmationPanel = new TicketConfirmationPanel(paymentController, userEmail, flight.toString(), selectedSeat, totalPrice, selectedSeat.getPrice(), insuranceSelected, cardPanel, cardLayout, system);
         cardPanel.add(confirmationPanel, "ticketConfirmation");
         cardLayout.show(cardPanel, "ticketConfirmation");
+    }
+
+    private JPanel createInputPanel(String labelText, JComponent field) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(Color.WHITE);
+    
+        JLabel label = new JLabel(labelText);
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.add(label);
+    
+        field.setMinimumSize(new Dimension(900, 25));
+        field.setAlignmentX(Component.LEFT_ALIGNMENT);
+        panel.add(field);
+    
+        return panel;
+    }
+
+    private void styleButton(JButton button) {
+        Color color = new Color(0, 102, 204);
+        button.setBackground(color); // Blue background
+        button.setForeground(Color.WHITE); // White text
+        button.setFocusPainted(false);
+        button.setFont(new Font(button.getFont().getName(), Font.BOLD, 16));
+        button.setOpaque(true);
+        button.setBorderPainted(false);
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(color.darker());
+            }
+    
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(color);
+            }
+        });
     }
 }

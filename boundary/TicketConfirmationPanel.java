@@ -2,6 +2,9 @@ package boundary;
 
 import javax.swing.*;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import controller.PaymentController;
 import controller.SystemController;
 import flightInfo.Seat;
@@ -32,46 +35,44 @@ public class TicketConfirmationPanel extends JPanel {
         this.cardPanel = cardPanel;
         this.cardLayout = cardLayout;
         this.system = system;
+
+        setBackground(Color.WHITE);
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        add(Box.createVerticalStrut(20));
         initializeComponents();
     }
 
     private void initializeComponents() {
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        JLabel thankyouLabel = new JLabel("Thank you for using Skyward Bound!");
+        thankyouLabel.setFont(new Font(thankyouLabel.getFont().getName(), Font.BOLD, 18));
+        thankyouLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(thankyouLabel);
+        add(Box.createVerticalStrut(10));
         
         // Ticket Confirmation Title
-        JLabel titleLabel = new JLabel("<html>" + "Thank you for using Skyward Bound!"+"<br>"+ "Your ticket and receipt have now been emailed to " + userEmail + ".</html>");
+        JLabel titleLabel = new JLabel("Your ticket and receipt have now been emailed to " + userEmail + ".");
+        titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.PLAIN, 16));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(titleLabel);
+        add(Box.createVerticalStrut(30));
     
         // Flight Information
         JPanel flightInfoPanel = createBorderedPanel("Flight Information", flightInfo);
         JPanel ticketPanel = createBorderedPanel("Ticket Information", 
                                                 paymentController.printTicket(userEmail, seat.getSeatNum()));
-        // add(new JLabel("Flight Information:"));
-        // JTextArea flightInfoArea = new JTextArea(flightInfo);
-        // flightInfoArea.setEditable(false);
-        // flightInfoArea.setOpaque(false);
-        // add(flightInfoArea);
-    
-        // Seat and Price Information
-        // add(new JLabel("Selected Seat: " + seatNum));
-        // add(new JLabel("Price: $" + String.format("%.2f", price)));
     
         // Receipt Section
         double insurance_cost = 0;
         if(insurance) {
             insurance_cost = 20;
         }
-        JPanel receiptPanel = createBorderedPanel("Receipt", "<html>" + "Detailed receipt information..." +
-                "<br>" + "Seat Price: $" + String.format("%.2f", origPrice) + "<br>" +
+        JPanel receiptPanel = createBorderedPanel("Receipt", "<html>" + "Seat Price: $" + String.format("%.2f", origPrice) + "<br>" +
                 "Insurance: $" + String.format("%.2f", insurance_cost) +
                 "<br>" + "Price after promos: $" + String.format("%.2f", price) + "</html>");
-        // add(new JLabel("Receipt:"));
-        // JTextArea receiptArea = new JTextArea("Detailed receipt information...");
-        // receiptArea.setEditable(false);
-        // receiptArea.setOpaque(false);
-        // add(receiptArea);
     
+
+        add(Box.createVerticalStrut(30));
         // Buttons
         add(createButtonPanel());
     
@@ -81,21 +82,48 @@ public class TicketConfirmationPanel extends JPanel {
     
     private JPanel createButtonPanel() {
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(Color.WHITE);
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
     
         JButton logoutButton = new JButton("Logout");
+        styleButton(logoutButton);
         logoutButton.addActionListener(e -> logout());
         buttonPanel.add(logoutButton);
     
         JButton viewFlightsButton = new JButton("View My Flights");
+        styleButton(viewFlightsButton);
         viewFlightsButton.addActionListener(e -> viewFlights());
         buttonPanel.add(viewFlightsButton);
     
         JButton browseFlightsButton = new JButton("Browse More Flights");
+        styleButton(browseFlightsButton);
         browseFlightsButton.addActionListener(e -> browseFlights());
         buttonPanel.add(browseFlightsButton);
     
         return buttonPanel;
+    }
+
+    private void styleButton(JButton button) {
+        Color color = new Color(0, 102, 204);
+        button.setBackground(color); // Blue background
+        button.setForeground(Color.WHITE); // White text
+        button.setFocusPainted(false);
+        button.setFont(new Font(button.getFont().getName(), Font.BOLD, 16));
+        button.setOpaque(true);
+        button.setBorderPainted(false);
+        button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(color.darker());
+            }
+    
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(color);
+            }
+        });
     }
     
     private void alignComponents() {
@@ -108,7 +136,12 @@ public class TicketConfirmationPanel extends JPanel {
     private JPanel createBorderedPanel(String title, String content) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createTitledBorder(title));
+
+        panel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createTitledBorder(title), 
+            BorderFactory.createEmptyBorder(10, 20, 10, 20) // Top, left, bottom, right padding
+        ));
+
         panel.setBackground(Color.WHITE);
         panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 

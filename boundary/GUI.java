@@ -237,18 +237,6 @@ public class GUI extends JFrame implements ActionListener {
         TitledBorder titledBorder = BorderFactory.createTitledBorder(title);
         flightScrollPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), titledBorder));
 
-        // // Add listener to handle location selection
-        // flightList.addListSelectionListener(new ListSelectionListener() {
-        //     @Override
-        //     public void valueChanged(ListSelectionEvent e) {
-        //         if (!e.getValueIsAdjusting()) {
-        //             String selectedFlight = flightList.getSelectedValue();
-        //             //handleSelectedFlight(selectedFlight);
-
-        //         }
-        //     }
-        // });
-
         return flightScrollPane;
     }
 
@@ -305,7 +293,7 @@ public class GUI extends JFrame implements ActionListener {
             flightsPanel.add(flightButton);
             flightsPanel.add(Box.createVerticalStrut(5)); // Spacing between buttons
         }
-        flightsPanel.setMinimumSize(new Dimension(900, flightsPanel.getPreferredSize().height));
+        //flightsPanel.setMinimumSize(new Dimension(900, flightsPanel.getPreferredSize().height));
     
         JScrollPane scrollPane = new JScrollPane(flightsPanel);
         TitledBorder titledBorder = BorderFactory.createTitledBorder(menuTitle);
@@ -333,7 +321,7 @@ public class GUI extends JFrame implements ActionListener {
         panel.setBackground(Color.WHITE);
 
         String flightInfo = system.getFlightByNum(flightNum).toString();
-        JLabel infoLabel = new JLabel("Flight Information");
+        JLabel infoLabel = new JLabel("Flight Information", SwingConstants.CENTER);
         infoLabel.setFont(new Font(infoLabel.getFont().getName(), Font.BOLD, 18));
         infoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -348,7 +336,7 @@ public class GUI extends JFrame implements ActionListener {
         JLabel label = new JLabel(imageIcon);
         label.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        panel.add(Box.createVerticalStrut(30));
+        panel.add(Box.createVerticalStrut(20));
         panel.add(infoLabel);
         panel.add(Box.createVerticalStrut(30));
         infoPanel.add(infoLabel2);
@@ -357,18 +345,23 @@ public class GUI extends JFrame implements ActionListener {
         panel.add(label);
         panel.add(Box.createVerticalStrut(30));
 
-        JButton viewSeatsButton = new JButton("View Seats");
-        styleButton(viewSeatsButton);
-        viewSeatsButton.addActionListener(e -> showSeatChart(flightNum));
+        // JButton viewSeatsButton = new JButton("View Seats");
+        // styleButton(viewSeatsButton);
+        // viewSeatsButton.addActionListener(e -> showSeatChart(flightNum));
 
         JButton backButton = new JButton("Back");
         styleButton(backButton);
         backButton.addActionListener(e -> cardLayout.show(cardPanel, "flightsPanel"));
 
+        JButton viewSeatsButton = new JButton("View Seats");
+        styleButton(viewSeatsButton);
+        viewSeatsButton.addActionListener(e -> showSeatChart(flightNum));
+
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setBackground(Color.WHITE);
-        buttonPanel.add(viewSeatsButton);
+        // buttonPanel.add(viewSeatsButton);
         buttonPanel.add(backButton);
+        buttonPanel.add(viewSeatsButton);
         panel.add(buttonPanel);
         add(Box.createVerticalStrut(10));
 
@@ -378,7 +371,7 @@ public class GUI extends JFrame implements ActionListener {
     private void showSeatChart(String flightNum) {
         Aircraft aircraft = system.getFlightByNum(flightNum).getAircraft();
         ArrayList<Seat> seats = aircraftController.seatByAircraft(aircraft);
-        SeatChart seatChart = new SeatChart(currentEmail, seats, aircraftController, flightNum, system, cardPanel, cardLayout);
+        SeatChart seatChart = new SeatChart(currentEmail, seats, aircraftController, flightNum, system, cardPanel, cardLayout, e -> showMainScreen());
 
         cardPanel.add(seatChart, "seatChart");
         cardLayout.show(cardPanel, "seatChart");

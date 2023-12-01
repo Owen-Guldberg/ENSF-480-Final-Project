@@ -20,7 +20,7 @@ public class AircraftController {
     public String getSeatDetails(Seat seat) {
         // Construct a string with all the details of the seat
         return "Seat Number: " + seat.getSeatNum() + 
-               "\nPrice: " + seat.getPrice() + 
+               "\nPrice: $" + seat.getPrice() + 
                "\nClass: " + seat.getSeatClass() +
                "\nAvailable: " + (seat.getAvailability() ? "Yes" : "No");
     }
