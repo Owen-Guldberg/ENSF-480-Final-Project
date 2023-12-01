@@ -174,6 +174,10 @@ public class SystemController {
 	public boolean addAircraft(Aircraft a) {
 		return Database.getOnlyInstance().addAircraftToDB(a);
 	}
+
+	public boolean deleteAircraft(Aircraft a) {
+		return Database.getOnlyInstance().deleteAircraft(a);
+	}
 	
 }
 

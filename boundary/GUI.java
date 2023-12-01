@@ -617,6 +617,21 @@ public class GUI extends JFrame implements ActionListener {
         JList<String> aircraftList = new JList<>(aircraftListModel);
         aircraftList.setFont(new Font(aircraftList.getFont().getName(), Font.PLAIN, 16));
         aircraftList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        // Add MouseListener to the aircraft list
+        aircraftList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) { // Detect double-click
+                    int selectedIndex = aircraftList.getSelectedIndex();
+                    if (selectedIndex != -1) {
+                        showAircraftOptionsPopup(allAircrafts.get(selectedIndex));
+                    }
+                }
+            }
+        });
+
+        
     
         // Create a JScrollPane for the JList
         JScrollPane aircraftScrollPane = new JScrollPane(aircraftList);
@@ -641,6 +656,49 @@ public class GUI extends JFrame implements ActionListener {
         manageAircraftPage.add(Box.createVerticalStrut(20));
     
         return manageAircraftPage;
+    }
+
+    private void showAircraftOptionsPopup(Aircraft selectedAircraft) {
+        String[] options = {"Modify Aircraft", "Delete Aircraft"};
+        int choice = JOptionPane.showOptionDialog(
+                this,
+                "Choose an action for Aircraft ID " + selectedAircraft.getId(),
+                "Aircraft Options",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+    
+        if (choice == 0) {
+            // Modify Aircraft
+            showModifyAircraftPage(selectedAircraft);
+        } else if (choice == 1) {
+            // Delete Aircraft
+            handleDeleteAircraft(selectedAircraft);
+        }
+    }
+
+    private void handleDeleteAircraft(Aircraft aircraft) {
+        // Implement this method to delete the selected aircraft from the system
+        boolean deleteSuccess = system.deleteAircraft(aircraft);
+    
+        if (deleteSuccess) {
+            // Aircraft deleted successfully
+            JOptionPane.showMessageDialog(this, "Aircraft deleted successfully.");
+            // Refresh the manage aircraft page to reflect the changes
+            showManageAircraftPage();
+        } else {
+            // Aircraft deletion failed
+            JOptionPane.showMessageDialog(this, "Failed to delete the aircraft.");
+        }
+    }
+
+    private void showModifyAircraftPage(Aircraft aircraft) {
+        // Implement this method to create and show the modify aircraft page
+        // You can use a similar approach as in createAddAircraftPage method
+        // to create a panel with the current aircraft information and allow modifications.
     }
     
     private void showAddAircraftPage() {
