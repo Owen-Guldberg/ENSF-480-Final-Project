@@ -719,7 +719,7 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     private void showAircraftOptionsPopup(Aircraft selectedAircraft) {
-        String[] options = {"Modify Aircraft", "Delete Aircraft"};
+        String[] options = {"Cancel", "Delete Aircraft"};
         int choice = JOptionPane.showOptionDialog(
                 this,
                 "Choose an action for Aircraft ID " + selectedAircraft.getId(),
@@ -756,9 +756,7 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     private void showModifyAircraftPage(Aircraft aircraft) {
-        // Implement this method to create and show the modify aircraft page
-        // You can use a similar approach as in createAddAircraftPage method
-        // to create a panel with the current aircraft information and allow modifications.
+        // Unused
     }
     
     private void showAddAircraftPage() {
