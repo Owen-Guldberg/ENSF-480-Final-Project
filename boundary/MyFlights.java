@@ -2,19 +2,16 @@ package boundary;
 
 import javax.swing.*;
 
-import org.checkerframework.checker.units.qual.s;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import flightInfo.Ticket;
 import role.RegisteredCustomer;
 import controller.PaymentController;
 import controller.SystemController;
-import database.Database;
 
 public class MyFlights extends JPanel {
     private PaymentController paymentController;
@@ -23,6 +20,7 @@ public class MyFlights extends JPanel {
     private SystemController systemController;
     private JPanel cardPanel;
     private CardLayout cardLayout;
+    private Color lightBlue = new Color(0xE1F5FE);
 
     public MyFlights(PaymentController paymentController, String userEmail, int seatNum, SystemController systemController, JPanel cardPanel, CardLayout cardLayout) {
         this.paymentController = paymentController;
@@ -35,17 +33,17 @@ public class MyFlights extends JPanel {
     }
 
     private void refreshPanel() {
-        removeAll(); // Remove all existing components
-        initializeComponents(); // Reinitialize components
-        revalidate(); // Revalidate the panel layout
-        repaint(); // Repaint the panel
+        removeAll();
+        initializeComponents();
+        revalidate();
+        repaint();
     }
 
     private void initializeComponents() {
         setBackground(Color.WHITE);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         add(Box.createVerticalStrut(20));
-        
+
 
         JLabel titleLabel = new JLabel("My Flights");
         titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.BOLD, 18));
@@ -56,16 +54,28 @@ public class MyFlights extends JPanel {
         RegisteredCustomer customer = systemController.getUserByEmail(userEmail);
         ArrayList<Ticket> tickets = customer.getTickets();
 
+        JPanel containerPanel = new JPanel();
+        containerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
+        containerPanel.setBackground(Color.WHITE);
+        containerPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        // issue is now with cancel
         if (tickets.isEmpty()) {
             add(new JLabel("No flights booked."));
         } else {
             for (Ticket ticket : tickets) {
-                add(createTicketPanel(ticket));
-                add(Box.createVerticalStrut(5));
+                containerPanel.add(createTicketPanel(ticket));
+                containerPanel.add(Box.createVerticalStrut(5));
             }
         }
+
+        JScrollPane scrollPane = new JScrollPane(containerPanel);
+        scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
+        scrollPane.setPreferredSize(new Dimension(900, 500)); // Set preferred size as needed
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setBorder(BorderFactory.createLineBorder(new Color(0, 102, 204), 2));
+        scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        add(scrollPane);
 
         add(Box.createVerticalStrut(40));
         JButton backButton = new JButton("Browse More Flights");
@@ -80,26 +90,25 @@ public class MyFlights extends JPanel {
     private JPanel createTicketPanel(Ticket ticket) {
         JPanel ticketPanel = new JPanel();
         ticketPanel.setLayout(new BoxLayout(ticketPanel, BoxLayout.Y_AXIS));
-        ticketPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        ticketPanel.setBackground(Color.WHITE);
-        //ticketPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, ticketPanel.getPreferredSize().height));
+        ticketPanel.setBackground(lightBlue);
 
-        JLabel flightLabel = new JLabel("Flight and Ticket Information");
-        flightLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JLabel flightLabel = new JLabel("<html><b>Flight and Ticket Information</b></html>");
+        flightLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
         ticketPanel.add(flightLabel);
+        ticketPanel.add(Box.createVerticalStrut(10));
 
         String flightInfo = systemController.getFlightByNum(ticket.getFlightNumber()).toString();
         JLabel flightInfoLabel = new JLabel(flightInfo);
         flightInfoLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
         ticketPanel.add(flightInfoLabel);
 
-        //ticketPanel.add(new JLabel("Ticket Information"));
         JLabel ticketDetailsLabel = new JLabel(ticket.toString());
         ticketDetailsLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
         ticketPanel.add(ticketDetailsLabel);
+        ticketPanel.add(Box.createVerticalStrut(10));
 
         JButton cancelButton = new JButton("Cancel Ticket");
-        cancelButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        cancelButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
         styleButton(cancelButton);
         cancelButton.addActionListener(e -> cancelTicket(ticket));
         ticketPanel.add(cancelButton);
@@ -108,9 +117,7 @@ public class MyFlights extends JPanel {
     }
 
     private void cancelTicket(Ticket ticket) {
-        // Implement cancellation logic
-        // Remove ticket from user's list and update in database
-        // Show confirmation message
+
         for(int i = 0 ; i < systemController.getFlightByNum(ticket.getFlightNumber()).getAircraft().getSeats().size(); i++){
             if(systemController.getFlightByNum(ticket.getFlightNumber()).getAircraft().getSeats().get(i).getSeatNum() == ticket.getSeatNum()){
                 systemController.getFlightByNum(ticket.getFlightNumber()).getAircraft().getSeats().get(i).setAvailable(true);
@@ -123,7 +130,7 @@ public class MyFlights extends JPanel {
         systemController.getUserByEmail(userEmail).removeTicket(ticket);
 
         JOptionPane.showMessageDialog(this, "Ticket cancelled successfully.");
-        // Refresh the MyFlights panel to update the list of tickets
+
         refreshPanel();
     }
 
