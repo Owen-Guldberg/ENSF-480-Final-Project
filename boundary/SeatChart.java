@@ -49,14 +49,6 @@ public class SeatChart extends JPanel {
             JButton seatButton = createSeatButton(seat);
             seatButton.addActionListener(e -> showSeatDetails(seat));
             seatsPanel.add(seatButton);
-            // JButton seatButton = new JButton();
-            // seatButton.setOpaque(true);
-            // seatButton.setEnabled(seat.getAvailability()); // Enable only if the seat is available
-            // seatButton.setBackground(seat.getAvailability() ? lightGreen : Color.RED);
-            // seatButton.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-            // seatButton.setText(String.valueOf(seat.getSeatNum()));
-            // seatButton.addActionListener(e -> showSeatDetails(seat));
-            // seatsPanel.add(seatButton);
         }
 
         // Create a wrapper panel with FlowLayout

@@ -45,6 +45,7 @@ public class MyFlights extends JPanel {
         setBackground(Color.WHITE);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         add(Box.createVerticalStrut(20));
+        
 
         JLabel titleLabel = new JLabel("My Flights");
         titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.BOLD, 18));
