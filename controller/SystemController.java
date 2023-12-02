@@ -166,6 +166,19 @@ public class SystemController {
 
 	// Cancel flight via controller accessing database instance
 	public boolean cancelFlight(Flight f) {
+
+		tickets.clear();
+		tickets = Database.getOnlyInstance().getTicketData();
+
+		for (RegisteredCustomer customer : registeredCustomers) {
+			ArrayList<Ticket> customerTickets = customer.getTickets();
+			for (Ticket ticket : customerTickets) {
+				if (ticket.getFlightNumber().equals(f.getFlightNum())) {
+					customer.removeTicket(ticket);
+				}
+			}
+		}
+
 		return Database.getOnlyInstance().cancelFlight(f);
 	}
 

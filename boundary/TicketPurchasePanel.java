@@ -124,6 +124,10 @@ public class TicketPurchasePanel extends JPanel {
     private void handlePurchase(boolean insuranceSelected, String cardNumber, String cvv, String promoCode, String username, Flight flight) {
         // Implement ticket purchase logic
         ArrayList<RegisteredCustomer> customers= system.getRegisteredCustomers();
+        if (cardNumber.length() == 0 || cvv.length() == 0) {
+            JOptionPane.showMessageDialog(this, "Credit card number and CVV are required.");
+            return;
+        }
         for(RegisteredCustomer a : customers){
             if(a.getEmail().equals(username)){
                 flight.addPassenger(a);

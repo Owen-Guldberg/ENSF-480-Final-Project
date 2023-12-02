@@ -635,7 +635,7 @@ public class GUI extends JFrame implements ActionListener {
         adminPage.add(manageAircraftButton);
         adminPage.add(Box.createVerticalStrut(60));
     
-        JButton backButton = new JButton("Back");
+        JButton backButton = new JButton("Log Out");
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         backButton.addActionListener(e -> showMainScreen());
         styleButton(backButton);
@@ -780,6 +780,7 @@ public class GUI extends JFrame implements ActionListener {
     
         // Add text fields for ID, Name, and Capacity
         JPanel idPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        idPanel.setBackground(Color.WHITE);
         idPanel.add(new JLabel("ID: "));
         JTextField idField = new JTextField(15);
         idPanel.add(idField);
@@ -787,6 +788,7 @@ public class GUI extends JFrame implements ActionListener {
         addAircraftPage.add(Box.createVerticalStrut(10));
     
         JPanel namePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        namePanel.setBackground(Color.WHITE);
         namePanel.add(new JLabel("Name: "));
         JTextField nameField = new JTextField(15);
         namePanel.add(nameField);
@@ -794,6 +796,7 @@ public class GUI extends JFrame implements ActionListener {
         addAircraftPage.add(Box.createVerticalStrut(10));
     
         JPanel capacityPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        capacityPanel.setBackground(Color.WHITE);
         capacityPanel.add(new JLabel("Capacity: "));
         JTextField capacityField = new JTextField(15);
         capacityPanel.add(capacityField);
@@ -802,6 +805,7 @@ public class GUI extends JFrame implements ActionListener {
     
         JButton addButton = new JButton("Add Aircraft");
         addButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        styleButton(addButton);
         addButton.addActionListener(e -> 
             handleAddAircraft(
                 Integer.parseInt(idField.getText()), 
@@ -815,6 +819,7 @@ public class GUI extends JFrame implements ActionListener {
     
         JButton backButton = new JButton("Back");
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        styleButton(backButton);
         backButton.addActionListener(e -> showManageAircraftPage());
         addAircraftPage.add(backButton);
         addAircraftPage.add(Box.createVerticalStrut(20));

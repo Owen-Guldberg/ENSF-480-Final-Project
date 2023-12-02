@@ -61,7 +61,9 @@ public class MyFlights extends JPanel {
         containerPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
         if (tickets.isEmpty()) {
-            add(new JLabel("No flights booked."));
+            JLabel noLabel = new JLabel("No flights booked.");
+            noLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            add(noLabel);
         } else {
             for (Ticket ticket : tickets) {
                 containerPanel.add(createTicketPanel(ticket));

@@ -501,6 +501,8 @@ private void readRegisteredUsers() throws SQLException{
                else{
                 success = true;
                 }
+
+                deleteTicketsForFlight(f.getFlightNum());
                myStmt.close();
              }
              catch (SQLException ex) {
@@ -546,6 +548,28 @@ private void readRegisteredUsers() throws SQLException{
              }
              return success;
          }
+
+    /**
+     * Deletes all tickets associated with a specific flight from the database.
+     * @param flightNum The flight number of the flight whose tickets are to be deleted.
+     */
+    private void deleteTicketsForFlight(String flightNum) {
+        try {
+            String ticketQuery = "DELETE FROM TICKETS WHERE FlightNumber = ?";
+            PreparedStatement ticketStmt = dbConnection.prepareStatement(ticketQuery);
+
+            ticketStmt.setString(1, flightNum);
+            ticketStmt.executeUpdate();
+
+            // Removing tickets from the ArrayList
+            tickets.removeIf(ticket -> ticket.getFlightNumber().equals(flightNum));
+
+            ticketStmt.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
      /**
      * Updates the Database by clearing existing data and re-reading from the database.
      *
