@@ -94,10 +94,10 @@ public class GUI extends JFrame implements ActionListener {
         userPage.add(Box.createVerticalStrut(10));
 
         JPanel locationMenusPanel = new JPanel();
-        locationMenusPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); 
+        locationMenusPanel.setLayout(new BorderLayout()); 
         locationMenusPanel.setBackground(Color.WHITE);
         JScrollPane CrewMemberScrollPane = createCrewMemberMenu("Crew Member Flights",username);
-        locationMenusPanel.add(CrewMemberScrollPane);
+        locationMenusPanel.add(CrewMemberScrollPane, BorderLayout.CENTER);
         userPage.add(locationMenusPanel);
         userPage.add(Box.createVerticalStrut(40));
 
@@ -252,6 +252,7 @@ public class GUI extends JFrame implements ActionListener {
 
         JScrollPane flightScrollPane = new JScrollPane(flightList);
         flightScrollPane.setPreferredSize(new Dimension(800, 500));
+        flightScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         TitledBorder titledBorder = BorderFactory.createTitledBorder(title);
         flightScrollPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), titledBorder));
