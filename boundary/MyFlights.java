@@ -73,7 +73,7 @@ public class MyFlights extends JPanel {
 
         JScrollPane scrollPane = new JScrollPane(containerPanel);
         scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
-        scrollPane.setPreferredSize(new Dimension(900, 500)); // Set preferred size as needed
+        scrollPane.setPreferredSize(new Dimension(900, 500));
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(0, 102, 204), 2));
         scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));

@@ -1,11 +1,7 @@
 package controller;
-import util.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import com.google.gson.internal.bind.DateTypeAdapter;
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Array;
 
 import database.*;
 import flightInfo.*;
@@ -13,18 +9,15 @@ import role.*;
 
 public class SystemController {
 	private ArrayList<Flight> flights = Database.getOnlyInstance().getFlightData();
-	private ArrayList<Aircraft> aircrafts;
 	private ArrayList<Location> locations = Database.getOnlyInstance().getLocationData();
 	private ArrayList<CrewMember> crewMembers = Database.getOnlyInstance().getCrewMemberData();
 	private ArrayList<RegisteredCustomer> registeredCustomers = Database.getOnlyInstance().getRegisteredCustomerData();
 	private ArrayList<Ticket> tickets = Database.getOnlyInstance().getTicketData();
-	//private ArrayList<Payment> payment;
 	private HashMap<String, Location> locationMap = new HashMap<>();
 	private HashMap<String, Flight> flightMap = new HashMap<>();
 
 
     public SystemController(){
-		start();
 		for (Location loc : locations) {
             locationMap.put(loc.toString(), loc);
         }
@@ -34,12 +27,6 @@ public class SystemController {
     }
 	public ArrayList<RegisteredCustomer> getRegisteredCustomers() {
 		return registeredCustomers;
-	}
-	public void start() {
-		
-	}
-	public void save(){
-		// write to db
 	}
 
 	public Location getLocationByName(String name) {
@@ -116,7 +103,6 @@ public class SystemController {
 		return flights;
 	}
 
-	//get user by email
 	public RegisteredCustomer getUserByEmail(String email){
 		registeredCustomers = Database.getOnlyInstance().getRegisteredCustomerData();
 		for(RegisteredCustomer customer : registeredCustomers){
@@ -127,7 +113,6 @@ public class SystemController {
 		return null;
 	}
 
-	//get name from email
 	public String getNameByEmail(String email){
 		registeredCustomers = Database.getOnlyInstance().getRegisteredCustomerData();
 		crewMembers = Database.getOnlyInstance().getCrewMemberData();
@@ -144,38 +129,25 @@ public class SystemController {
 		return null;
 	}
 
-	// get tickets
     public ArrayList<Ticket> getTickets() {
-
         return tickets;
     }
 
-    private boolean containsTicket(Ticket newTicket) {
-        for (Ticket existingTicket : tickets) {
-            if (existingTicket.getSeatNum() == newTicket.getSeatNum() && existingTicket.getFlightNumber().equals(newTicket.getFlightNumber())) {
-                return true; // Ticket with the same seat number and flight number already exists
-            }
-        }
-        return false; // Ticket is unique based on seat number and flight number
-    }
-
-
-		public static void main(String[] args) {
-		SystemController system = new SystemController();
-	}
-
-	// Cancel flight via controller accessing database instance
 	public boolean cancelFlight(Flight f) {
 
 		tickets.clear();
 		tickets = Database.getOnlyInstance().getTicketData();
 
 		for (RegisteredCustomer customer : registeredCustomers) {
-			ArrayList<Ticket> customerTickets = customer.getTickets();
-			for (Ticket ticket : customerTickets) {
+			ArrayList<Ticket> ticketsToRemove = new ArrayList<>();
+			for (Ticket ticket : customer.getTickets()) {
 				if (ticket.getFlightNumber().equals(f.getFlightNum())) {
-					customer.removeTicket(ticket);
+					ticketsToRemove.add(ticket);
 				}
+			}
+		
+			for (Ticket ticket : ticketsToRemove) {
+				customer.removeTicket(ticket);
 			}
 		}
 
@@ -200,6 +172,10 @@ public class SystemController {
 
 	public boolean modifyFlight(Flight f) {
 		return Database.getOnlyInstance().updateFlight(f);
+	}
+
+	public static void main(String[] args) {
+		SystemController system = new SystemController();
 	}
 	
 }

@@ -8,7 +8,6 @@ import java.awt.event.MouseEvent;
 import controller.PaymentController;
 import controller.SystemController;
 import flightInfo.Seat;
-import util.Payment;
 
 import java.awt.*;
 
@@ -105,8 +104,8 @@ public class TicketConfirmationPanel extends JPanel {
 
     private void styleButton(JButton button) {
         Color color = new Color(0, 102, 204);
-        button.setBackground(color); // Blue background
-        button.setForeground(Color.WHITE); // White text
+        button.setBackground(color);
+        button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setFont(new Font(button.getFont().getName(), Font.BOLD, 16));
         button.setOpaque(true);
@@ -139,7 +138,7 @@ public class TicketConfirmationPanel extends JPanel {
 
         panel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createTitledBorder(title), 
-            BorderFactory.createEmptyBorder(10, 20, 10, 20) // Top, left, bottom, right padding
+            BorderFactory.createEmptyBorder(10, 20, 10, 20)
         ));
 
         panel.setBackground(Color.WHITE);
@@ -154,19 +153,16 @@ public class TicketConfirmationPanel extends JPanel {
     }
 
     private void logout() {
-        // Implement logout functionality
         cardLayout.show(cardPanel, "main");
     }
 
     private void viewFlights() {
-        // Implement view flights functionality
         MyFlights myFlightsPanel = new MyFlights(paymentController, userEmail, seat.getSeatNum(), system, cardPanel, cardLayout); // Pass null or default values for now
         cardPanel.add(myFlightsPanel, "myFlights");
         cardLayout.show(cardPanel, "myFlights");
     }
 
     private void browseFlights() {
-        // Implement browse flights functionality
         cardLayout.show(cardPanel, "user");
     }
 }

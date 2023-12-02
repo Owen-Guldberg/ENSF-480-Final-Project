@@ -68,6 +68,7 @@ public class Login extends JPanel {
     
         gbc.weighty = 1;
         add(Box.createGlue(), gbc);
+        clearFields();
     }
     
     private JPanel createInputPanel(String labelText, JComponent field) {
@@ -88,8 +89,8 @@ public class Login extends JPanel {
 
     private void styleButton(JButton button) {
         Color color = new Color(0, 102, 204);
-        button.setBackground(color); // Blue background
-        button.setForeground(Color.WHITE); // White text
+        button.setBackground(color);
+        button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setFont(new Font(button.getFont().getName(), Font.BOLD, 16));
         button.setOpaque(true);

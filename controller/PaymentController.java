@@ -94,7 +94,7 @@ public class PaymentController {
         Ticket ticket = new Ticket(seat.getSeatNum(), user.getPayment().getAmountOwed(), flightNum, insurance, departureTime, seat.getSeatClass());
         user.addTicket(ticket);
         seat.setAvailable(false);
-        boolean success = Database.getOnlyInstance().addTicketToDB(ticket, user.getEmail()); // alter to add tickets to database
+        boolean success = Database.getOnlyInstance().addTicketToDB(ticket, user.getEmail());
         if (!success) {
             return false;
         }
@@ -116,7 +116,7 @@ public class PaymentController {
         for (Ticket ticket : tickets) {
             if (ticket.getSeatNum() == seatNum) {
                 String emailSubject = "Flight Cancellation Notification";
-                String emailBody = "Hello, " + user.getName().getFirstName() + user.getName().getLastName() + "\n" +
+                String emailBody = "Hello, " + user.getName().getFirstName() + " " + user.getName().getLastName() + "\n" +
                         "You have canceled flight " + ticket.getFlightNumber();
     
                 if (ticket.getHasCancellationInsurance()) {

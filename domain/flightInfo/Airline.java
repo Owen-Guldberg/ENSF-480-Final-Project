@@ -38,7 +38,6 @@ public class Airline {
         this.aircrafts = aircrafts;
     }
 
-
     // set an entire crew member list
     public void setCrewMembers(ArrayList<CrewMember> crewMembers) {
         this.crewMembers = crewMembers;

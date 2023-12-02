@@ -2,6 +2,10 @@ package boundary;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -23,14 +27,13 @@ public class UserPagePanel extends JPanel {
     }
 
     private void initializeComponents(ActionListener viewMyFlightsListener, ActionListener viewFlightsListener, ActionListener logoutListener, ArrayList<String> locationStrings) {
-        // Welcome Label
+
         JLabel welcomeLabel = new JLabel("Welcome, " + (user.isEmpty() ? "Guest" : user) + "!");
         welcomeLabel.setFont(new Font(welcomeLabel.getFont().getName(), Font.BOLD, 20));
         welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(Box.createVerticalStrut(20));
         add(welcomeLabel);
 
-        // View Flights Button
         if (!user.isEmpty()) {
             JButton myFlightsButton = styleButton(new JButton("View My Flights"));
             myFlightsButton.addActionListener(viewMyFlightsListener);
@@ -46,7 +49,6 @@ public class UserPagePanel extends JPanel {
         add(enterLabel);
         add(Box.createVerticalStrut(10));
 
-        // Location selection
         originList = new JList<>(locationStrings.toArray(new String[0]));
         originList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         originScrollPane = createScrollableList(originList, "Origin Locations");
@@ -68,7 +70,6 @@ public class UserPagePanel extends JPanel {
         add(viewFlightsButton);
         add(Box.createVerticalStrut(40));
 
-        // Logout Button
         logoutButton = styleButton(new JButton(user.isEmpty() ? "Return to Home Page" : "Logout"));
         logoutButton.addActionListener(logoutListener);
         add(logoutButton);
@@ -76,14 +77,28 @@ public class UserPagePanel extends JPanel {
     }
 
     private JButton styleButton(JButton button) {
+        Color color = new Color(0, 102, 204);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setBackground(new Color(0, 102, 204)); // Blue background
-        button.setForeground(Color.WHITE); // White text
+        button.setBackground(new Color(0, 102, 204));
+        button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setFont(new Font(button.getFont().getName(), Font.BOLD, 16));
         button.setOpaque(true);
         button.setBorderPainted(false);
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(color.darker());
+            }
+    
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(color);
+            }
+        });
+
         return button;
     }
 

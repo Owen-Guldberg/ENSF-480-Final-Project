@@ -22,7 +22,7 @@ public class MainPanel extends JPanel {
         
         JLabel welcome = new JLabel("Welcome to Skyward Bound!");
         welcome.setFont(new Font(welcome.getFont().getName(), Font.BOLD, 24));
-        welcome.setForeground(new Color(0, 102, 204)); // Blue color
+        welcome.setForeground(new Color(0, 102, 204));
         welcome.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         ImageIcon imageIcon = new ImageIcon(getClass().getResource("airline.png"));
@@ -31,7 +31,7 @@ public class MainPanel extends JPanel {
 
         JLabel sloganLabel = new JLabel("Elevating Your Journey!");
         sloganLabel.setFont(new Font(sloganLabel.getFont().getName(), Font.ITALIC, 18));
-        sloganLabel.setForeground(new Color(102, 153, 255)); // A shade of blue that complements the logo
+        sloganLabel.setForeground(new Color(102, 153, 255));
         sloganLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel instructions = new JLabel("Please register or log in to continue.");
@@ -98,12 +98,12 @@ public class MainPanel extends JPanel {
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                button.setBackground(bgColor.darker()); // Slightly darker color on hover
+                button.setBackground(bgColor.darker());
             }
     
             @Override
             public void mouseExited(MouseEvent e) {
-                button.setBackground(bgColor); // Original color when mouse exits
+                button.setBackground(bgColor);
             }
         });
 
@@ -115,7 +115,7 @@ public class MainPanel extends JPanel {
         button.setContentAreaFilled(false);
         button.setFocusPainted(false);
         button.setOpaque(false);
-        button.setForeground(new Color(0, 102, 204)); // Blue color
+        button.setForeground(new Color(0, 102, 204));
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         button.setFont(new Font(button.getFont().getName(), Font.PLAIN, 16));
         button.setAlignmentX(Component.CENTER_ALIGNMENT);

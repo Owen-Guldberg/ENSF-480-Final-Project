@@ -531,7 +531,7 @@ private void readRegisteredUsers() throws SQLException{
                                         + orgin + " to " + destination
                                         + " has been cancelled.\n\n"
                                         + "As a token of our appreciation, we're delighted to offer you a special promotion. Use the promo code below for 50% off your next flight!\n\n"
-                                        + "Promo Code: MEMEBR50\n\n"
+                                        + "Promo Code: MEMBER50\n\n"
                                         + "We look forward to serving you on board and providing you with a great travel experience.\n\n"
                                         + "Best regards,\n"
                                         + "The Skyward Bound Team";

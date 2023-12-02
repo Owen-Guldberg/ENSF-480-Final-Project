@@ -132,8 +132,8 @@ public class Register extends JPanel {
 
     private void styleButton(JButton button) {
         Color color = new Color(0, 102, 204);
-        button.setBackground(color); // Blue background
-        button.setForeground(Color.WHITE); // White text
+        button.setBackground(color);
+        button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setFont(new Font(button.getFont().getName(), Font.BOLD, 16));
         button.setOpaque(true);
@@ -158,7 +158,7 @@ public class Register extends JPanel {
         button.setContentAreaFilled(false);
         button.setFocusPainted(false);
         button.setOpaque(false);
-        button.setForeground(new Color(0, 102, 204)); // Blue color
+        button.setForeground(new Color(0, 102, 204));
         button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         button.setFont(new Font(button.getFont().getName(), Font.PLAIN, 16));
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -178,7 +178,6 @@ public class Register extends JPanel {
         });
     }
 
-    // Getters
     public String getFirstName() {
         return firstNameField.getText();
     }

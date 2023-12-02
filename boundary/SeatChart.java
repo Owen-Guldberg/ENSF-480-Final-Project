@@ -1,7 +1,6 @@
 package boundary;
 
 import controller.AircraftController;
-import controller.FlightController;
 import controller.SystemController;
 import flightInfo.Flight;
 import flightInfo.Seat;
@@ -51,7 +50,6 @@ public class SeatChart extends JPanel {
             seatsPanel.add(seatButton);
         }
 
-        // Create a wrapper panel with FlowLayout
         JPanel wrapperPanel = new JPanel();
         wrapperPanel.add(seatsPanel);
         wrapperPanel.setBackground(Color.WHITE);
@@ -83,7 +81,6 @@ public class SeatChart extends JPanel {
         }
     }
 
-    // Method to add a legend for seat colors
     public void addLegend() {
         JPanel legendPanel = new JPanel();
         legendPanel.setBackground(Color.WHITE);
@@ -135,7 +132,6 @@ public class SeatChart extends JPanel {
         return seatButton;
     }
     
-    // Legend Box Creation
     private JPanel createLegendBox(String labelText, Color backgroundColor) {
         JLabel label = new JLabel(labelText);
         label.setForeground(Color.WHITE);
@@ -147,7 +143,6 @@ public class SeatChart extends JPanel {
         return box;
     }
     
-    // Adding Back and Logout Buttons
     private void addNavigationButtons() {
         JButton backButton = styleButton(new JButton("Back"));
         backButton.addActionListener(e -> cardLayout.show(cardPanel, "flightInfo"));
@@ -165,8 +160,8 @@ public class SeatChart extends JPanel {
     
     private JButton styleButton(JButton button) {
         Color color = new Color(0, 102, 204);
-        button.setBackground(color); // Blue background
-        button.setForeground(Color.WHITE); // White text
+        button.setBackground(color);
+        button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setFont(new Font(button.getFont().getName(), Font.BOLD, 16));
         button.setOpaque(true);

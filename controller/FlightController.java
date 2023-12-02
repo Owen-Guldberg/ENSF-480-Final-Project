@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import flightInfo.*;
 import role.RegisteredCustomer;
@@ -58,7 +57,6 @@ public class FlightController{
 
             }
         }
-        // no flights booked
         return null;
     }
     public void bookFlightByCustomer(RegisteredCustomer customer, Flight flight, int seatNum){

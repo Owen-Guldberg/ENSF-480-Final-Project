@@ -5,8 +5,6 @@ import flightInfo.*;
 
 import java.util.ArrayList;
 
-import database.*;
-
 public class RegisteredCustomer implements Person{
     private Name name; 
     private String email;

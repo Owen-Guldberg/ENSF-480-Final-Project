@@ -77,7 +77,6 @@ public class TicketPurchasePanel extends JPanel {
         add(infoLabel4, gbc);
         add(Box.createVerticalStrut(20));
 
-        // Add options for ticket cancellation insurance
         JCheckBox insuranceCheckBox = new JCheckBox("Add Ticket Cancellation Insurance ($20)");
         insuranceCheckBox.setAlignmentX(Component.CENTER_ALIGNMENT);
         gbc.anchor = GridBagConstraints.CENTER;
@@ -122,7 +121,6 @@ public class TicketPurchasePanel extends JPanel {
     }
 
     private void handlePurchase(boolean insuranceSelected, String cardNumber, String cvv, String promoCode, String username, Flight flight) {
-        // Implement ticket purchase logic
         ArrayList<RegisteredCustomer> customers= system.getRegisteredCustomers();
         if (cardNumber.length() == 0 || cvv.length() == 0) {
             JOptionPane.showMessageDialog(this, "Credit card number and CVV are required.");
@@ -133,7 +131,6 @@ public class TicketPurchasePanel extends JPanel {
                 flight.addPassenger(a);
             }
         }
-        // Update seat availability
         paymentController.setPaymentInfo(cardNumber, cvv);
         paymentController.setTicketPrice(selectedSeat.getPrice(), insuranceSelected);
         paymentController.setStrat(promoCode);
@@ -145,8 +142,6 @@ public class TicketPurchasePanel extends JPanel {
         }
         aircraftController.updateSeatAvailability(selectedSeat, false);
         
-
-        // Send the ticket and receipt information to customer
         try {
             double insurance_cost = 0;
             if(insuranceSelected) {
@@ -172,9 +167,6 @@ public class TicketPurchasePanel extends JPanel {
             e.printStackTrace();
         }
 
-        // Process payment and booking
-        // Show confirmation message
-        //JOptionPane.showMessageDialog(this, "Ticket purchased successfully!");
         TicketConfirmationPanel confirmationPanel = new TicketConfirmationPanel(paymentController, userEmail, flight.toString(), selectedSeat, totalPrice, selectedSeat.getPrice(), insuranceSelected, cardPanel, cardLayout, system);
         cardPanel.add(confirmationPanel, "ticketConfirmation");
         cardLayout.show(cardPanel, "ticketConfirmation");
@@ -198,8 +190,8 @@ public class TicketPurchasePanel extends JPanel {
 
     private void styleButton(JButton button) {
         Color color = new Color(0, 102, 204);
-        button.setBackground(color); // Blue background
-        button.setForeground(Color.WHITE); // White text
+        button.setBackground(color);
+        button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setFont(new Font(button.getFont().getName(), Font.BOLD, 16));
         button.setOpaque(true);

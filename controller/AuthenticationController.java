@@ -28,11 +28,10 @@ public class AuthenticationController {
 
         for (RegisteredCustomer customer : registeredCustomers) {
             if (customer.getEmail().equals(email) && customer.getPassword().equals(password)) {
-                // Login successful
                 return true;
             }
         }
-        return false; // Login failed
+        return false;
     }
 
     public boolean registerNewUser(String firstName, String lastName, String email, String password, 
@@ -42,19 +41,15 @@ public class AuthenticationController {
         ArrayList<RegisteredCustomer> registeredCustomers = Database.getOnlyInstance().getRegisteredCustomerData();
         for (RegisteredCustomer customer : registeredCustomers) {
             if (customer.getEmail().equals(email)) {
-                // Email already exists, return false
                 return false;
             }
         }
 
-        // Creating Address object
         Address address = new Address(houseNum, streetName, city, country, postalCode);
 
-        // Creating RegisteredCustomer object
         Name customerName = new Name(firstName, lastName);
         RegisteredCustomer newCustomer = new RegisteredCustomer(customerName, email, password, address);
 
-        // Attempt to register the user in the database
         return registerUser(newCustomer, email);
     }
 
@@ -75,7 +70,7 @@ public class AuthenticationController {
         gMailer.sendMail(email,"Thank you for registering with Skyward Bound!",
                 "As a token of our appreciation, we're delighted to offer you a special promotion. Use the promo code below for 50% of your first flight!\r\n" +
                 "\r\n" +
-                "Promo Code: MEMBR50\r\n" +
+                "Promo Code: MEMBER50\r\n" +
                 "\r\n" +
                 "We look forward to serving you on board and providing you with a great travel experience.\r\n" +
                 "Best regards, \r\n" +

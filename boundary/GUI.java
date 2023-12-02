@@ -2,18 +2,12 @@ package boundary;
 
 import controller.*;
 import flightInfo.*;
-import role.CrewMember;
 import role.RegisteredCustomer;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.time.LocalDate;
-import java.time.LocalTime;
-
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -29,17 +23,13 @@ public class GUI extends JFrame implements ActionListener {
     private Register registerPanel;
     private JPanel userPanel;
     private UserPagePanel userPagePanel;
-    private JPanel flightInfoPanel;  // New panel for flight information
+    private JPanel flightInfoPanel;
     private JButton backToMainButton;
-    private JButton actionButton; // Used for both login and register actions
-    private JButton loginBackButton; // Separate button for the back action on the login page
-    private JTextField usernameField;
-    private JPasswordField passwordField;
-    private JButton viewAllFlightsButton; // View flighst as admin
-    private JScrollPane allFlightsScrollPane; // View flights as admin
+    private JButton actionButton;
+    private JButton loginBackButton;
+    private JButton viewAllFlightsButton;
     private JList<String> flightList;
-    private JList<String> allFlightsList;
-    private String currentEmail; // Track username of currently logged in user
+    private String currentEmail;
     private String selectedOriginName;
     private String selectedDestinationName;
     private SystemController system = new SystemController();
@@ -145,7 +135,6 @@ public class GUI extends JFrame implements ActionListener {
                 userPanel = createPassengerPage(username, flightNumber);
                 cardPanel.add(userPanel, "user");
 
-        // Show user page
         cardLayout.show(cardPanel, "user");
                 
             } else {
@@ -173,13 +162,11 @@ public class GUI extends JFrame implements ActionListener {
         locationMenusPanel.setBackground(Color.WHITE);
     
         JScrollPane CrewMemberScrollPane = createFlightPassengerMenu("Passengers", flightNumber);
-        // set the scroll pane size
         if (CrewMemberScrollPane != null) {
             CrewMemberScrollPane.setPreferredSize(new Dimension(600, 500));
         
         }
-    
-        // Check if there are passengers to display
+
         if (CrewMemberScrollPane != null && CrewMemberScrollPane.getComponentCount() > 0) {
             locationMenusPanel.add(CrewMemberScrollPane);
             userPage.add(locationMenusPanel);
@@ -192,7 +179,6 @@ public class GUI extends JFrame implements ActionListener {
             userPage.add(Box.createVerticalStrut(10));
         }
     
-        // Logout or Return to Home Page Button
         userPage.add(Box.createVerticalStrut(30));
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> showCrewMemberPage(username));
@@ -219,8 +205,7 @@ public class GUI extends JFrame implements ActionListener {
     private JScrollPane createFlightPassengerMenu(String title, String flightnumber) {
         ArrayList<RegisteredCustomer> customers = system.getFlightsPassengers(flightnumber);
         if (customers == null) {
-            // Handle the case where customers is null, for example:
-            return null; // or return an empty JScrollPane, or handle it in a way that fits your requirements
+            return null;
         }
             System.out.println(customers.size());
 
@@ -264,13 +249,6 @@ public class GUI extends JFrame implements ActionListener {
                 return c;
             }
         });
-        // //add bottom border to each entry
-        // flightList.addListSelectionListener(new ListSelectionListener() {
-        //     @Override
-        //     public void valueChanged(ListSelectionEvent e) {
-        //         flightList.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-        //     }
-        // });
 
         JScrollPane flightScrollPane = new JScrollPane(flightList);
         flightScrollPane.setPreferredSize(new Dimension(800, 500));
@@ -298,14 +276,13 @@ public class GUI extends JFrame implements ActionListener {
         JLabel flightsLabel = new JLabel("Browse Flights", SwingConstants.CENTER);
         flightsLabel.setFont(new Font(flightsLabel.getFont().getName(), Font.BOLD, 18));
         flightsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //flightsPanel.add(flightsLabel);
         flightsPanel.add(flightsLabel, BorderLayout.NORTH);
 
         flightsPanel.add(Box.createVerticalStrut(20));
 
         JScrollPane flightsScrollPane = createFlightMenu("Flights");
-        flightsScrollPane.setMaximumSize(new Dimension(900, 600)); // Set preferred size
-        flightsPanel.add(flightsScrollPane, BorderLayout.CENTER); // Add the scroll pane to the center
+        flightsScrollPane.setMaximumSize(new Dimension(900, 600));
+        flightsPanel.add(flightsScrollPane, BorderLayout.CENTER);
     
         flightsPanel.add(Box.createVerticalStrut(20));
         JButton backButton = new JButton("Back");
@@ -325,16 +302,15 @@ public class GUI extends JFrame implements ActionListener {
     
         for (String flightNum : flightStrings) {
             JButton flightButton = new JButton(flightNum);
-            flightButton.setMaximumSize(new Dimension(900, 30)); // Set maximum size for uniformity
+            flightButton.setMaximumSize(new Dimension(900, 30));
             flightButton.setAlignmentX(Component.CENTER_ALIGNMENT);
             styleButton(flightButton);
     
             flightButton.addActionListener(e -> handleSelectedFlight(flightNum));
     
             flightsPanel.add(flightButton);
-            flightsPanel.add(Box.createVerticalStrut(5)); // Spacing between buttons
+            flightsPanel.add(Box.createVerticalStrut(5));
         }
-        //flightsPanel.setMinimumSize(new Dimension(900, flightsPanel.getPreferredSize().height));
     
         JScrollPane scrollPane = new JScrollPane(flightsPanel);
         TitledBorder titledBorder = BorderFactory.createTitledBorder(menuTitle);
@@ -343,19 +319,15 @@ public class GUI extends JFrame implements ActionListener {
         return scrollPane;
     }
 
-    // Method to handle the action when a flight is selected
     private void handleSelectedFlight(String selectedFlight) {
 
-        // Database connectivity here
         System.out.println("Selected Flight: " + selectedFlight);
 
-        // Create and show the flightInfoPanel
         flightInfoPanel = createFlightInfoPanel(selectedFlight);
         cardPanel.add(flightInfoPanel, "flightInfo");
         cardLayout.show(cardPanel, "flightInfo");
     }
 
-    // Method to create the flightInfoPanel
     private JPanel createFlightInfoPanel(String flightNum) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -396,7 +368,6 @@ public class GUI extends JFrame implements ActionListener {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonPanel.setBackground(Color.WHITE);
-        // buttonPanel.add(viewSeatsButton);
         buttonPanel.add(backButton);
         buttonPanel.add(viewSeatsButton);
         panel.add(buttonPanel);
@@ -423,7 +394,6 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     private void continueAsGuest() {
-        // Show the user page for the guest
         currentEmail = "";
         showUserPage(currentEmail);
     }
@@ -441,7 +411,6 @@ public class GUI extends JFrame implements ActionListener {
     private void showMainScreen() {
         cardLayout.show(cardPanel, "main");
 
-        // Clear the username and password fields
         currentEmail = "";
         selectedOriginName = null;
         selectedDestinationName = null;
@@ -460,14 +429,11 @@ public class GUI extends JFrame implements ActionListener {
             currentEmail = email;
             showCrewMemberPage(email);
         } else if (authController.loginUser(email, new String(password))) {
-            // Login successful for a regular user
             currentEmail = email;
             showUserPage(email);
         } else if (email.equals("admin") && new String(password).equals("admin")) {
-            // Login successful for admin
             showAdminPage();
         } else {
-            // Login failed
             JOptionPane.showMessageDialog(this, "Invalid email or password.");
         }
     }
@@ -490,7 +456,6 @@ public class GUI extends JFrame implements ActionListener {
             return;
         }
 
-        // Validate and parse house number
         int houseNum;
         try {
             houseNum = Integer.parseInt(houseNumStr);
@@ -499,16 +464,13 @@ public class GUI extends JFrame implements ActionListener {
             return;
         }
 
-        // Registering user through AuthenticationController
         boolean registrationSuccess = authController.registerNewUser(firstName, lastName, email, new String(password), 
                                                                     houseNum, streetName, city, 
                                                                     country, postalCode);
 
         if (registrationSuccess) {
-            // Registration successful
             showLoginScreen();
         } else {
-            // Registration failed
             JOptionPane.showMessageDialog(this, "Registration failed. User might already exist.");
         }
     }
@@ -521,16 +483,13 @@ public class GUI extends JFrame implements ActionListener {
             }
         }
 
-        // Create a new user panel and add it to the cardPanel
         userPanel = createCrewMemberPage(username);
         cardPanel.add(userPanel, "user");
 
-        // Show user page
         cardLayout.show(cardPanel, "user");
 
     }
     private void showUserPage(String username) {
-        // Check if the user panel already exists and remove it
         Component[] components = cardPanel.getComponents();
         for (Component component : components) {
             if (component == userPanel) {
@@ -541,7 +500,6 @@ public class GUI extends JFrame implements ActionListener {
 
         ArrayList<String> locationStrings = system.getLocationStrings();
 
-        // Create UserPagePanel and add it to the cardPanel
         userPagePanel = new UserPagePanel(
             username.isEmpty() ? "" : system.getNameByEmail(username),
             e -> showMyFlights(username),
@@ -561,13 +519,10 @@ public class GUI extends JFrame implements ActionListener {
         );
         cardPanel.add(userPagePanel, "user");
 
-        // Show user page
         cardLayout.show(cardPanel, "user");
     }
 
-    // Method to create admin page
     private void showAdminPage() {
-        // Check if the user panel already exists and remove it
         Component[] components = cardPanel.getComponents();
         for (Component component : components) {
             if (component == userPanel) {
@@ -576,7 +531,6 @@ public class GUI extends JFrame implements ActionListener {
             }
         }
     
-        // Create a new admin panel and add it to the cardPanel
         userPanel = createAdminPage();
         cardPanel.add(userPanel, "user");
         
@@ -585,23 +539,18 @@ public class GUI extends JFrame implements ActionListener {
 
     private void handleAddFlight(Location origin, Location destination, String flightNum, String date, String departureTime, String arrivalTime, String flightTime, Aircraft aircraft) {
 
-        // Create a Flight object
         Flight newFlight = new Flight(origin, destination, flightNum, date, departureTime, arrivalTime, flightTime, aircraft);
 
-        // Call the addFlight method
         boolean addSuccess = system.addFlight(newFlight);
 
         if (addSuccess) {
-            // Flight added successfully
             JOptionPane.showMessageDialog(this, "Flight added successfully.");
             showAdminPage(); 
         } else {
-            // Flight addition failed
             JOptionPane.showMessageDialog(this, "Failed to add the flight.");
         }
     }
 
-    // Admin panel content
     private JPanel createAdminPage() {
         JPanel adminPage = new JPanel();
         adminPage.setLayout(new BoxLayout(adminPage, BoxLayout.Y_AXIS));
@@ -646,7 +595,6 @@ public class GUI extends JFrame implements ActionListener {
     }
 
     private void showManageAircraftPage() {
-        // Create and show the page for managing aircraft
         JPanel manageAircraftPanel = createManageAircraftPage();
         cardPanel.add(manageAircraftPanel, "manageAircraftPanel");
         cardLayout.show(cardPanel, "manageAircraftPanel");
@@ -664,7 +612,6 @@ public class GUI extends JFrame implements ActionListener {
         manageAircraftPage.add(titleLabel);
         manageAircraftPage.add(Box.createVerticalStrut(20));
     
-        // Get the list of aircraft from the system controller
         ArrayList<Aircraft> allAircrafts = system.getAircrafts();
     
         DefaultListModel<String> aircraftListModel = new DefaultListModel<>();
@@ -676,11 +623,10 @@ public class GUI extends JFrame implements ActionListener {
         aircraftList.setFont(new Font(aircraftList.getFont().getName(), Font.PLAIN, 16));
         aircraftList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        // Add MouseListener to the aircraft list
         aircraftList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) { // Detect double-click
+                if (e.getClickCount() == 2) {
                     int selectedIndex = aircraftList.getSelectedIndex();
                     if (selectedIndex != -1) {
                         showAircraftOptionsPopup(allAircrafts.get(selectedIndex));
@@ -690,8 +636,6 @@ public class GUI extends JFrame implements ActionListener {
         });
 
         
-    
-        // Create a JScrollPane for the JList
         JScrollPane aircraftScrollPane = new JScrollPane(aircraftList);
         aircraftScrollPane.setPreferredSize(new Dimension(600, 400));
     
@@ -732,25 +676,19 @@ public class GUI extends JFrame implements ActionListener {
         );
     
         if (choice == 0) {
-            // Modify Aircraft
             showModifyAircraftPage(selectedAircraft);
         } else if (choice == 1) {
-            // Delete Aircraft
             handleDeleteAircraft(selectedAircraft);
         }
     }
 
     private void handleDeleteAircraft(Aircraft aircraft) {
-        // Implement this method to delete the selected aircraft from the system
         boolean deleteSuccess = system.deleteAircraft(aircraft);
     
         if (deleteSuccess) {
-            // Aircraft deleted successfully
             JOptionPane.showMessageDialog(this, "Aircraft deleted successfully.");
-            // Refresh the manage aircraft page to reflect the changes
             showManageAircraftPage();
         } else {
-            // Aircraft deletion failed
             JOptionPane.showMessageDialog(this, "Failed to delete the aircraft.");
         }
     }
@@ -760,7 +698,6 @@ public class GUI extends JFrame implements ActionListener {
     }
     
     private void showAddAircraftPage() {
-        // Create and show the page for adding an aircraft
         JPanel addAircraftPanel = createAddAircraftPage();
         cardPanel.add(addAircraftPanel, "addAircraftPanel");
         cardLayout.show(cardPanel, "addAircraftPanel");
@@ -778,7 +715,6 @@ public class GUI extends JFrame implements ActionListener {
         addAircraftPage.add(titleLabel);
         addAircraftPage.add(Box.createVerticalStrut(20));
     
-        // Add text fields for ID, Name, and Capacity
         JPanel idPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         idPanel.setBackground(Color.WHITE);
         idPanel.add(new JLabel("ID: "));
@@ -829,22 +765,18 @@ public class GUI extends JFrame implements ActionListener {
     
 
     private void handleAddAircraft(int id, String name, int capacity) {
-        // Create the Aircraft object using the provided parameters
         Aircraft newAircraft = new Aircraft(id, name, null, capacity);
         boolean addSuccess = system.addAircraft(newAircraft);
     
         if (addSuccess) {
-            // Aircraft added successfully
             JOptionPane.showMessageDialog(this, "Aircraft added successfully.");
         } else {
-            // Aircraft addition failed
             JOptionPane.showMessageDialog(this, "Failed to add the aircraft.");
         }
         showManageAircraftPage();
     }
 
     private void showAddFlightPage() {
-        // Create and show the page for adding a flight
         JPanel addFlightPanel = createAddFlightPage();
         cardPanel.add(addFlightPanel, "addFlightPanel");
         cardLayout.show(cardPanel, "addFlightPanel");
@@ -862,7 +794,6 @@ public class GUI extends JFrame implements ActionListener {
         addFlightPage.add(titleLabel);
         addFlightPage.add(Box.createVerticalStrut(20));
     
-        // Add Origin
         JPanel originPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         originPanel.setBackground(Color.WHITE);
         originPanel.add(new JLabel("Airport 1: "));
@@ -877,7 +808,6 @@ public class GUI extends JFrame implements ActionListener {
         addFlightPage.add(originPanel);
         addFlightPage.add(Box.createVerticalStrut(10));
     
-        // Add Destination
         JPanel destinationPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         destinationPanel.setBackground(Color.WHITE);
         destinationPanel.add(new JLabel("Airport 2: "));
@@ -892,7 +822,6 @@ public class GUI extends JFrame implements ActionListener {
         addFlightPage.add(destinationPanel);
         addFlightPage.add(Box.createVerticalStrut(10));
     
-        // Add Flight Number
         JPanel flightNumberPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         flightNumberPanel.setBackground(Color.WHITE);
         flightNumberPanel.add(new JLabel("Flight Number: "));
@@ -901,7 +830,6 @@ public class GUI extends JFrame implements ActionListener {
         addFlightPage.add(flightNumberPanel);
         addFlightPage.add(Box.createVerticalStrut(10));
     
-        // Add Flight Date
         JPanel flightDatePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         flightDatePanel.setBackground(Color.WHITE);
         flightDatePanel.add(new JLabel("Flight Date (YYYY-MM-DD): "));
@@ -910,7 +838,6 @@ public class GUI extends JFrame implements ActionListener {
         addFlightPage.add(flightDatePanel);
         addFlightPage.add(Box.createVerticalStrut(10));
     
-        // Add Departure Time
         JPanel departureTimePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         departureTimePanel.setBackground(Color.WHITE);
         departureTimePanel.add(new JLabel("Departure Time (HH:mm): "));
@@ -919,7 +846,6 @@ public class GUI extends JFrame implements ActionListener {
         addFlightPage.add(departureTimePanel);
         addFlightPage.add(Box.createVerticalStrut(10));
     
-        // Add Arrival Time
         JPanel arrivalTimePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         arrivalTimePanel.setBackground(Color.WHITE);
         arrivalTimePanel.add(new JLabel("Arrival Time (HH:mm): "));
@@ -928,7 +854,6 @@ public class GUI extends JFrame implements ActionListener {
         addFlightPage.add(arrivalTimePanel);
         addFlightPage.add(Box.createVerticalStrut(10));
     
-        // Add Flight Time
         JPanel flightTimePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         flightTimePanel.setBackground(Color.WHITE);
         flightTimePanel.add(new JLabel("Flight Time (HH:mm): "));
@@ -973,7 +898,7 @@ public class GUI extends JFrame implements ActionListener {
     }
     
     private void showAllFlights() {
-        ArrayList<Flight> allFlights = system.getFlights(); // Adjust this based on your implementation
+        ArrayList<Flight> allFlights = system.getFlights();
         ArrayList<String> flightStrings = system.getFlightStrings(allFlights);
     
         JList<String> allFlightsList = new JList<>(flightStrings.toArray(new String[0]));
@@ -999,15 +924,14 @@ public class GUI extends JFrame implements ActionListener {
             }
         });
     
-        // Add ListSelectionListener to the flight list
         allFlightsList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) { // Double-click
+                if (e.getClickCount() == 2) {
                     int selectedIndex = allFlightsList.getSelectedIndex();
                     if (selectedIndex != -1) {
                         showFlightOptionsDialog(allFlights.get(selectedIndex));
-                        allFlightsList.clearSelection(); // Deselect the item after handling
+                        allFlightsList.clearSelection();
                     }
                 }
             }
@@ -1029,7 +953,6 @@ public class GUI extends JFrame implements ActionListener {
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         backButton.addActionListener(e -> cardLayout.show(cardPanel, "user"));
     
-        // Add the "Add Flight" button
         JButton addFlightButton = new JButton("Add Flight");
         styleButton(addFlightButton);
         addFlightButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -1068,18 +991,15 @@ public class GUI extends JFrame implements ActionListener {
     
         switch (choice) {
             case JOptionPane.YES_OPTION:
-                // User chose to cancel the flight
                 handleCancelAdminFlight(selectedFlight);
                 break;
     
             case JOptionPane.NO_OPTION:
-                // User chose to modify the flight
                 handleModifyAdminFlight(selectedFlight);
                 break;
     
             default:
                 // User chose to go back or closed the dialog
-                // Do nothing or add any additional logic as needed
                 break;
         }
     }
@@ -1088,23 +1008,18 @@ public class GUI extends JFrame implements ActionListener {
         boolean cancellationSuccess = system.cancelFlight(selectedFlight);
     
         if (cancellationSuccess) {
-            // Cancellation successful
             JOptionPane.showMessageDialog(this, "Flight canceled successfully.");
-    
-            // Recreate the list of flights and update the UI
             showAllFlights();
         } else {
-            // Cancellation failed
             JOptionPane.showMessageDialog(this, "Failed to cancel the flight.");
         }
     }
 
     private void handleModifyAdminFlight(Flight selectedFlight) {
-        // Create a new panel for flight modification
+
         JPanel modifyPanel = new JPanel();
         modifyPanel.setLayout(new GridLayout(5, 2, 10, 10));
     
-        // Labels and text fields for modification options
         JLabel departureLabel = new JLabel("Departure Time:");
         JTextField departureField = new JTextField(selectedFlight.getDepartureTime());
     
@@ -1117,7 +1032,6 @@ public class GUI extends JFrame implements ActionListener {
         JLabel flightTimeLabel = new JLabel("Flight Time (hh:mm):");
         JTextField flightTimeField = new JTextField(selectedFlight.getFlightTime());
     
-        // Add labels and text fields to the panel
         modifyPanel.add(departureLabel);
         modifyPanel.add(departureField);
         modifyPanel.add(arrivalLabel);
@@ -1127,19 +1041,15 @@ public class GUI extends JFrame implements ActionListener {
         modifyPanel.add(flightTimeLabel);
         modifyPanel.add(flightTimeField);
     
-        // Create a button for flight modification
         JButton modifyButton = new JButton("Modify Flight");
-        styleButton(modifyButton); // Assuming you have a styleButton method
+        styleButton(modifyButton);
     
-        // Add action listener to the modify button
         modifyButton.addActionListener(e -> {
-            // Get the modified values from text fields
             String newDepartureTime = departureField.getText();
             String newArrivalTime = arrivalField.getText();
             String newDate = dateField.getText();
             String newFlightTime = flightTimeField.getText();
     
-            // Perform flight modification (update system, database, etc.)
             Flight modifiedFlight = new Flight(
                     selectedFlight.getOrigin(),
                     selectedFlight.getDestination(),
@@ -1155,24 +1065,18 @@ public class GUI extends JFrame implements ActionListener {
             boolean modificationSuccess = system.modifyFlight(modifiedFlight);
     
             if (modificationSuccess) {
-                // Modification successful
                 JOptionPane.showMessageDialog(this, "Flight modified successfully.");
     
-                // Close the modification panel
                 ((Window) SwingUtilities.getRoot(modifyPanel)).dispose();
     
-                // Update the list of flights and refresh the UI
                 showAllFlights();
             } else {
-                // Modification failed
                 JOptionPane.showMessageDialog(this, "Failed to modify the flight. Please check the input.");
             }
         });
     
-        // Add the modify button to the panel
         modifyPanel.add(modifyButton);
     
-        // Show the modification panel in a dialog
         JOptionPane.showOptionDialog(
                 this,
                 modifyPanel,
@@ -1187,8 +1091,8 @@ public class GUI extends JFrame implements ActionListener {
 
     private void styleButton(JButton button) {
         Color color = new Color(0, 102, 204);
-        button.setBackground(color); // Blue background
-        button.setForeground(Color.WHITE); // White text
+        button.setBackground(color);
+        button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setFont(new Font(button.getFont().getName(), Font.BOLD, 16));
         button.setOpaque(true);
@@ -1211,16 +1115,12 @@ public class GUI extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == backToMainButton) {
-            // Show the main screen
             showMainScreen();
         } else if (e.getSource() == loginBackButton) {
-            // Show the main screen when the back button is pressed on the login page
             showMainScreen();
         } else if (e.getActionCommand().equals("Register")) {
-            // Show the registration screen
             cardLayout.show(cardPanel, "register");
         } else {
-            // Show or hide the login screen
             showLoginScreen();
         }
     }

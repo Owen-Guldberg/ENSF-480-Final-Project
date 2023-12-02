@@ -18,7 +18,6 @@ public class AircraftController {
         return new ArrayList<>();
     }
     public String getSeatDetails(Seat seat) {
-        // Construct a string with all the details of the seat
         return "Seat Number: " + seat.getSeatNum() + 
                "\nPrice: $" + seat.getPrice() + 
                "\nClass: " + seat.getSeatClass() +
@@ -26,7 +25,6 @@ public class AircraftController {
     }
 
     public void updateSeatAvailability(Seat seat, boolean availability) {
-        // Update the availability of the seat
         seat.setAvailable(availability);
     }
 }

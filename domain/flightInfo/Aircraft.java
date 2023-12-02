@@ -12,8 +12,8 @@ public class Aircraft{
     ArrayList<Seat> seats;
 
     
-    public Aircraft(){} //default
-    // Constructor
+    public Aircraft(){}
+
     public Aircraft(int id, String name, Flight assignedFlight, int capacity) {
         this.id = id;
         this.name = name;
@@ -21,10 +21,8 @@ public class Aircraft{
         this.capacity = capacity;
         this.seats = new ArrayList<>();
 
-        // Initialize seats one by one each 'third' is its own class, 
-        // todo figure out price
         for (int seatNum = 1; seatNum <= capacity; seatNum++) {
-            // class 1->capacity
+  
             if (seatNum < (capacity / 3)) {
                 // Comfort class (40% more than Ordinary)
                 int price = (int) (50 * 1.4);
@@ -77,22 +75,19 @@ public class Aircraft{
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
-    // methods
+
     public void assignFlight(Flight flight){
         assignedFlight = flight;
     }
-    // used for when customer books
+
     public void changeSeatStatus(boolean status, int seatNum){
-        // Check if seatNum is valid
         if (seatNum < 1 || seatNum > capacity) {
             System.out.println("Invalid seat number");
             return;
         }
 
-        // Find the seat with the given seatNum
         for (Seat seat : seats) {
             if (seat.getSeatNum() == seatNum) {
-                // Change the seat status
                 seat.setAvailable(status);
                 return;
             }
