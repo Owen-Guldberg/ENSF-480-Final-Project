@@ -264,13 +264,13 @@ public class GUI extends JFrame implements ActionListener {
                 return c;
             }
         });
-        //add bottom border to each entry
-        flightList.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                flightList.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
-            }
-        });
+        // //add bottom border to each entry
+        // flightList.addListSelectionListener(new ListSelectionListener() {
+        //     @Override
+        //     public void valueChanged(ListSelectionEvent e) {
+        //         flightList.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+        //     }
+        // });
 
         JScrollPane flightScrollPane = new JScrollPane(flightList);
         flightScrollPane.setPreferredSize(new Dimension(800, 500));
@@ -385,10 +385,6 @@ public class GUI extends JFrame implements ActionListener {
         panel.add(infoPanel);
         panel.add(label);
         panel.add(Box.createVerticalStrut(30));
-
-        // JButton viewSeatsButton = new JButton("View Seats");
-        // styleButton(viewSeatsButton);
-        // viewSeatsButton.addActionListener(e -> showSeatChart(flightNum));
 
         JButton backButton = new JButton("Back");
         styleButton(backButton);
@@ -609,30 +605,42 @@ public class GUI extends JFrame implements ActionListener {
     private JPanel createAdminPage() {
         JPanel adminPage = new JPanel();
         adminPage.setLayout(new BoxLayout(adminPage, BoxLayout.Y_AXIS));
+        adminPage.setBackground(Color.WHITE);
     
         JLabel welcomeLabel = new JLabel("Welcome, Admin!");
-        welcomeLabel.setFont(new Font(welcomeLabel.getFont().getName(), Font.PLAIN, 20));
+        welcomeLabel.setFont(new Font(welcomeLabel.getFont().getName(), Font.BOLD, 18));
         welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         adminPage.add(Box.createVerticalStrut(20));
         adminPage.add(welcomeLabel);
+        adminPage.add(Box.createVerticalStrut(20));
+
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("admin_icon.png"));
+        imageIcon.setImage(imageIcon.getImage().getScaledInstance(300, 300, Image.SCALE_DEFAULT));
+        JLabel image = new JLabel(imageIcon);
+        image.setAlignmentX(Component.CENTER_ALIGNMENT);
+        adminPage.add(image);
         adminPage.add(Box.createVerticalStrut(20));
     
         viewAllFlightsButton = new JButton("Manage Flights");
         viewAllFlightsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         viewAllFlightsButton.addActionListener(e -> showAllFlights());
+        styleButton(viewAllFlightsButton);
         adminPage.add(viewAllFlightsButton);
-        adminPage.add(Box.createVerticalStrut(20));
+        adminPage.add(Box.createVerticalStrut(30));
     
         JButton manageAircraftButton = new JButton("Manage Aircraft");
         manageAircraftButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         manageAircraftButton.addActionListener(e -> showManageAircraftPage());
+        styleButton(manageAircraftButton);
         adminPage.add(manageAircraftButton);
-        adminPage.add(Box.createVerticalStrut(20));
+        adminPage.add(Box.createVerticalStrut(60));
     
         JButton backButton = new JButton("Back");
+        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         backButton.addActionListener(e -> showMainScreen());
+        styleButton(backButton);
         adminPage.add(backButton);
-        adminPage.add(Box.createVerticalStrut(20));
+        adminPage.add(Box.createVerticalStrut(80));
     
         return adminPage;
     }
@@ -647,9 +655,10 @@ public class GUI extends JFrame implements ActionListener {
     private JPanel createManageAircraftPage() {
         JPanel manageAircraftPage = new JPanel();
         manageAircraftPage.setLayout(new BoxLayout(manageAircraftPage, BoxLayout.Y_AXIS));
+        manageAircraftPage.setBackground(Color.WHITE);
     
         JLabel titleLabel = new JLabel("Manage Aircraft");
-        titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.PLAIN, 20));
+        titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.BOLD, 18));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         manageAircraftPage.add(Box.createVerticalStrut(20));
         manageAircraftPage.add(titleLabel);
@@ -695,12 +704,14 @@ public class GUI extends JFrame implements ActionListener {
         JButton addAircraftButton = new JButton("Add Aircraft");
         addAircraftButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         addAircraftButton.addActionListener(e -> showAddAircraftPage());
+        styleButton(addAircraftButton);
         manageAircraftPage.add(addAircraftButton);
         manageAircraftPage.add(Box.createVerticalStrut(20));
     
         JButton backButton = new JButton("Back");
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         backButton.addActionListener(e -> showAdminPage());
+        styleButton(backButton);
         manageAircraftPage.add(backButton);
         manageAircraftPage.add(Box.createVerticalStrut(20));
     
@@ -760,9 +771,10 @@ public class GUI extends JFrame implements ActionListener {
     private JPanel createAddAircraftPage() {
         JPanel addAircraftPage = new JPanel();
         addAircraftPage.setLayout(new BoxLayout(addAircraftPage, BoxLayout.Y_AXIS));
+        addAircraftPage.setBackground(Color.WHITE);
     
         JLabel titleLabel = new JLabel("Add New Aircraft");
-        titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.PLAIN, 20));
+        titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.BOLD, 18));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         addAircraftPage.add(Box.createVerticalStrut(20));
         addAircraftPage.add(titleLabel);
@@ -838,9 +850,10 @@ public class GUI extends JFrame implements ActionListener {
     private JPanel createAddFlightPage() {
         JPanel addFlightPage = new JPanel();
         addFlightPage.setLayout(new BoxLayout(addFlightPage, BoxLayout.Y_AXIS));
+        addFlightPage.setBackground(Color.WHITE);
     
         JLabel titleLabel = new JLabel("Add New Flight");
-        titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.PLAIN, 20));
+        titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.BOLD, 18));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         addFlightPage.add(Box.createVerticalStrut(20));
         addFlightPage.add(titleLabel);
@@ -848,6 +861,7 @@ public class GUI extends JFrame implements ActionListener {
     
         // Add Origin
         JPanel originPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        originPanel.setBackground(Color.WHITE);
         originPanel.add(new JLabel("Airport 1: "));
         JTextField airport1Field = new JTextField(15);
         originPanel.add(airport1Field);
@@ -862,6 +876,7 @@ public class GUI extends JFrame implements ActionListener {
     
         // Add Destination
         JPanel destinationPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        destinationPanel.setBackground(Color.WHITE);
         destinationPanel.add(new JLabel("Airport 2: "));
         JTextField airport2Field = new JTextField(15);
         destinationPanel.add(airport2Field);
@@ -876,6 +891,7 @@ public class GUI extends JFrame implements ActionListener {
     
         // Add Flight Number
         JPanel flightNumberPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        flightNumberPanel.setBackground(Color.WHITE);
         flightNumberPanel.add(new JLabel("Flight Number: "));
         JTextField flightNumField = new JTextField(15);
         flightNumberPanel.add(flightNumField);
@@ -884,6 +900,7 @@ public class GUI extends JFrame implements ActionListener {
     
         // Add Flight Date
         JPanel flightDatePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        flightDatePanel.setBackground(Color.WHITE);
         flightDatePanel.add(new JLabel("Flight Date (YYYY-MM-DD): "));
         JTextField dateField = new JTextField(15);
         flightDatePanel.add(dateField);
@@ -892,6 +909,7 @@ public class GUI extends JFrame implements ActionListener {
     
         // Add Departure Time
         JPanel departureTimePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        departureTimePanel.setBackground(Color.WHITE);
         departureTimePanel.add(new JLabel("Departure Time (HH:mm): "));
         JTextField departureTimeField = new JTextField(15);
         departureTimePanel.add(departureTimeField);
@@ -900,6 +918,7 @@ public class GUI extends JFrame implements ActionListener {
     
         // Add Arrival Time
         JPanel arrivalTimePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        arrivalTimePanel.setBackground(Color.WHITE);
         arrivalTimePanel.add(new JLabel("Arrival Time (HH:mm): "));
         JTextField arrivalTimeField = new JTextField(15);
         arrivalTimePanel.add(arrivalTimeField);
@@ -908,6 +927,7 @@ public class GUI extends JFrame implements ActionListener {
     
         // Add Flight Time
         JPanel flightTimePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        flightTimePanel.setBackground(Color.WHITE);
         flightTimePanel.add(new JLabel("Flight Time (HH:mm): "));
         JTextField flightTimeField = new JTextField(15);
         flightTimePanel.add(flightTimeField);
@@ -916,6 +936,7 @@ public class GUI extends JFrame implements ActionListener {
     
         JButton addButton = new JButton("Add Flight");
         addButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        styleButton(addButton);
         addButton.addActionListener(e -> handleAddFlight(
                 new Location(
                 airport1Field.getText(),
@@ -941,6 +962,7 @@ public class GUI extends JFrame implements ActionListener {
         JButton backButton = new JButton("Back");
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         backButton.addActionListener(e -> showAdminPage());
+        styleButton(backButton);
         addFlightPage.add(backButton);
         addFlightPage.add(Box.createVerticalStrut(20));
     
@@ -954,6 +976,25 @@ public class GUI extends JFrame implements ActionListener {
         JList<String> allFlightsList = new JList<>(flightStrings.toArray(new String[0]));
         allFlightsList.setFont(new Font(allFlightsList.getFont().getName(), Font.PLAIN, 16));
         allFlightsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        allFlightsList.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+                Color evenColor = new Color(230, 240, 255);
+                Color oddColor = Color.WHITE;
+
+                if (isSelected) {
+                    c.setBackground(new Color(0, 102, 204));
+                } else {
+                    c.setBackground(index % 2 == 0 ? evenColor : oddColor);
+                }
+
+                return c;
+            }
+        });
     
         // Add ListSelectionListener to the flight list
         allFlightsList.addMouseListener(new MouseAdapter() {
@@ -968,27 +1009,41 @@ public class GUI extends JFrame implements ActionListener {
                 }
             }
         });
+
+        JLabel titleLabel = new JLabel("All Flights");
+        titleLabel.setFont(new Font(titleLabel.getFont().getName(), Font.BOLD, 18));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
     
         JScrollPane allFlightsScrollPane = new JScrollPane(allFlightsList);
+
         allFlightsScrollPane.setPreferredSize(new Dimension(600, 400));
     
         TitledBorder titledBorder = BorderFactory.createTitledBorder("All Flights");
         allFlightsScrollPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), titledBorder));
     
         JButton backButton = new JButton("Back");
+        styleButton(backButton);
+        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         backButton.addActionListener(e -> cardLayout.show(cardPanel, "user"));
     
         // Add the "Add Flight" button
         JButton addFlightButton = new JButton("Add Flight");
+        styleButton(addFlightButton);
+        addFlightButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         addFlightButton.addActionListener(e -> showAddFlightPage());
     
         JPanel allFlightsPanel = new JPanel();
+        allFlightsPanel.setBackground(Color.WHITE);
         allFlightsPanel.setLayout(new BoxLayout(allFlightsPanel, BoxLayout.Y_AXIS));
+        allFlightsPanel.add(Box.createVerticalStrut(20));
+        allFlightsPanel.add(titleLabel);
+        allFlightsPanel.add(Box.createVerticalStrut(20));
         allFlightsPanel.add(allFlightsScrollPane);
         allFlightsPanel.add(Box.createVerticalStrut(20));
         allFlightsPanel.add(addFlightButton);
-        allFlightsPanel.add(Box.createVerticalStrut(20));
+        allFlightsPanel.add(Box.createVerticalStrut(40));
         allFlightsPanel.add(backButton);
+        allFlightsPanel.add(Box.createVerticalStrut(80));
     
         cardPanel.add(allFlightsPanel, "allFlightsPanel");
         cardLayout.show(cardPanel, "allFlightsPanel");
