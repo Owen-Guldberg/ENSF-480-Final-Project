@@ -130,9 +130,15 @@ public class SystemController {
 	//get name from email
 	public String getNameByEmail(String email){
 		registeredCustomers = Database.getOnlyInstance().getRegisteredCustomerData();
+		crewMembers = Database.getOnlyInstance().getCrewMemberData();
 		for(RegisteredCustomer customer : registeredCustomers){
 			if(customer.getEmail().equals(email)){
 				return customer.getName().toString();
+			}
+		}
+		for(CrewMember crew : crewMembers){
+			if(crew.getEmail().equals(email)){
+				return crew.getName().toString();
 			}
 		}
 		return null;

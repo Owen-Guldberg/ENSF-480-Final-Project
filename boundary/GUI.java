@@ -89,30 +89,32 @@ public class GUI extends JFrame implements ActionListener {
     private JPanel createCrewMemberPage(String username){
         JPanel userPage = new JPanel();
         userPage.setLayout(new BoxLayout(userPage, BoxLayout.Y_AXIS));
+        userPage.setBackground(Color.WHITE);
 
-        JLabel welcomeLabel = new JLabel("Welcome, " + username+ "!");
-        welcomeLabel.setFont(new Font(welcomeLabel.getFont().getName(), Font.PLAIN, 20));
+        JLabel welcomeLabel = new JLabel("Welcome, " + system.getNameByEmail(username) + "!");
+        welcomeLabel.setFont(new Font(welcomeLabel.getFont().getName(), Font.BOLD, 18));
         welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         userPage.add(Box.createVerticalStrut(20));
         userPage.add(welcomeLabel);
         userPage.add(Box.createVerticalStrut(20));
 
-
-
-        JLabel enterLabel = new JLabel("Please select flights to show passengers");
+        JLabel enterLabel = new JLabel("Please select flights to show passengers.");
         enterLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         userPage.add(enterLabel);
         userPage.add(Box.createVerticalStrut(10));
+
         JPanel locationMenusPanel = new JPanel();
         locationMenusPanel.setLayout(new FlowLayout(FlowLayout.CENTER)); 
-        JScrollPane CrewMemberScrollPane = createCrewMemberMenu("Crew Member flights",username);
+        locationMenusPanel.setBackground(Color.WHITE);
+        JScrollPane CrewMemberScrollPane = createCrewMemberMenu("Crew Member Flights",username);
         locationMenusPanel.add(CrewMemberScrollPane);
         userPage.add(locationMenusPanel);
-        userPage.add(Box.createVerticalStrut(10));
+        userPage.add(Box.createVerticalStrut(40));
 
         JButton viewPassengersButton = new JButton("View Passengers");
         viewPassengersButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         viewPassengersButton.addActionListener(e -> handleViewPassengers(username));
+        styleButton(viewPassengersButton);
         userPage.add(viewPassengersButton);
 
         userPage.add(Box.createVerticalStrut(100));
@@ -121,8 +123,9 @@ public class GUI extends JFrame implements ActionListener {
         actionButton = username.isEmpty() ? new JButton("Return to Home Page") : new JButton("Logout");
         actionButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         actionButton.addActionListener(e -> showMainScreen());
+        styleButton(actionButton);
         userPage.add(actionButton);
-        userPage.add(Box.createVerticalStrut(20));
+        userPage.add(Box.createVerticalStrut(80));
 
         return userPage;    
     }
@@ -155,9 +158,10 @@ public class GUI extends JFrame implements ActionListener {
     private JPanel createPassengerPage(String username, String flightNumber) {
         JPanel userPage = new JPanel();
         userPage.setLayout(new BoxLayout(userPage, BoxLayout.Y_AXIS));
+        userPage.setBackground(Color.WHITE);
     
         JLabel welcomeLabel = new JLabel("Flight : " + flightNumber + " Passengers");
-        welcomeLabel.setFont(new Font(welcomeLabel.getFont().getName(), Font.PLAIN, 20));
+        welcomeLabel.setFont(new Font(welcomeLabel.getFont().getName(), Font.BOLD, 18));
         welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         userPage.add(Box.createVerticalStrut(20));
         userPage.add(welcomeLabel);
@@ -166,8 +170,14 @@ public class GUI extends JFrame implements ActionListener {
         userPage.add(Box.createVerticalStrut(10));
         JPanel locationMenusPanel = new JPanel();
         locationMenusPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+        locationMenusPanel.setBackground(Color.WHITE);
     
         JScrollPane CrewMemberScrollPane = createFlightPassengerMenu("Passengers", flightNumber);
+        // set the scroll pane size
+        if (CrewMemberScrollPane != null) {
+            CrewMemberScrollPane.setPreferredSize(new Dimension(600, 500));
+        
+        }
     
         // Check if there are passengers to display
         if (CrewMemberScrollPane != null && CrewMemberScrollPane.getComponentCount() > 0) {
@@ -183,17 +193,20 @@ public class GUI extends JFrame implements ActionListener {
         }
     
         // Logout or Return to Home Page Button
+        userPage.add(Box.createVerticalStrut(30));
         JButton backButton = new JButton("Back");
         backButton.addActionListener(e -> showCrewMemberPage(username));
-        
+        styleButton(backButton);
         backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         userPage.add(backButton);
+        userPage.add(Box.createVerticalStrut(60));
     
         actionButton = username.isEmpty() ? new JButton("Return to Home Page") : new JButton("Logout");
         actionButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         actionButton.addActionListener(e -> showMainScreen());
+        styleButton(actionButton);
         userPage.add(actionButton);
-        userPage.add(Box.createVerticalStrut(20));
+        userPage.add(Box.createVerticalStrut(80));
         return userPage;
     }
     
@@ -232,8 +245,35 @@ public class GUI extends JFrame implements ActionListener {
 
         flightList.setFont(new Font(flightList.getFont().getName(), Font.PLAIN, 16));
         flightList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        flightList.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+                Color evenColor = new Color(230, 240, 255);
+                Color oddColor = Color.WHITE;
+
+                if (isSelected) {
+                    c.setBackground(new Color(0, 102, 204));
+                } else {
+                    c.setBackground(index % 2 == 0 ? evenColor : oddColor);
+                }
+
+                return c;
+            }
+        });
+        //add bottom border to each entry
+        flightList.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                flightList.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.GRAY), BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+            }
+        });
+
         JScrollPane flightScrollPane = new JScrollPane(flightList);
-        flightScrollPane.setPreferredSize(new Dimension(400, 400));
+        flightScrollPane.setPreferredSize(new Dimension(800, 500));
 
         TitledBorder titledBorder = BorderFactory.createTitledBorder(title);
         flightScrollPane.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), titledBorder));
