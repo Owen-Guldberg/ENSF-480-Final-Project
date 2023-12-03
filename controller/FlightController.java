@@ -2,9 +2,10 @@ package controller;
 
 import java.util.ArrayList;
 
+import boundary.Database;
 import flightInfo.*;
 import role.RegisteredCustomer;
-import database.*;
+
 
 public class FlightController{
 

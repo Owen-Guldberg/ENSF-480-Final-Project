@@ -6,7 +6,8 @@ import java.util.ArrayList;
 
 import com.owen_guldberg.gmailsender.GMailer;
 
-import database.*;
+import boundary.Database;
+
 import util.*;
 
 public class AuthenticationController {

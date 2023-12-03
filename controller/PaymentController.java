@@ -4,12 +4,13 @@ import util.*;
 
 import java.util.ArrayList;
 
-import database.Database;
 import role.RegisteredCustomer;
 import flightInfo.Ticket;
 import flightInfo.Seat;
 
 import com.owen_guldberg.gmailsender.GMailer;
+
+import boundary.Database;
 
 public class PaymentController {
 

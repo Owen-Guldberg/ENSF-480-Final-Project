@@ -1,7 +1,8 @@
 package controller;
 import java.util.ArrayList;
 
-import database.*;
+import boundary.Database;
+
 import flightInfo.*;
 
 public class AircraftController {

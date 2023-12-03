@@ -1,4 +1,4 @@
-package database;
+package boundary;
 import com.owen_guldberg.gmailsender.GMailer;
 
 import util.*;

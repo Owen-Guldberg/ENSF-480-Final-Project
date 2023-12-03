@@ -3,7 +3,8 @@ package controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import database.*;
+import boundary.Database;
+
 import flightInfo.*;
 import role.*;
 
